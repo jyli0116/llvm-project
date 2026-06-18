@@ -59,6 +59,8 @@ public:
 
   bool isTypeIsValidForThisReturn(EVT Ty) const override;
 
+  bool enableBigEndian() const override;
+
 private:
   using RegHandler = std::function<void(MachineIRBuilder &, Type *, unsigned,
                                         CCValAssign &)>;

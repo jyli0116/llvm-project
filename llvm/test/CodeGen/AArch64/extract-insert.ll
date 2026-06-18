@@ -5,16 +5,23 @@
 ; RUN: llc -mtriple=aarch64-- -global-isel=1 < %s | FileCheck %s --check-prefixes=CHECK-LE,CHECK-GI-LE
 
 define i32 @trunc_i64_to_i32_le(i64 %x) {
-; CHECK-BE-LABEL: trunc_i64_to_i32_le:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    lsr x0, x0, #32
-; CHECK-BE-NEXT:    // kill: def $w0 killed $w0 killed $x0
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: trunc_i64_to_i32_le:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    lsr x0, x0, #32
+; CHECK-SD-BE-NEXT:    // kill: def $w0 killed $w0 killed $x0
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-SD-LE-LABEL: trunc_i64_to_i32_le:
 ; CHECK-SD-LE:       // %bb.0:
 ; CHECK-SD-LE-NEXT:    // kill: def $w0 killed $w0 killed $x0
 ; CHECK-SD-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: trunc_i64_to_i32_le:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    fmov d0, x0
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    fmov w0, s0
+; CHECK-GI-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: trunc_i64_to_i32_le:
 ; CHECK-GI-LE:       // %bb.0:
@@ -28,16 +35,24 @@ define i32 @trunc_i64_to_i32_le(i64 %x) {
 }
 
 define i32 @trunc_i64_to_i32_be(i64 %x) {
-; CHECK-BE-LABEL: trunc_i64_to_i32_be:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    // kill: def $w0 killed $w0 killed $x0
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: trunc_i64_to_i32_be:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    // kill: def $w0 killed $w0 killed $x0
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-SD-LE-LABEL: trunc_i64_to_i32_be:
 ; CHECK-SD-LE:       // %bb.0:
 ; CHECK-SD-LE-NEXT:    lsr x0, x0, #32
 ; CHECK-SD-LE-NEXT:    // kill: def $w0 killed $w0 killed $x0
 ; CHECK-SD-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: trunc_i64_to_i32_be:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    fmov d0, x0
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    mov s0, v0.s[1]
+; CHECK-GI-BE-NEXT:    fmov w0, s0
+; CHECK-GI-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: trunc_i64_to_i32_be:
 ; CHECK-GI-LE:       // %bb.0:
@@ -52,16 +67,23 @@ define i32 @trunc_i64_to_i32_be(i64 %x) {
 }
 
 define i16 @trunc_i64_to_i16_le(i64 %x) {
-; CHECK-BE-LABEL: trunc_i64_to_i16_le:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    lsr x0, x0, #48
-; CHECK-BE-NEXT:    // kill: def $w0 killed $w0 killed $x0
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: trunc_i64_to_i16_le:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    lsr x0, x0, #48
+; CHECK-SD-BE-NEXT:    // kill: def $w0 killed $w0 killed $x0
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-SD-LE-LABEL: trunc_i64_to_i16_le:
 ; CHECK-SD-LE:       // %bb.0:
 ; CHECK-SD-LE-NEXT:    // kill: def $w0 killed $w0 killed $x0
 ; CHECK-SD-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: trunc_i64_to_i16_le:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    fmov d0, x0
+; CHECK-GI-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    umov w0, v0.h[0]
+; CHECK-GI-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: trunc_i64_to_i16_le:
 ; CHECK-GI-LE:       // %bb.0:
@@ -75,16 +97,23 @@ define i16 @trunc_i64_to_i16_le(i64 %x) {
 }
 
 define i16 @trunc_i64_to_i16_be(i64 %x) {
-; CHECK-BE-LABEL: trunc_i64_to_i16_be:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    // kill: def $w0 killed $w0 killed $x0
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: trunc_i64_to_i16_be:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    // kill: def $w0 killed $w0 killed $x0
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-SD-LE-LABEL: trunc_i64_to_i16_be:
 ; CHECK-SD-LE:       // %bb.0:
 ; CHECK-SD-LE-NEXT:    lsr x0, x0, #48
 ; CHECK-SD-LE-NEXT:    // kill: def $w0 killed $w0 killed $x0
 ; CHECK-SD-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: trunc_i64_to_i16_be:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    fmov d0, x0
+; CHECK-GI-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    umov w0, v0.h[3]
+; CHECK-GI-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: trunc_i64_to_i16_be:
 ; CHECK-GI-LE:       // %bb.0:
@@ -98,14 +127,21 @@ define i16 @trunc_i64_to_i16_be(i64 %x) {
 }
 
 define i8 @trunc_i32_to_i8_le(i32 %x) {
-; CHECK-BE-LABEL: trunc_i32_to_i8_le:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    lsr w0, w0, #24
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: trunc_i32_to_i8_le:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    lsr w0, w0, #24
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-SD-LE-LABEL: trunc_i32_to_i8_le:
 ; CHECK-SD-LE:       // %bb.0:
 ; CHECK-SD-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: trunc_i32_to_i8_le:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    fmov s0, w0
+; CHECK-GI-BE-NEXT:    rev32 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    umov w0, v0.b[0]
+; CHECK-GI-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: trunc_i32_to_i8_le:
 ; CHECK-GI-LE:       // %bb.0:
@@ -119,14 +155,21 @@ define i8 @trunc_i32_to_i8_le(i32 %x) {
 }
 
 define i8 @trunc_i32_to_i8_be(i32 %x) {
-; CHECK-BE-LABEL: trunc_i32_to_i8_be:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: trunc_i32_to_i8_be:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-SD-LE-LABEL: trunc_i32_to_i8_be:
 ; CHECK-SD-LE:       // %bb.0:
 ; CHECK-SD-LE-NEXT:    lsr w0, w0, #24
 ; CHECK-SD-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: trunc_i32_to_i8_be:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    fmov s0, w0
+; CHECK-GI-BE-NEXT:    rev32 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    umov w0, v0.b[3]
+; CHECK-GI-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: trunc_i32_to_i8_be:
 ; CHECK-GI-LE:       // %bb.0:
@@ -142,16 +185,23 @@ define i8 @trunc_i32_to_i8_be(i32 %x) {
 ; Weird type (non-power-of-2 vector) is ok.
 
 define i8 @trunc_i64_to_i8_be(i64 %x) {
-; CHECK-BE-LABEL: trunc_i64_to_i8_be:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    // kill: def $w0 killed $w0 killed $x0
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: trunc_i64_to_i8_be:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    // kill: def $w0 killed $w0 killed $x0
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-SD-LE-LABEL: trunc_i64_to_i8_be:
 ; CHECK-SD-LE:       // %bb.0:
 ; CHECK-SD-LE-NEXT:    lsr x0, x0, #56
 ; CHECK-SD-LE-NEXT:    // kill: def $w0 killed $w0 killed $x0
 ; CHECK-SD-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: trunc_i64_to_i8_be:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    fmov d0, x0
+; CHECK-GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    umov w0, v0.b[7]
+; CHECK-GI-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: trunc_i64_to_i8_be:
 ; CHECK-GI-LE:       // %bb.0:
@@ -165,6 +215,5 @@ define i8 @trunc_i64_to_i8_be(i64 %x) {
 }
 
 ;; NOTE: These prefixes are unused and the list is autogenerated. Do not add tests below this line:
-; CHECK-GI-BE: {{.*}}
+; CHECK-BE: {{.*}}
 ; CHECK-LE: {{.*}}
-; CHECK-SD-BE: {{.*}}

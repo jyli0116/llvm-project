@@ -67,15 +67,29 @@ define <4 x i16> @test_reconstructshuffle(<16 x i8> %a, <16 x i8> %b) nounwind {
 ; CHECKBE-GI-NEXT:    rev64 v1.16b, v1.16b
 ; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECKBE-GI-NEXT:    mov b2, v0.b[3]
-; CHECKBE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECKBE-GI-NEXT:    mov v2.b[2], v0.b[2]
-; CHECKBE-GI-NEXT:    mov v2.b[4], v0.b[1]
-; CHECKBE-GI-NEXT:    mov v2.b[6], v0.b[0]
-; CHECKBE-GI-NEXT:    zip2 v0.8b, v1.8b, v0.8b
-; CHECKBE-GI-NEXT:    add v0.4h, v2.4h, v0.4h
-; CHECKBE-GI-NEXT:    bic v0.4h, #255, lsl #8
-; CHECKBE-GI-NEXT:    rev64 v0.4h, v0.4h
+; CHECKBE-GI-NEXT:    rev32 v0.16b, v0.16b
+; CHECKBE-GI-NEXT:    ext v1.16b, v1.16b, v0.16b, #12
+; CHECKBE-GI-NEXT:    mov b2, v0.b[1]
+; CHECKBE-GI-NEXT:    mov b4, v0.b[2]
+; CHECKBE-GI-NEXT:    mov b5, v0.b[3]
+; CHECKBE-GI-NEXT:    mov b3, v1.b[1]
+; CHECKBE-GI-NEXT:    fmov w8, s2
+; CHECKBE-GI-NEXT:    mov b2, v1.b[2]
+; CHECKBE-GI-NEXT:    mov v0.h[1], w8
+; CHECKBE-GI-NEXT:    fmov w8, s4
+; CHECKBE-GI-NEXT:    fmov w9, s3
+; CHECKBE-GI-NEXT:    mov b3, v1.b[3]
+; CHECKBE-GI-NEXT:    mov v1.h[1], w9
+; CHECKBE-GI-NEXT:    fmov w9, s2
+; CHECKBE-GI-NEXT:    mov v0.h[2], w8
+; CHECKBE-GI-NEXT:    fmov w8, s5
+; CHECKBE-GI-NEXT:    movi d2, #0xff00ff00ff00ff
+; CHECKBE-GI-NEXT:    mov v1.h[2], w9
+; CHECKBE-GI-NEXT:    fmov w9, s3
+; CHECKBE-GI-NEXT:    mov v0.h[3], w8
+; CHECKBE-GI-NEXT:    mov v1.h[3], w9
+; CHECKBE-GI-NEXT:    add v0.4h, v0.4h, v1.4h
+; CHECKBE-GI-NEXT:    and v0.8b, v0.8b, v2.8b
 ; CHECKBE-GI-NEXT:    ret
   %tmp1 = shufflevector <16 x i8> %a, <16 x i8> undef, <4 x i32> <i32 3, i32 2, i32 1, i32 0>
   %tmp2 = shufflevector <16 x i8> %b, <16 x i8> undef, <4 x i32> <i32 12, i32 13, i32 14, i32 15>

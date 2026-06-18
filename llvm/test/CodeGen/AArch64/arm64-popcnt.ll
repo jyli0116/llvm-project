@@ -35,13 +35,21 @@ define i32 @cnt32_advsimd(i32 %x) nounwind readnone {
 ; CHECK-CSSC-NEXT:    cnt w0, w0
 ; CHECK-CSSC-NEXT:    ret
 ;
-; CHECK-BE-LABEL: cnt32_advsimd:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    fmov s0, w0
-; CHECK-BE-NEXT:    cnt v0.8b, v0.8b
-; CHECK-BE-NEXT:    addv b0, v0.8b
-; CHECK-BE-NEXT:    fmov w0, s0
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: cnt32_advsimd:
+; CHECK-BE-SD:       // %bb.0:
+; CHECK-BE-SD-NEXT:    fmov s0, w0
+; CHECK-BE-SD-NEXT:    cnt v0.8b, v0.8b
+; CHECK-BE-SD-NEXT:    addv b0, v0.8b
+; CHECK-BE-SD-NEXT:    fmov w0, s0
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: cnt32_advsimd:
+; CHECK-BE-GI:       // %bb.0:
+; CHECK-BE-GI-NEXT:    fmov s0, w0
+; CHECK-BE-GI-NEXT:    cnt v0.8b, v0.8b
+; CHECK-BE-GI-NEXT:    uaddlv h0, v0.8b
+; CHECK-BE-GI-NEXT:    fmov w0, s0
+; CHECK-BE-GI-NEXT:    ret
   %cnt = tail call i32 @llvm.ctpop.i32(i32 %x)
   ret i32 %cnt
 }
@@ -80,15 +88,25 @@ define i32 @cnt32_advsimd_2(<2 x i32> %x) {
 ; CHECK-CSSC-NEXT:    cnt w0, w8
 ; CHECK-CSSC-NEXT:    ret
 ;
-; CHECK-BE-LABEL: cnt32_advsimd_2:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    rev64 v0.2s, v0.2s
-; CHECK-BE-NEXT:    fmov w8, s0
-; CHECK-BE-NEXT:    fmov s0, w8
-; CHECK-BE-NEXT:    cnt v0.8b, v0.8b
-; CHECK-BE-NEXT:    addv b0, v0.8b
-; CHECK-BE-NEXT:    fmov w0, s0
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: cnt32_advsimd_2:
+; CHECK-BE-SD:       // %bb.0:
+; CHECK-BE-SD-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-BE-SD-NEXT:    fmov w8, s0
+; CHECK-BE-SD-NEXT:    fmov s0, w8
+; CHECK-BE-SD-NEXT:    cnt v0.8b, v0.8b
+; CHECK-BE-SD-NEXT:    addv b0, v0.8b
+; CHECK-BE-SD-NEXT:    fmov w0, s0
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: cnt32_advsimd_2:
+; CHECK-BE-GI:       // %bb.0:
+; CHECK-BE-GI-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-BE-GI-NEXT:    fmov w8, s0
+; CHECK-BE-GI-NEXT:    fmov s0, w8
+; CHECK-BE-GI-NEXT:    cnt v0.8b, v0.8b
+; CHECK-BE-GI-NEXT:    uaddlv h0, v0.8b
+; CHECK-BE-GI-NEXT:    fmov w0, s0
+; CHECK-BE-GI-NEXT:    ret
   %1 = extractelement <2 x i32> %x, i64 0
   %2 = tail call i32 @llvm.ctpop.i32(i32 %1)
   ret i32 %2
@@ -124,14 +142,23 @@ define i64 @cnt64_advsimd(i64 %x) nounwind readnone {
 ; CHECK-CSSC-NEXT:    cnt x0, x0
 ; CHECK-CSSC-NEXT:    ret
 ;
-; CHECK-BE-LABEL: cnt64_advsimd:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    fmov d0, x0
-; CHECK-BE-NEXT:    rev64 v0.8b, v0.8b
-; CHECK-BE-NEXT:    cnt v0.8b, v0.8b
-; CHECK-BE-NEXT:    addv b0, v0.8b
-; CHECK-BE-NEXT:    fmov x0, d0
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: cnt64_advsimd:
+; CHECK-BE-SD:       // %bb.0:
+; CHECK-BE-SD-NEXT:    fmov d0, x0
+; CHECK-BE-SD-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-BE-SD-NEXT:    cnt v0.8b, v0.8b
+; CHECK-BE-SD-NEXT:    addv b0, v0.8b
+; CHECK-BE-SD-NEXT:    fmov x0, d0
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: cnt64_advsimd:
+; CHECK-BE-GI:       // %bb.0:
+; CHECK-BE-GI-NEXT:    fmov d0, x0
+; CHECK-BE-GI-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-BE-GI-NEXT:    cnt v0.8b, v0.8b
+; CHECK-BE-GI-NEXT:    uaddlv h0, v0.8b
+; CHECK-BE-GI-NEXT:    mov w0, v0.s[0]
+; CHECK-BE-GI-NEXT:    ret
   %cnt = tail call i64 @llvm.ctpop.i64(i64 %x)
   ret i64 %cnt
 }
@@ -177,21 +204,37 @@ define i32 @cnt32(i32 %x) nounwind readnone noimplicitfloat {
 ; CHECK-CSSC-NEXT:    cnt w0, w0
 ; CHECK-CSSC-NEXT:    ret
 ;
-; CHECK-BE-LABEL: cnt32:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    lsr w9, w0, #1
-; CHECK-BE-NEXT:    mov w8, #16843009 // =0x1010101
-; CHECK-BE-NEXT:    and w9, w9, #0x55555555
-; CHECK-BE-NEXT:    sub w9, w0, w9
-; CHECK-BE-NEXT:    lsr w10, w9, #2
-; CHECK-BE-NEXT:    and w9, w9, #0x33333333
-; CHECK-BE-NEXT:    and w10, w10, #0x33333333
-; CHECK-BE-NEXT:    add w9, w9, w10
-; CHECK-BE-NEXT:    add w9, w9, w9, lsr #4
-; CHECK-BE-NEXT:    and w9, w9, #0xf0f0f0f
-; CHECK-BE-NEXT:    mul w8, w9, w8
-; CHECK-BE-NEXT:    lsr w0, w8, #24
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: cnt32:
+; CHECK-BE-SD:       // %bb.0:
+; CHECK-BE-SD-NEXT:    lsr w9, w0, #1
+; CHECK-BE-SD-NEXT:    mov w8, #16843009 // =0x1010101
+; CHECK-BE-SD-NEXT:    and w9, w9, #0x55555555
+; CHECK-BE-SD-NEXT:    sub w9, w0, w9
+; CHECK-BE-SD-NEXT:    lsr w10, w9, #2
+; CHECK-BE-SD-NEXT:    and w9, w9, #0x33333333
+; CHECK-BE-SD-NEXT:    and w10, w10, #0x33333333
+; CHECK-BE-SD-NEXT:    add w9, w9, w10
+; CHECK-BE-SD-NEXT:    add w9, w9, w9, lsr #4
+; CHECK-BE-SD-NEXT:    and w9, w9, #0xf0f0f0f
+; CHECK-BE-SD-NEXT:    mul w8, w9, w8
+; CHECK-BE-SD-NEXT:    lsr w0, w8, #24
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: cnt32:
+; CHECK-BE-GI:       // %bb.0:
+; CHECK-BE-GI-NEXT:    lsr w9, w0, #1
+; CHECK-BE-GI-NEXT:    mov w8, #16843009 // =0x1010101
+; CHECK-BE-GI-NEXT:    and w9, w9, #0x55555555
+; CHECK-BE-GI-NEXT:    sub w9, w0, w9
+; CHECK-BE-GI-NEXT:    lsr w10, w9, #2
+; CHECK-BE-GI-NEXT:    and w9, w9, #0x33333333
+; CHECK-BE-GI-NEXT:    and w10, w10, #0x33333333
+; CHECK-BE-GI-NEXT:    add w9, w10, w9
+; CHECK-BE-GI-NEXT:    add w9, w9, w9, lsr #4
+; CHECK-BE-GI-NEXT:    and w9, w9, #0xf0f0f0f
+; CHECK-BE-GI-NEXT:    mul w8, w9, w8
+; CHECK-BE-GI-NEXT:    lsr w0, w8, #24
+; CHECK-BE-GI-NEXT:    ret
   %cnt = tail call i32 @llvm.ctpop.i32(i32 %x)
   ret i32 %cnt
 }
@@ -234,21 +277,37 @@ define i64 @cnt64(i64 %x) nounwind readnone noimplicitfloat {
 ; CHECK-CSSC-NEXT:    cnt x0, x0
 ; CHECK-CSSC-NEXT:    ret
 ;
-; CHECK-BE-LABEL: cnt64:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    lsr x9, x0, #1
-; CHECK-BE-NEXT:    mov x8, #72340172838076673 // =0x101010101010101
-; CHECK-BE-NEXT:    and x9, x9, #0x5555555555555555
-; CHECK-BE-NEXT:    sub x9, x0, x9
-; CHECK-BE-NEXT:    lsr x10, x9, #2
-; CHECK-BE-NEXT:    and x9, x9, #0x3333333333333333
-; CHECK-BE-NEXT:    and x10, x10, #0x3333333333333333
-; CHECK-BE-NEXT:    add x9, x9, x10
-; CHECK-BE-NEXT:    add x9, x9, x9, lsr #4
-; CHECK-BE-NEXT:    and x9, x9, #0xf0f0f0f0f0f0f0f
-; CHECK-BE-NEXT:    mul x8, x9, x8
-; CHECK-BE-NEXT:    lsr x0, x8, #56
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: cnt64:
+; CHECK-BE-SD:       // %bb.0:
+; CHECK-BE-SD-NEXT:    lsr x9, x0, #1
+; CHECK-BE-SD-NEXT:    mov x8, #72340172838076673 // =0x101010101010101
+; CHECK-BE-SD-NEXT:    and x9, x9, #0x5555555555555555
+; CHECK-BE-SD-NEXT:    sub x9, x0, x9
+; CHECK-BE-SD-NEXT:    lsr x10, x9, #2
+; CHECK-BE-SD-NEXT:    and x9, x9, #0x3333333333333333
+; CHECK-BE-SD-NEXT:    and x10, x10, #0x3333333333333333
+; CHECK-BE-SD-NEXT:    add x9, x9, x10
+; CHECK-BE-SD-NEXT:    add x9, x9, x9, lsr #4
+; CHECK-BE-SD-NEXT:    and x9, x9, #0xf0f0f0f0f0f0f0f
+; CHECK-BE-SD-NEXT:    mul x8, x9, x8
+; CHECK-BE-SD-NEXT:    lsr x0, x8, #56
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: cnt64:
+; CHECK-BE-GI:       // %bb.0:
+; CHECK-BE-GI-NEXT:    lsr x9, x0, #1
+; CHECK-BE-GI-NEXT:    mov x8, #72340172838076673 // =0x101010101010101
+; CHECK-BE-GI-NEXT:    and x9, x9, #0x5555555555555555
+; CHECK-BE-GI-NEXT:    sub x9, x0, x9
+; CHECK-BE-GI-NEXT:    lsr x10, x9, #2
+; CHECK-BE-GI-NEXT:    and x9, x9, #0x3333333333333333
+; CHECK-BE-GI-NEXT:    and x10, x10, #0x3333333333333333
+; CHECK-BE-GI-NEXT:    add x9, x10, x9
+; CHECK-BE-GI-NEXT:    add x9, x9, x9, lsr #4
+; CHECK-BE-GI-NEXT:    and x9, x9, #0xf0f0f0f0f0f0f0f
+; CHECK-BE-GI-NEXT:    mul x8, x9, x8
+; CHECK-BE-GI-NEXT:    lsr x0, x8, #56
+; CHECK-BE-GI-NEXT:    ret
   %cnt = tail call i64 @llvm.ctpop.i64(i64 %x)
   ret i64 %cnt
 }
@@ -478,22 +537,31 @@ define i128 @cnt128(i128 %x) nounwind readnone {
 ; CHECK-CSSC-NEXT:    add x0, x9, x8
 ; CHECK-CSSC-NEXT:    ret
 ;
-; CHECK-BE-LABEL: cnt128:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    fmov d0, x0
-; CHECK-BE-NEXT:    mov x0, xzr
-; CHECK-BE-NEXT:    mov v0.d[1], x1
-; CHECK-BE-NEXT:    rev64 v0.16b, v0.16b
-; CHECK-BE-NEXT:    cnt v0.16b, v0.16b
-; CHECK-BE-NEXT:    addv b0, v0.16b
-; CHECK-BE-NEXT:    fmov x1, d0
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: cnt128:
+; CHECK-BE-SD:       // %bb.0:
+; CHECK-BE-SD-NEXT:    fmov d0, x0
+; CHECK-BE-SD-NEXT:    mov x0, xzr
+; CHECK-BE-SD-NEXT:    mov v0.d[1], x1
+; CHECK-BE-SD-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-BE-SD-NEXT:    cnt v0.16b, v0.16b
+; CHECK-BE-SD-NEXT:    addv b0, v0.16b
+; CHECK-BE-SD-NEXT:    fmov x1, d0
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: cnt128:
+; CHECK-BE-GI:       // %bb.0:
+; CHECK-BE-GI-NEXT:    mov v0.d[0], x1
+; CHECK-BE-GI-NEXT:    mov v0.d[1], x0
+; CHECK-BE-GI-NEXT:    mov x0, xzr
+; CHECK-BE-GI-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    cnt v0.16b, v0.16b
+; CHECK-BE-GI-NEXT:    uaddlv h0, v0.16b
+; CHECK-BE-GI-NEXT:    mov w1, v0.s[0]
+; CHECK-BE-GI-NEXT:    ret
   %cnt = tail call i128 @llvm.ctpop.i128(i128 %x)
   ret i128 %cnt
 }
 
 declare i32 @llvm.ctpop.i32(i32) nounwind readnone
 declare i64 @llvm.ctpop.i64(i64) nounwind readnone
-;; NOTE: These prefixes are unused and the list is autogenerated. Do not add tests below this line:
-; CHECK-BE-GI: {{.*}}
-; CHECK-BE-SD: {{.*}}

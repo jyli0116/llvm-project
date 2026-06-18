@@ -18,23 +18,13 @@ define void @test1() {
 ; CHECK-NEXT:    stp x8, x9, [x10]
 ; CHECK-NEXT:    ret
 ;
-; CHECK-LE-GI-LABEL: test1:
-; CHECK-LE-GI:       // %bb.0:
-; CHECK-LE-GI-NEXT:    adrp x8, x
-; CHECK-LE-GI-NEXT:    ldr q0, [x8, :lo12:x]
-; CHECK-LE-GI-NEXT:    adrp x8, y
-; CHECK-LE-GI-NEXT:    str q0, [x8, :lo12:y]
-; CHECK-LE-GI-NEXT:    ret
-;
-; CHECK-BE-GI-LABEL: test1:
-; CHECK-BE-GI:       // %bb.0:
-; CHECK-BE-GI-NEXT:    adrp x8, x
-; CHECK-BE-GI-NEXT:    add x8, x8, :lo12:x
-; CHECK-BE-GI-NEXT:    adrp x10, y
-; CHECK-BE-GI-NEXT:    add x10, x10, :lo12:y
-; CHECK-BE-GI-NEXT:    ldp x8, x9, [x8]
-; CHECK-BE-GI-NEXT:    stp x8, x9, [x10]
-; CHECK-BE-GI-NEXT:    ret
+; CHECK-GI-LABEL: test1:
+; CHECK-GI:       // %bb.0:
+; CHECK-GI-NEXT:    adrp x8, x
+; CHECK-GI-NEXT:    ldr q0, [x8, :lo12:x]
+; CHECK-GI-NEXT:    adrp x8, y
+; CHECK-GI-NEXT:    str q0, [x8, :lo12:y]
+; CHECK-GI-NEXT:    ret
   %tmp = load volatile i128, ptr @x
   store volatile i128 %tmp, ptr @y
   ret void
@@ -51,27 +41,17 @@ define void @test2() {
 ; CHECK-NEXT:    stp x8, x9, [x10, #504]
 ; CHECK-NEXT:    ret
 ;
-; CHECK-LE-GI-LABEL: test2:
-; CHECK-LE-GI:       // %bb.0:
-; CHECK-LE-GI-NEXT:    adrp x8, x
-; CHECK-LE-GI-NEXT:    add x8, x8, :lo12:x
-; CHECK-LE-GI-NEXT:    add x8, x8, #504
-; CHECK-LE-GI-NEXT:    ldr q0, [x8]
-; CHECK-LE-GI-NEXT:    adrp x8, y
-; CHECK-LE-GI-NEXT:    add x8, x8, :lo12:y
-; CHECK-LE-GI-NEXT:    add x8, x8, #504
-; CHECK-LE-GI-NEXT:    str q0, [x8]
-; CHECK-LE-GI-NEXT:    ret
-;
-; CHECK-BE-GI-LABEL: test2:
-; CHECK-BE-GI:       // %bb.0:
-; CHECK-BE-GI-NEXT:    adrp x8, x
-; CHECK-BE-GI-NEXT:    add x8, x8, :lo12:x
-; CHECK-BE-GI-NEXT:    adrp x10, y
-; CHECK-BE-GI-NEXT:    add x10, x10, :lo12:y
-; CHECK-BE-GI-NEXT:    ldp x8, x9, [x8, #504]
-; CHECK-BE-GI-NEXT:    stp x8, x9, [x10, #504]
-; CHECK-BE-GI-NEXT:    ret
+; CHECK-GI-LABEL: test2:
+; CHECK-GI:       // %bb.0:
+; CHECK-GI-NEXT:    adrp x8, x
+; CHECK-GI-NEXT:    add x8, x8, :lo12:x
+; CHECK-GI-NEXT:    add x8, x8, #504
+; CHECK-GI-NEXT:    ldr q0, [x8]
+; CHECK-GI-NEXT:    adrp x8, y
+; CHECK-GI-NEXT:    add x8, x8, :lo12:y
+; CHECK-GI-NEXT:    add x8, x8, #504
+; CHECK-GI-NEXT:    str q0, [x8]
+; CHECK-GI-NEXT:    ret
   %tmp = load volatile i128, ptr getelementptr (i8, ptr @x, i64 504)
   store volatile i128 %tmp, ptr getelementptr (i8, ptr @y, i64 504)
   ret void
@@ -90,27 +70,15 @@ define void @test3() {
 ; CHECK-NEXT:    stp x8, x9, [x10]
 ; CHECK-NEXT:    ret
 ;
-; CHECK-LE-GI-LABEL: test3:
-; CHECK-LE-GI:       // %bb.0:
-; CHECK-LE-GI-NEXT:    adrp x8, x
-; CHECK-LE-GI-NEXT:    add x8, x8, :lo12:x
-; CHECK-LE-GI-NEXT:    ldr q0, [x8, #512]
-; CHECK-LE-GI-NEXT:    adrp x8, y
-; CHECK-LE-GI-NEXT:    add x8, x8, :lo12:y
-; CHECK-LE-GI-NEXT:    str q0, [x8, #512]
-; CHECK-LE-GI-NEXT:    ret
-;
-; CHECK-BE-GI-LABEL: test3:
-; CHECK-BE-GI:       // %bb.0:
-; CHECK-BE-GI-NEXT:    adrp x8, x
-; CHECK-BE-GI-NEXT:    add x8, x8, :lo12:x
-; CHECK-BE-GI-NEXT:    adrp x10, y
-; CHECK-BE-GI-NEXT:    add x10, x10, :lo12:y
-; CHECK-BE-GI-NEXT:    add x8, x8, #512
-; CHECK-BE-GI-NEXT:    ldp x8, x9, [x8]
-; CHECK-BE-GI-NEXT:    add x10, x10, #512
-; CHECK-BE-GI-NEXT:    stp x8, x9, [x10]
-; CHECK-BE-GI-NEXT:    ret
+; CHECK-GI-LABEL: test3:
+; CHECK-GI:       // %bb.0:
+; CHECK-GI-NEXT:    adrp x8, x
+; CHECK-GI-NEXT:    add x8, x8, :lo12:x
+; CHECK-GI-NEXT:    ldr q0, [x8, #512]
+; CHECK-GI-NEXT:    adrp x8, y
+; CHECK-GI-NEXT:    add x8, x8, :lo12:y
+; CHECK-GI-NEXT:    str q0, [x8, #512]
+; CHECK-GI-NEXT:    ret
   %tmp = load volatile i128, ptr getelementptr (i8, ptr @x, i64 512)
   store volatile i128 %tmp, ptr getelementptr (i8, ptr @y, i64 512)
   ret void
@@ -127,27 +95,17 @@ define void @test4() {
 ; CHECK-NEXT:    stp x8, x9, [x10, #-512]
 ; CHECK-NEXT:    ret
 ;
-; CHECK-LE-GI-LABEL: test4:
-; CHECK-LE-GI:       // %bb.0:
-; CHECK-LE-GI-NEXT:    adrp x8, x
-; CHECK-LE-GI-NEXT:    add x8, x8, :lo12:x
-; CHECK-LE-GI-NEXT:    sub x8, x8, #512
-; CHECK-LE-GI-NEXT:    ldr q0, [x8]
-; CHECK-LE-GI-NEXT:    adrp x8, y
-; CHECK-LE-GI-NEXT:    add x8, x8, :lo12:y
-; CHECK-LE-GI-NEXT:    sub x8, x8, #512
-; CHECK-LE-GI-NEXT:    str q0, [x8]
-; CHECK-LE-GI-NEXT:    ret
-;
-; CHECK-BE-GI-LABEL: test4:
-; CHECK-BE-GI:       // %bb.0:
-; CHECK-BE-GI-NEXT:    adrp x8, x
-; CHECK-BE-GI-NEXT:    add x8, x8, :lo12:x
-; CHECK-BE-GI-NEXT:    adrp x10, y
-; CHECK-BE-GI-NEXT:    add x10, x10, :lo12:y
-; CHECK-BE-GI-NEXT:    ldp x8, x9, [x8, #-512]
-; CHECK-BE-GI-NEXT:    stp x8, x9, [x10, #-512]
-; CHECK-BE-GI-NEXT:    ret
+; CHECK-GI-LABEL: test4:
+; CHECK-GI:       // %bb.0:
+; CHECK-GI-NEXT:    adrp x8, x
+; CHECK-GI-NEXT:    add x8, x8, :lo12:x
+; CHECK-GI-NEXT:    sub x8, x8, #512
+; CHECK-GI-NEXT:    ldr q0, [x8]
+; CHECK-GI-NEXT:    adrp x8, y
+; CHECK-GI-NEXT:    add x8, x8, :lo12:y
+; CHECK-GI-NEXT:    sub x8, x8, #512
+; CHECK-GI-NEXT:    str q0, [x8]
+; CHECK-GI-NEXT:    ret
   %tmp = load volatile i128, ptr getelementptr (i8, ptr @x, i64 -512)
   store volatile i128 %tmp, ptr getelementptr (i8, ptr @y, i64 -512)
   ret void
@@ -166,29 +124,17 @@ define void @test5() {
 ; CHECK-NEXT:    stp x8, x9, [x10]
 ; CHECK-NEXT:    ret
 ;
-; CHECK-LE-GI-LABEL: test5:
-; CHECK-LE-GI:       // %bb.0:
-; CHECK-LE-GI-NEXT:    adrp x8, x
-; CHECK-LE-GI-NEXT:    add x8, x8, :lo12:x
-; CHECK-LE-GI-NEXT:    sub x8, x8, #520
-; CHECK-LE-GI-NEXT:    ldr q0, [x8]
-; CHECK-LE-GI-NEXT:    adrp x8, y
-; CHECK-LE-GI-NEXT:    add x8, x8, :lo12:y
-; CHECK-LE-GI-NEXT:    sub x8, x8, #520
-; CHECK-LE-GI-NEXT:    str q0, [x8]
-; CHECK-LE-GI-NEXT:    ret
-;
-; CHECK-BE-GI-LABEL: test5:
-; CHECK-BE-GI:       // %bb.0:
-; CHECK-BE-GI-NEXT:    adrp x8, x
-; CHECK-BE-GI-NEXT:    add x8, x8, :lo12:x
-; CHECK-BE-GI-NEXT:    adrp x10, y
-; CHECK-BE-GI-NEXT:    add x10, x10, :lo12:y
-; CHECK-BE-GI-NEXT:    sub x8, x8, #520
-; CHECK-BE-GI-NEXT:    ldp x8, x9, [x8]
-; CHECK-BE-GI-NEXT:    sub x10, x10, #520
-; CHECK-BE-GI-NEXT:    stp x8, x9, [x10]
-; CHECK-BE-GI-NEXT:    ret
+; CHECK-GI-LABEL: test5:
+; CHECK-GI:       // %bb.0:
+; CHECK-GI-NEXT:    adrp x8, x
+; CHECK-GI-NEXT:    add x8, x8, :lo12:x
+; CHECK-GI-NEXT:    sub x8, x8, #520
+; CHECK-GI-NEXT:    ldr q0, [x8]
+; CHECK-GI-NEXT:    adrp x8, y
+; CHECK-GI-NEXT:    add x8, x8, :lo12:y
+; CHECK-GI-NEXT:    sub x8, x8, #520
+; CHECK-GI-NEXT:    str q0, [x8]
+; CHECK-GI-NEXT:    ret
   %tmp = load volatile i128, ptr getelementptr (i8, ptr @x, i64 -520)
   store volatile i128 %tmp, ptr getelementptr (i8, ptr @y, i64 -520)
   ret void
@@ -207,29 +153,17 @@ define void @test6() {
 ; CHECK-NEXT:    stp x8, x9, [x10]
 ; CHECK-NEXT:    ret
 ;
-; CHECK-LE-GI-LABEL: test6:
-; CHECK-LE-GI:       // %bb.0:
-; CHECK-LE-GI-NEXT:    adrp x8, x
-; CHECK-LE-GI-NEXT:    add x8, x8, :lo12:x
-; CHECK-LE-GI-NEXT:    sub x8, x8, #520
-; CHECK-LE-GI-NEXT:    ldr q0, [x8]
-; CHECK-LE-GI-NEXT:    adrp x8, y
-; CHECK-LE-GI-NEXT:    add x8, x8, :lo12:y
-; CHECK-LE-GI-NEXT:    sub x8, x8, #520
-; CHECK-LE-GI-NEXT:    str q0, [x8]
-; CHECK-LE-GI-NEXT:    ret
-;
-; CHECK-BE-GI-LABEL: test6:
-; CHECK-BE-GI:       // %bb.0:
-; CHECK-BE-GI-NEXT:    adrp x8, x
-; CHECK-BE-GI-NEXT:    add x8, x8, :lo12:x
-; CHECK-BE-GI-NEXT:    adrp x10, y
-; CHECK-BE-GI-NEXT:    add x10, x10, :lo12:y
-; CHECK-BE-GI-NEXT:    sub x8, x8, #520
-; CHECK-BE-GI-NEXT:    ldp x8, x9, [x8]
-; CHECK-BE-GI-NEXT:    sub x10, x10, #520
-; CHECK-BE-GI-NEXT:    stp x8, x9, [x10]
-; CHECK-BE-GI-NEXT:    ret
+; CHECK-GI-LABEL: test6:
+; CHECK-GI:       // %bb.0:
+; CHECK-GI-NEXT:    adrp x8, x
+; CHECK-GI-NEXT:    add x8, x8, :lo12:x
+; CHECK-GI-NEXT:    sub x8, x8, #520
+; CHECK-GI-NEXT:    ldr q0, [x8]
+; CHECK-GI-NEXT:    adrp x8, y
+; CHECK-GI-NEXT:    add x8, x8, :lo12:y
+; CHECK-GI-NEXT:    sub x8, x8, #520
+; CHECK-GI-NEXT:    str q0, [x8]
+; CHECK-GI-NEXT:    ret
   %tmp = load volatile i128, ptr getelementptr (i8, ptr @x, i64 -520)
   store volatile i128 %tmp, ptr getelementptr (i8, ptr @y, i64 -520)
   ret void
@@ -248,29 +182,17 @@ define void @test7() {
 ; CHECK-NEXT:    stp x8, x9, [x10]
 ; CHECK-NEXT:    ret
 ;
-; CHECK-LE-GI-LABEL: test7:
-; CHECK-LE-GI:       // %bb.0:
-; CHECK-LE-GI-NEXT:    adrp x8, x
-; CHECK-LE-GI-NEXT:    add x8, x8, :lo12:x
-; CHECK-LE-GI-NEXT:    add x8, x8, #503
-; CHECK-LE-GI-NEXT:    ldr q0, [x8]
-; CHECK-LE-GI-NEXT:    adrp x8, y
-; CHECK-LE-GI-NEXT:    add x8, x8, :lo12:y
-; CHECK-LE-GI-NEXT:    add x8, x8, #503
-; CHECK-LE-GI-NEXT:    str q0, [x8]
-; CHECK-LE-GI-NEXT:    ret
-;
-; CHECK-BE-GI-LABEL: test7:
-; CHECK-BE-GI:       // %bb.0:
-; CHECK-BE-GI-NEXT:    adrp x8, x
-; CHECK-BE-GI-NEXT:    add x8, x8, :lo12:x
-; CHECK-BE-GI-NEXT:    adrp x10, y
-; CHECK-BE-GI-NEXT:    add x10, x10, :lo12:y
-; CHECK-BE-GI-NEXT:    add x8, x8, #503
-; CHECK-BE-GI-NEXT:    ldp x8, x9, [x8]
-; CHECK-BE-GI-NEXT:    add x10, x10, #503
-; CHECK-BE-GI-NEXT:    stp x8, x9, [x10]
-; CHECK-BE-GI-NEXT:    ret
+; CHECK-GI-LABEL: test7:
+; CHECK-GI:       // %bb.0:
+; CHECK-GI-NEXT:    adrp x8, x
+; CHECK-GI-NEXT:    add x8, x8, :lo12:x
+; CHECK-GI-NEXT:    add x8, x8, #503
+; CHECK-GI-NEXT:    ldr q0, [x8]
+; CHECK-GI-NEXT:    adrp x8, y
+; CHECK-GI-NEXT:    add x8, x8, :lo12:y
+; CHECK-GI-NEXT:    add x8, x8, #503
+; CHECK-GI-NEXT:    str q0, [x8]
+; CHECK-GI-NEXT:    ret
   %tmp = load volatile i128, ptr getelementptr (i8, ptr @x, i64 503)
   store volatile i128 %tmp, ptr getelementptr (i8, ptr @y, i64 503)
   ret void
@@ -292,7 +214,10 @@ define i128 @load_nonvol(i32, i32, ptr %p) {
 ;
 ; CHECK-BE-GI-LABEL: load_nonvol:
 ; CHECK-BE-GI:       // %bb.0: // %entry
-; CHECK-BE-GI-NEXT:    ldp x0, x1, [x2]
+; CHECK-BE-GI-NEXT:    ldr q0, [x2]
+; CHECK-BE-GI-NEXT:    mov d1, v0.d[1]
+; CHECK-BE-GI-NEXT:    fmov x1, d0
+; CHECK-BE-GI-NEXT:    fmov x0, d1
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %l = load i128, ptr %p, align 16
@@ -315,7 +240,10 @@ define i128 @load_vol(i32, i32, ptr %p) {
 ;
 ; CHECK-BE-GI-LABEL: load_vol:
 ; CHECK-BE-GI:       // %bb.0: // %entry
-; CHECK-BE-GI-NEXT:    ldp x0, x1, [x2]
+; CHECK-BE-GI-NEXT:    ldr q0, [x2]
+; CHECK-BE-GI-NEXT:    mov d1, v0.d[1]
+; CHECK-BE-GI-NEXT:    fmov x1, d0
+; CHECK-BE-GI-NEXT:    fmov x0, d1
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %l = load volatile i128, ptr %p, align 16
@@ -337,7 +265,9 @@ define void @store_nonvol(i128 %a, ptr %p) {
 ;
 ; CHECK-BE-GI-LABEL: store_nonvol:
 ; CHECK-BE-GI:       // %bb.0: // %entry
-; CHECK-BE-GI-NEXT:    stp x0, x1, [x2]
+; CHECK-BE-GI-NEXT:    mov v0.d[0], x1
+; CHECK-BE-GI-NEXT:    mov v0.d[1], x0
+; CHECK-BE-GI-NEXT:    str q0, [x2]
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   store i128 %a, ptr %p, align 16
@@ -359,7 +289,9 @@ define void @loadstore_vol(i128 %a, ptr %p) {
 ;
 ; CHECK-BE-GI-LABEL: loadstore_vol:
 ; CHECK-BE-GI:       // %bb.0: // %entry
-; CHECK-BE-GI-NEXT:    stp x0, x1, [x2]
+; CHECK-BE-GI-NEXT:    mov v0.d[0], x1
+; CHECK-BE-GI-NEXT:    mov v0.d[1], x0
+; CHECK-BE-GI-NEXT:    str q0, [x2]
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   store volatile i128 %a, ptr %p, align 16
@@ -367,5 +299,4 @@ entry:
 }
 ;; NOTE: These prefixes are unused and the list is autogenerated. Do not add tests below this line:
 ; CHECK-BE: {{.*}}
-; CHECK-GI: {{.*}}
 ; CHECK-LE: {{.*}}

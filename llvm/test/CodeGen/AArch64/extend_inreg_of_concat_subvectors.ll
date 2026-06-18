@@ -16,18 +16,18 @@ define void @zext_of_concat(ptr %a, ptr %b, ptr %c, ptr %d) nounwind {
 ; CHECK-SD-LE-NEXT:    str q0, [x2]
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: zext_of_concat:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.2s }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.2s }, [x1]
-; CHECK-BE-NEXT:    add v0.2s, v0.2s, v1.2s
-; CHECK-BE-NEXT:    movi v1.2d, #0000000000000000
-; CHECK-BE-NEXT:    zip1 v0.4s, v0.4s, v0.4s
-; CHECK-BE-NEXT:    trn2 v0.4s, v0.4s, v1.4s
-; CHECK-BE-NEXT:    ld1 { v1.4s }, [x2]
-; CHECK-BE-NEXT:    add v0.4s, v0.4s, v1.4s
-; CHECK-BE-NEXT:    st1 { v0.4s }, [x2]
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: zext_of_concat:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.2s }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.2s }, [x1]
+; CHECK-SD-BE-NEXT:    add v0.2s, v0.2s, v1.2s
+; CHECK-SD-BE-NEXT:    movi v1.2d, #0000000000000000
+; CHECK-SD-BE-NEXT:    zip1 v0.4s, v0.4s, v0.4s
+; CHECK-SD-BE-NEXT:    trn2 v0.4s, v0.4s, v1.4s
+; CHECK-SD-BE-NEXT:    ld1 { v1.4s }, [x2]
+; CHECK-SD-BE-NEXT:    add v0.4s, v0.4s, v1.4s
+; CHECK-SD-BE-NEXT:    st1 { v0.4s }, [x2]
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: zext_of_concat:
 ; CHECK-GI-LE:       ; %bb.0:
@@ -45,6 +45,20 @@ define void @zext_of_concat(ptr %a, ptr %b, ptr %c, ptr %d) nounwind {
 ; CHECK-GI-LE-NEXT:    str q0, [x2]
 ; CHECK-GI-LE-NEXT:    ret
 ; CHECK-GI-LE-NEXT:    .loh AdrpLdr Lloh0, Lloh1
+;
+; CHECK-GI-BE-LABEL: zext_of_concat:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.2s }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.2s }, [x1]
+; CHECK-GI-BE-NEXT:    movi v3.2d, #0000000000000000
+; CHECK-GI-BE-NEXT:    adrp x8, .LCPI0_0
+; CHECK-GI-BE-NEXT:    add v2.2s, v0.2s, v1.2s
+; CHECK-GI-BE-NEXT:    ldr q0, [x8, :lo12:.LCPI0_0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.4s }, [x2]
+; CHECK-GI-BE-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
+; CHECK-GI-BE-NEXT:    add v0.4s, v0.4s, v1.4s
+; CHECK-GI-BE-NEXT:    st1 { v0.4s }, [x2]
+; CHECK-GI-BE-NEXT:    ret
   %i0.a = load <2 x i32>, ptr %a
   %i0.b = load <2 x i32>, ptr %b
   %i0 = add <2 x i32> %i0.a, %i0.b
@@ -71,20 +85,20 @@ define void @zext_of_concat_extrause(ptr %a, ptr %b, ptr %c, ptr %d, ptr %e) nou
 ; CHECK-SD-LE-NEXT:    str q0, [x2]
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: zext_of_concat_extrause:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.2s }, [x1]
-; CHECK-BE-NEXT:    ld1 { v1.2s }, [x0]
-; CHECK-BE-NEXT:    movi v2.2d, #0000000000000000
-; CHECK-BE-NEXT:    add v0.2s, v1.2s, v0.2s
-; CHECK-BE-NEXT:    mov v0.d[1], v0.d[0]
-; CHECK-BE-NEXT:    zip1 v1.4s, v0.4s, v0.4s
-; CHECK-BE-NEXT:    st1 { v0.4s }, [x4]
-; CHECK-BE-NEXT:    trn2 v0.4s, v1.4s, v2.4s
-; CHECK-BE-NEXT:    ld1 { v1.4s }, [x2]
-; CHECK-BE-NEXT:    add v0.4s, v0.4s, v1.4s
-; CHECK-BE-NEXT:    st1 { v0.4s }, [x2]
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: zext_of_concat_extrause:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.2s }, [x1]
+; CHECK-SD-BE-NEXT:    ld1 { v1.2s }, [x0]
+; CHECK-SD-BE-NEXT:    movi v2.2d, #0000000000000000
+; CHECK-SD-BE-NEXT:    add v0.2s, v1.2s, v0.2s
+; CHECK-SD-BE-NEXT:    mov v0.d[1], v0.d[0]
+; CHECK-SD-BE-NEXT:    zip1 v1.4s, v0.4s, v0.4s
+; CHECK-SD-BE-NEXT:    st1 { v0.4s }, [x4]
+; CHECK-SD-BE-NEXT:    trn2 v0.4s, v1.4s, v2.4s
+; CHECK-SD-BE-NEXT:    ld1 { v1.4s }, [x2]
+; CHECK-SD-BE-NEXT:    add v0.4s, v0.4s, v1.4s
+; CHECK-SD-BE-NEXT:    st1 { v0.4s }, [x2]
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: zext_of_concat_extrause:
 ; CHECK-GI-LE:       ; %bb.0:
@@ -104,6 +118,22 @@ define void @zext_of_concat_extrause(ptr %a, ptr %b, ptr %c, ptr %d, ptr %e) nou
 ; CHECK-GI-LE-NEXT:    str q0, [x2]
 ; CHECK-GI-LE-NEXT:    ret
 ; CHECK-GI-LE-NEXT:    .loh AdrpLdr Lloh2, Lloh3
+;
+; CHECK-GI-BE-LABEL: zext_of_concat_extrause:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.2s }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.2s }, [x1]
+; CHECK-GI-BE-NEXT:    movi v3.2d, #0000000000000000
+; CHECK-GI-BE-NEXT:    adrp x8, .LCPI1_0
+; CHECK-GI-BE-NEXT:    add v2.2s, v0.2s, v1.2s
+; CHECK-GI-BE-NEXT:    ldr q0, [x8, :lo12:.LCPI1_0]
+; CHECK-GI-BE-NEXT:    mov v2.d[1], v2.d[0]
+; CHECK-GI-BE-NEXT:    st1 { v2.4s }, [x4]
+; CHECK-GI-BE-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
+; CHECK-GI-BE-NEXT:    ld1 { v1.4s }, [x2]
+; CHECK-GI-BE-NEXT:    add v0.4s, v0.4s, v1.4s
+; CHECK-GI-BE-NEXT:    st1 { v0.4s }, [x2]
+; CHECK-GI-BE-NEXT:    ret
   %i0.a = load <2 x i32>, ptr %a
   %i0.b = load <2 x i32>, ptr %b
   %i0 = add <2 x i32> %i0.a, %i0.b
@@ -175,19 +205,19 @@ define void @aext_of_concat_extrause(ptr %a, ptr %b, ptr %c, ptr %d, ptr %e) nou
 ; CHECK-SD-LE-NEXT:    str q0, [x2]
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: aext_of_concat_extrause:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.2s }, [x1]
-; CHECK-BE-NEXT:    ld1 { v1.2s }, [x0]
-; CHECK-BE-NEXT:    add v0.2s, v1.2s, v0.2s
-; CHECK-BE-NEXT:    mov v1.16b, v0.16b
-; CHECK-BE-NEXT:    mov v1.d[1], v0.d[0]
-; CHECK-BE-NEXT:    zip1 v0.4s, v0.4s, v0.4s
-; CHECK-BE-NEXT:    st1 { v1.4s }, [x4]
-; CHECK-BE-NEXT:    ld1 { v1.4s }, [x2]
-; CHECK-BE-NEXT:    add v0.4s, v0.4s, v1.4s
-; CHECK-BE-NEXT:    st1 { v0.4s }, [x2]
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: aext_of_concat_extrause:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.2s }, [x1]
+; CHECK-SD-BE-NEXT:    ld1 { v1.2s }, [x0]
+; CHECK-SD-BE-NEXT:    add v0.2s, v1.2s, v0.2s
+; CHECK-SD-BE-NEXT:    mov v1.16b, v0.16b
+; CHECK-SD-BE-NEXT:    mov v1.d[1], v0.d[0]
+; CHECK-SD-BE-NEXT:    zip1 v0.4s, v0.4s, v0.4s
+; CHECK-SD-BE-NEXT:    st1 { v1.4s }, [x4]
+; CHECK-SD-BE-NEXT:    ld1 { v1.4s }, [x2]
+; CHECK-SD-BE-NEXT:    add v0.4s, v0.4s, v1.4s
+; CHECK-SD-BE-NEXT:    st1 { v0.4s }, [x2]
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: aext_of_concat_extrause:
 ; CHECK-GI-LE:       ; %bb.0:
@@ -201,6 +231,19 @@ define void @aext_of_concat_extrause(ptr %a, ptr %b, ptr %c, ptr %d, ptr %e) nou
 ; CHECK-GI-LE-NEXT:    add.4s v0, v1, v0
 ; CHECK-GI-LE-NEXT:    str q0, [x2]
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: aext_of_concat_extrause:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.2s }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.2s }, [x1]
+; CHECK-GI-BE-NEXT:    add v0.2s, v0.2s, v1.2s
+; CHECK-GI-BE-NEXT:    mov v0.d[1], v0.d[0]
+; CHECK-GI-BE-NEXT:    st1 { v0.4s }, [x4]
+; CHECK-GI-BE-NEXT:    zip1 v0.4s, v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ld1 { v1.4s }, [x2]
+; CHECK-GI-BE-NEXT:    add v0.4s, v0.4s, v1.4s
+; CHECK-GI-BE-NEXT:    st1 { v0.4s }, [x2]
+; CHECK-GI-BE-NEXT:    ret
   %i0.a = load <2 x i32>, ptr %a
   %i0.b = load <2 x i32>, ptr %b
   %i0 = add <2 x i32> %i0.a, %i0.b
@@ -213,6 +256,4 @@ define void @aext_of_concat_extrause(ptr %a, ptr %b, ptr %c, ptr %d, ptr %e) nou
   ret void
 }
 ;; NOTE: These prefixes are unused and the list is autogenerated. Do not add tests below this line:
-; CHECK-GI-BE: {{.*}}
 ; CHECK-LE: {{.*}}
-; CHECK-SD-BE: {{.*}}

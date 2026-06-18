@@ -661,11 +661,10 @@ define void @le_i64_to_i16(i64 %x, ptr %p0) {
 ;
 ; CHECK-GI-BE-LABEL: le_i64_to_i16:
 ; CHECK-GI-BE:       // %bb.0:
-; CHECK-GI-BE-NEXT:    lsr x8, x0, #16
+; CHECK-GI-BE-NEXT:    ror w8, w0, #16
 ; CHECK-GI-BE-NEXT:    lsr x9, x0, #32
 ; CHECK-GI-BE-NEXT:    lsr x10, x0, #48
-; CHECK-GI-BE-NEXT:    strh w0, [x1]
-; CHECK-GI-BE-NEXT:    strh w8, [x1, #2]
+; CHECK-GI-BE-NEXT:    str w8, [x1]
 ; CHECK-GI-BE-NEXT:    strh w9, [x1, #4]
 ; CHECK-GI-BE-NEXT:    strh w10, [x1, #6]
 ; CHECK-GI-BE-NEXT:    ret

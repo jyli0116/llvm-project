@@ -12,12 +12,12 @@ define i64 @load32_and16_and(ptr %p, i64 %y) {
 ; CHECK-SD-LE-NEXT:    and x0, x8, #0xffff
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: load32_and16_and:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldr w8, [x0]
-; CHECK-BE-NEXT:    and w8, w1, w8
-; CHECK-BE-NEXT:    and x0, x8, #0xffff
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: load32_and16_and:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ldr w8, [x0]
+; CHECK-SD-BE-NEXT:    and w8, w1, w8
+; CHECK-SD-BE-NEXT:    and x0, x8, #0xffff
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: load32_and16_and:
 ; CHECK-GI-LE:       // %bb.0:
@@ -25,6 +25,13 @@ define i64 @load32_and16_and(ptr %p, i64 %y) {
 ; CHECK-GI-LE-NEXT:    and x9, x1, #0xffff
 ; CHECK-GI-LE-NEXT:    and x0, x9, x8
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: load32_and16_and:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ldr w8, [x0]
+; CHECK-GI-BE-NEXT:    and x9, x1, #0xffff
+; CHECK-GI-BE-NEXT:    and x0, x9, x8
+; CHECK-GI-BE-NEXT:    ret
   %x = load i32, ptr %p, align 4
   %xz = zext i32 %x to i64
   %ym = and i64 %y, 65535
@@ -40,12 +47,12 @@ define i64 @load32_and16_andr(ptr %p, i64 %y) {
 ; CHECK-SD-LE-NEXT:    and x0, x8, #0xffff
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: load32_and16_andr:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldr w8, [x0]
-; CHECK-BE-NEXT:    and w8, w1, w8
-; CHECK-BE-NEXT:    and x0, x8, #0xffff
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: load32_and16_andr:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ldr w8, [x0]
+; CHECK-SD-BE-NEXT:    and w8, w1, w8
+; CHECK-SD-BE-NEXT:    and x0, x8, #0xffff
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: load32_and16_andr:
 ; CHECK-GI-LE:       // %bb.0:
@@ -53,6 +60,13 @@ define i64 @load32_and16_andr(ptr %p, i64 %y) {
 ; CHECK-GI-LE-NEXT:    and x8, x1, x8
 ; CHECK-GI-LE-NEXT:    and x0, x8, #0xffff
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: load32_and16_andr:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ldr w8, [x0]
+; CHECK-GI-BE-NEXT:    and x8, x1, x8
+; CHECK-GI-BE-NEXT:    and x0, x8, #0xffff
+; CHECK-GI-BE-NEXT:    ret
   %x = load i32, ptr %p, align 4
   %xz = zext i32 %x to i64
   %a = and i64 %y, %xz
@@ -68,12 +82,12 @@ define i64 @load32_and16_and_sext(ptr %p, i64 %y) {
 ; CHECK-SD-LE-NEXT:    and x0, x8, #0xffff
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: load32_and16_and_sext:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldr w8, [x0]
-; CHECK-BE-NEXT:    and w8, w1, w8
-; CHECK-BE-NEXT:    and x0, x8, #0xffff
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: load32_and16_and_sext:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ldr w8, [x0]
+; CHECK-SD-BE-NEXT:    and w8, w1, w8
+; CHECK-SD-BE-NEXT:    and x0, x8, #0xffff
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: load32_and16_and_sext:
 ; CHECK-GI-LE:       // %bb.0:
@@ -81,6 +95,13 @@ define i64 @load32_and16_and_sext(ptr %p, i64 %y) {
 ; CHECK-GI-LE-NEXT:    and x8, x1, x8
 ; CHECK-GI-LE-NEXT:    and x0, x8, #0xffff
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: load32_and16_and_sext:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ldrsw x8, [x0]
+; CHECK-GI-BE-NEXT:    and x8, x1, x8
+; CHECK-GI-BE-NEXT:    and x0, x8, #0xffff
+; CHECK-GI-BE-NEXT:    ret
   %x = load i32, ptr %p, align 4
   %xz = sext i32 %x to i64
   %a = and i64 %y, %xz
@@ -96,12 +117,12 @@ define i64 @load32_and16_or(ptr %p, i64 %y) {
 ; CHECK-SD-LE-NEXT:    and x0, x8, #0xffff
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: load32_and16_or:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldr w8, [x0]
-; CHECK-BE-NEXT:    orr w8, w1, w8
-; CHECK-BE-NEXT:    and x0, x8, #0xffff
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: load32_and16_or:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ldr w8, [x0]
+; CHECK-SD-BE-NEXT:    orr w8, w1, w8
+; CHECK-SD-BE-NEXT:    and x0, x8, #0xffff
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: load32_and16_or:
 ; CHECK-GI-LE:       // %bb.0:
@@ -109,6 +130,13 @@ define i64 @load32_and16_or(ptr %p, i64 %y) {
 ; CHECK-GI-LE-NEXT:    orr x8, x1, x8
 ; CHECK-GI-LE-NEXT:    and x0, x8, #0xffff
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: load32_and16_or:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ldr w8, [x0]
+; CHECK-GI-BE-NEXT:    orr x8, x1, x8
+; CHECK-GI-BE-NEXT:    and x0, x8, #0xffff
+; CHECK-GI-BE-NEXT:    ret
   %x = load i32, ptr %p, align 4
   %xz = zext i32 %x to i64
   %a = or i64 %y, %xz
@@ -145,12 +173,12 @@ define i64 @load32_and16_xorm1(ptr %p) {
 ; CHECK-SD-LE-NEXT:    and x0, x8, #0xffff
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: load32_and16_xorm1:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldr w8, [x0]
-; CHECK-BE-NEXT:    mvn w8, w8
-; CHECK-BE-NEXT:    and x0, x8, #0xffff
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: load32_and16_xorm1:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ldr w8, [x0]
+; CHECK-SD-BE-NEXT:    mvn w8, w8
+; CHECK-SD-BE-NEXT:    and x0, x8, #0xffff
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: load32_and16_xorm1:
 ; CHECK-GI-LE:       // %bb.0:
@@ -158,6 +186,13 @@ define i64 @load32_and16_xorm1(ptr %p) {
 ; CHECK-GI-LE-NEXT:    mov w9, #65535 // =0xffff
 ; CHECK-GI-LE-NEXT:    bic x0, x9, x8
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: load32_and16_xorm1:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ldr w8, [x0]
+; CHECK-GI-BE-NEXT:    mov w9, #65535 // =0xffff
+; CHECK-GI-BE-NEXT:    bic x0, x9, x8
+; CHECK-GI-BE-NEXT:    ret
   %x = load i32, ptr %p, align 4
   %xz = zext i32 %x to i64
   %a = xor i64 %xz, -1
@@ -172,11 +207,11 @@ define i64 @load64_and16(ptr %p, i128 %y) {
 ; CHECK-SD-LE-NEXT:    and x0, x2, x8
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: load64_and16:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldrh w8, [x0, #6]
-; CHECK-BE-NEXT:    and x0, x3, x8
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: load64_and16:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ldrh w8, [x0, #6]
+; CHECK-SD-BE-NEXT:    and x0, x3, x8
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: load64_and16:
 ; CHECK-GI-LE:       // %bb.0:
@@ -184,6 +219,13 @@ define i64 @load64_and16(ptr %p, i128 %y) {
 ; CHECK-GI-LE-NEXT:    and x8, x2, x8
 ; CHECK-GI-LE-NEXT:    and x0, x8, #0xffff
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: load64_and16:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ldr x8, [x0]
+; CHECK-GI-BE-NEXT:    and x8, x3, x8
+; CHECK-GI-BE-NEXT:    and x0, x8, #0xffff
+; CHECK-GI-BE-NEXT:    ret
   %x = load i64, ptr %p, align 4
   %xz = zext i64 %x to i128
   %a = and i128 %y, %xz
@@ -219,12 +261,12 @@ define i64 @load16_and8(ptr %p, i64 %y) {
 ; CHECK-SD-LE-NEXT:    and x0, x8, #0xff
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: load16_and8:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldrh w8, [x0]
-; CHECK-BE-NEXT:    and w8, w1, w8
-; CHECK-BE-NEXT:    and x0, x8, #0xff
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: load16_and8:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ldrh w8, [x0]
+; CHECK-SD-BE-NEXT:    and w8, w1, w8
+; CHECK-SD-BE-NEXT:    and x0, x8, #0xff
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: load16_and8:
 ; CHECK-GI-LE:       // %bb.0:
@@ -232,6 +274,13 @@ define i64 @load16_and8(ptr %p, i64 %y) {
 ; CHECK-GI-LE-NEXT:    and x8, x1, x8
 ; CHECK-GI-LE-NEXT:    and x0, x8, #0xff
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: load16_and8:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ldrh w8, [x0]
+; CHECK-GI-BE-NEXT:    and x8, x1, x8
+; CHECK-GI-BE-NEXT:    and x0, x8, #0xff
+; CHECK-GI-BE-NEXT:    ret
   %x = load i16, ptr %p, align 4
   %xz = zext i16 %x to i64
   %a = and i64 %y, %xz
@@ -247,12 +296,12 @@ define i64 @load16_and7(ptr %p, i64 %y) {
 ; CHECK-SD-LE-NEXT:    and x0, x8, #0x7f
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: load16_and7:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldrh w8, [x0]
-; CHECK-BE-NEXT:    and w8, w1, w8
-; CHECK-BE-NEXT:    and x0, x8, #0x7f
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: load16_and7:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ldrh w8, [x0]
+; CHECK-SD-BE-NEXT:    and w8, w1, w8
+; CHECK-SD-BE-NEXT:    and x0, x8, #0x7f
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: load16_and7:
 ; CHECK-GI-LE:       // %bb.0:
@@ -260,6 +309,13 @@ define i64 @load16_and7(ptr %p, i64 %y) {
 ; CHECK-GI-LE-NEXT:    and x8, x1, x8
 ; CHECK-GI-LE-NEXT:    and x0, x8, #0x7f
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: load16_and7:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ldrh w8, [x0]
+; CHECK-GI-BE-NEXT:    and x8, x1, x8
+; CHECK-GI-BE-NEXT:    and x0, x8, #0x7f
+; CHECK-GI-BE-NEXT:    ret
   %x = load i16, ptr %p, align 4
   %xz = zext i16 %x to i64
   %a = and i64 %y, %xz
@@ -294,12 +350,12 @@ define i64 @load8_and16_zext(ptr %p, i8 %y) {
 ; CHECK-SD-LE-NEXT:    and x0, x8, #0xff
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: load8_and16_zext:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldrb w8, [x0]
-; CHECK-BE-NEXT:    and w8, w1, w8
-; CHECK-BE-NEXT:    and x0, x8, #0xff
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: load8_and16_zext:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ldrb w8, [x0]
+; CHECK-SD-BE-NEXT:    and w8, w1, w8
+; CHECK-SD-BE-NEXT:    and x0, x8, #0xff
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: load8_and16_zext:
 ; CHECK-GI-LE:       // %bb.0:
@@ -308,6 +364,14 @@ define i64 @load8_and16_zext(ptr %p, i8 %y) {
 ; CHECK-GI-LE-NEXT:    and x9, x1, #0xff
 ; CHECK-GI-LE-NEXT:    and x0, x9, x8
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: load8_and16_zext:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ldrb w8, [x0]
+; CHECK-GI-BE-NEXT:    // kill: def $w1 killed $w1 def $x1
+; CHECK-GI-BE-NEXT:    and x9, x1, #0xff
+; CHECK-GI-BE-NEXT:    and x0, x9, x8
+; CHECK-GI-BE-NEXT:    ret
   %x = load i8, ptr %p, align 4
   %xz = zext i8 %x to i64
   %yz = zext i8 %y to i64
@@ -324,12 +388,12 @@ define i64 @load8_and16_sext(ptr %p, i8 %y) {
 ; CHECK-SD-LE-NEXT:    and x0, x1, x8
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: load8_and16_sext:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldrb w8, [x0]
-; CHECK-BE-NEXT:    // kill: def $w1 killed $w1 def $x1
-; CHECK-BE-NEXT:    and x0, x1, x8
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: load8_and16_sext:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ldrb w8, [x0]
+; CHECK-SD-BE-NEXT:    // kill: def $w1 killed $w1 def $x1
+; CHECK-SD-BE-NEXT:    and x0, x1, x8
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: load8_and16_sext:
 ; CHECK-GI-LE:       // %bb.0:
@@ -338,6 +402,14 @@ define i64 @load8_and16_sext(ptr %p, i8 %y) {
 ; CHECK-GI-LE-NEXT:    sxtb x9, w1
 ; CHECK-GI-LE-NEXT:    and x0, x9, x8
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: load8_and16_sext:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    // kill: def $w1 killed $w1 def $x1
+; CHECK-GI-BE-NEXT:    ldrb w8, [x0]
+; CHECK-GI-BE-NEXT:    sxtb x9, w1
+; CHECK-GI-BE-NEXT:    and x0, x9, x8
+; CHECK-GI-BE-NEXT:    ret
   %x = load i8, ptr %p, align 4
   %xz = zext i8 %x to i64
   %yz = sext i8 %y to i64
@@ -354,12 +426,12 @@ define i64 @load8_and16_or(ptr %p, i64 %y) {
 ; CHECK-SD-LE-NEXT:    and x0, x8, #0xffff
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: load8_and16_or:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldrb w8, [x0]
-; CHECK-BE-NEXT:    orr w8, w1, w8
-; CHECK-BE-NEXT:    and x0, x8, #0xffff
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: load8_and16_or:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ldrb w8, [x0]
+; CHECK-SD-BE-NEXT:    orr w8, w1, w8
+; CHECK-SD-BE-NEXT:    and x0, x8, #0xffff
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: load8_and16_or:
 ; CHECK-GI-LE:       // %bb.0:
@@ -367,6 +439,13 @@ define i64 @load8_and16_or(ptr %p, i64 %y) {
 ; CHECK-GI-LE-NEXT:    orr x8, x1, x8
 ; CHECK-GI-LE-NEXT:    and x0, x8, #0xffff
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: load8_and16_or:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ldrb w8, [x0]
+; CHECK-GI-BE-NEXT:    orr x8, x1, x8
+; CHECK-GI-BE-NEXT:    and x0, x8, #0xffff
+; CHECK-GI-BE-NEXT:    ret
   %x = load i8, ptr %p, align 4
   %xz = zext i8 %x to i64
   %a = or i64 %y, %xz
@@ -405,13 +484,13 @@ define i64 @multiple_load(ptr %p, ptr %q) {
 ; CHECK-SD-LE-NEXT:    and x0, x8, #0xff
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: multiple_load:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldrh w8, [x0]
-; CHECK-BE-NEXT:    ldr w9, [x1]
-; CHECK-BE-NEXT:    and w8, w9, w8
-; CHECK-BE-NEXT:    and x0, x8, #0xff
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: multiple_load:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ldrh w8, [x0]
+; CHECK-SD-BE-NEXT:    ldr w9, [x1]
+; CHECK-SD-BE-NEXT:    and w8, w9, w8
+; CHECK-SD-BE-NEXT:    and x0, x8, #0xff
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: multiple_load:
 ; CHECK-GI-LE:       // %bb.0:
@@ -420,6 +499,14 @@ define i64 @multiple_load(ptr %p, ptr %q) {
 ; CHECK-GI-LE-NEXT:    and x8, x9, x8
 ; CHECK-GI-LE-NEXT:    and x0, x8, #0xff
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: multiple_load:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ldrh w8, [x0]
+; CHECK-GI-BE-NEXT:    ldr w9, [x1]
+; CHECK-GI-BE-NEXT:    and x8, x9, x8
+; CHECK-GI-BE-NEXT:    and x0, x8, #0xff
+; CHECK-GI-BE-NEXT:    ret
   %x = load i16, ptr %p, align 4
   %xz = zext i16 %x to i64
   %y = load i32, ptr %q, align 4
@@ -438,13 +525,13 @@ define i64 @multiple_load_or(ptr %p, ptr %q) {
 ; CHECK-SD-LE-NEXT:    and x0, x8, #0xff
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: multiple_load_or:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldrh w8, [x0]
-; CHECK-BE-NEXT:    ldr w9, [x1]
-; CHECK-BE-NEXT:    orr w8, w9, w8
-; CHECK-BE-NEXT:    and x0, x8, #0xff
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: multiple_load_or:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ldrh w8, [x0]
+; CHECK-SD-BE-NEXT:    ldr w9, [x1]
+; CHECK-SD-BE-NEXT:    orr w8, w9, w8
+; CHECK-SD-BE-NEXT:    and x0, x8, #0xff
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: multiple_load_or:
 ; CHECK-GI-LE:       // %bb.0:
@@ -453,6 +540,14 @@ define i64 @multiple_load_or(ptr %p, ptr %q) {
 ; CHECK-GI-LE-NEXT:    orr x8, x9, x8
 ; CHECK-GI-LE-NEXT:    and x0, x8, #0xff
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: multiple_load_or:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ldrh w8, [x0]
+; CHECK-GI-BE-NEXT:    ldr w9, [x1]
+; CHECK-GI-BE-NEXT:    orr x8, x9, x8
+; CHECK-GI-BE-NEXT:    and x0, x8, #0xff
+; CHECK-GI-BE-NEXT:    ret
   %x = load i16, ptr %p, align 4
   %xz = zext i16 %x to i64
   %y = load i32, ptr %q, align 4
@@ -470,12 +565,12 @@ define i64 @load32_and16_zexty(ptr %p, i32 %y) {
 ; CHECK-SD-LE-NEXT:    and x0, x8, #0xffff
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: load32_and16_zexty:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldr w8, [x0]
-; CHECK-BE-NEXT:    orr w8, w1, w8
-; CHECK-BE-NEXT:    and x0, x8, #0xffff
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: load32_and16_zexty:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ldr w8, [x0]
+; CHECK-SD-BE-NEXT:    orr w8, w1, w8
+; CHECK-SD-BE-NEXT:    and x0, x8, #0xffff
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: load32_and16_zexty:
 ; CHECK-GI-LE:       // %bb.0:
@@ -484,6 +579,14 @@ define i64 @load32_and16_zexty(ptr %p, i32 %y) {
 ; CHECK-GI-LE-NEXT:    orr x8, x9, x8
 ; CHECK-GI-LE-NEXT:    and x0, x8, #0xffff
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: load32_and16_zexty:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ldr w8, [x0]
+; CHECK-GI-BE-NEXT:    mov w9, w1
+; CHECK-GI-BE-NEXT:    orr x8, x9, x8
+; CHECK-GI-BE-NEXT:    and x0, x8, #0xffff
+; CHECK-GI-BE-NEXT:    ret
   %x = load i32, ptr %p, align 4
   %xz = zext i32 %x to i64
   %yz = zext i32 %y to i64
@@ -500,12 +603,12 @@ define i64 @load32_and16_sexty(ptr %p, i32 %y) {
 ; CHECK-SD-LE-NEXT:    and x0, x8, #0xffff
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: load32_and16_sexty:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldr w8, [x0]
-; CHECK-BE-NEXT:    orr w8, w1, w8
-; CHECK-BE-NEXT:    and x0, x8, #0xffff
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: load32_and16_sexty:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ldr w8, [x0]
+; CHECK-SD-BE-NEXT:    orr w8, w1, w8
+; CHECK-SD-BE-NEXT:    and x0, x8, #0xffff
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: load32_and16_sexty:
 ; CHECK-GI-LE:       // %bb.0:
@@ -515,6 +618,15 @@ define i64 @load32_and16_sexty(ptr %p, i32 %y) {
 ; CHECK-GI-LE-NEXT:    orr x8, x9, x8
 ; CHECK-GI-LE-NEXT:    and x0, x8, #0xffff
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: load32_and16_sexty:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    // kill: def $w1 killed $w1 def $x1
+; CHECK-GI-BE-NEXT:    ldr w8, [x0]
+; CHECK-GI-BE-NEXT:    sxtw x9, w1
+; CHECK-GI-BE-NEXT:    orr x8, x9, x8
+; CHECK-GI-BE-NEXT:    and x0, x8, #0xffff
+; CHECK-GI-BE-NEXT:    ret
   %x = load i32, ptr %p, align 4
   %xz = zext i32 %x to i64
   %yz = sext i32 %y to i64
@@ -538,19 +650,19 @@ define zeroext i1 @bigger(ptr nocapture readonly %c, ptr nocapture readonly %e, 
 ; CHECK-SD-LE-NEXT:    cset w0, eq
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: bigger:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    ldrb w8, [x1, x2]
-; CHECK-BE-NEXT:    ldrb w9, [x0, x2]
-; CHECK-BE-NEXT:    and w10, w3, #0x7
-; CHECK-BE-NEXT:    mov w11, #8 // =0x8
-; CHECK-BE-NEXT:    sub w10, w11, w10
-; CHECK-BE-NEXT:    eor w8, w8, w9
-; CHECK-BE-NEXT:    mov w9, #5 // =0x5
-; CHECK-BE-NEXT:    lsr w8, w8, w10
-; CHECK-BE-NEXT:    tst w8, w9
-; CHECK-BE-NEXT:    cset w0, eq
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: bigger:
+; CHECK-SD-BE:       // %bb.0: // %entry
+; CHECK-SD-BE-NEXT:    ldrb w8, [x1, x2]
+; CHECK-SD-BE-NEXT:    ldrb w9, [x0, x2]
+; CHECK-SD-BE-NEXT:    and w10, w3, #0x7
+; CHECK-SD-BE-NEXT:    mov w11, #8 // =0x8
+; CHECK-SD-BE-NEXT:    sub w10, w11, w10
+; CHECK-SD-BE-NEXT:    eor w8, w8, w9
+; CHECK-SD-BE-NEXT:    mov w9, #5 // =0x5
+; CHECK-SD-BE-NEXT:    lsr w8, w8, w10
+; CHECK-SD-BE-NEXT:    tst w8, w9
+; CHECK-SD-BE-NEXT:    cset w0, eq
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: bigger:
 ; CHECK-GI-LE:       // %bb.0: // %entry
@@ -566,6 +678,21 @@ define zeroext i1 @bigger(ptr nocapture readonly %c, ptr nocapture readonly %e, 
 ; CHECK-GI-LE-NEXT:    tst w8, #0xff
 ; CHECK-GI-LE-NEXT:    cset w0, eq
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: bigger:
+; CHECK-GI-BE:       // %bb.0: // %entry
+; CHECK-GI-BE-NEXT:    mov w8, #8 // =0x8
+; CHECK-GI-BE-NEXT:    and w9, w3, #0x7
+; CHECK-GI-BE-NEXT:    ldrb w10, [x0, x2]
+; CHECK-GI-BE-NEXT:    sub w8, w8, w9
+; CHECK-GI-BE-NEXT:    mov w9, #5 // =0x5
+; CHECK-GI-BE-NEXT:    ldrb w11, [x1, x2]
+; CHECK-GI-BE-NEXT:    lsl w8, w9, w8
+; CHECK-GI-BE-NEXT:    eor w9, w11, w10
+; CHECK-GI-BE-NEXT:    and w8, w9, w8
+; CHECK-GI-BE-NEXT:    tst w8, #0xff
+; CHECK-GI-BE-NEXT:    cset w0, eq
+; CHECK-GI-BE-NEXT:    ret
 entry:
   %0 = trunc i64 %p1 to i16
   %1 = and i16 %0, 7
@@ -583,6 +710,3 @@ entry:
   %cmp.not = icmp eq i32 %7, 0
   ret i1 %cmp.not
 }
-;; NOTE: These prefixes are unused and the list is autogenerated. Do not add tests below this line:
-; CHECK-GI-BE: {{.*}}
-; CHECK-SD-BE: {{.*}}

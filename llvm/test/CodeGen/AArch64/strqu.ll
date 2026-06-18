@@ -14,7 +14,9 @@ define void @test_split_f(<4 x float> %val, ptr %addr) {
 ;
 ; CHECK-BE-LABEL: test_split_f:
 ; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    str q0, [x0]
+; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-NEXT:    st1 { v0.4s }, [x0]
 ; CHECK-BE-NEXT:    ret
   store <4 x float> %val, ptr %addr, align 8
   ret void
@@ -28,7 +30,8 @@ define void @test_split_d(<2 x double> %val, ptr %addr) {
 ;
 ; CHECK-BE-LABEL: test_split_d:
 ; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    str q0, [x0]
+; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-NEXT:    st1 { v0.2d }, [x0]
 ; CHECK-BE-NEXT:    ret
   store <2 x double> %val, ptr %addr, align 8
   ret void

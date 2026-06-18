@@ -1,7 +1,6 @@
 ; RUN: llc -O0 -global-isel -global-isel-abort=2 -pass-remarks-missed='gisel*' -verify-machineinstrs %s -o %t.out 2> %t.err
 ; RUN: FileCheck %s --check-prefix=FALLBACK-WITH-REPORT-OUT < %t.out
 ; RUN: FileCheck %s --check-prefix=FALLBACK-WITH-REPORT-ERR < %t.err
-; RUN: not --crash llc -global-isel -mtriple aarch64_be %s -o - 2>&1 | FileCheck %s --check-prefix=BIG-ENDIAN
 ; This file checks that the fallback path to selection dag works.
 ; The test is fragile in the sense that it must be updated to expose
 ; something that fails with global-isel.
@@ -10,8 +9,6 @@
 
 target datalayout = "e-m:o-i64:64-i128:128-n32:64-S128"
 target triple = "aarch64--"
-
-; BIG-ENDIAN: unable to translate in big endian mode
 
 ; Make sure we don't mess up metadata arguments.
 declare void @llvm.write_register.i64(metadata, i64)

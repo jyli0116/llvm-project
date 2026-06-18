@@ -44,7 +44,11 @@ define i32 @load_i32_by_i16_by_i8_big_endian(ptr %arg) {
 ;
 ; CHECK-BE-LABEL: load_i32_by_i16_by_i8_big_endian:
 ; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldr w0, [x0]
+; CHECK-BE-NEXT:    ldrb w8, [x0, #2]
+; CHECK-BE-NEXT:    ldrb w9, [x0, #3]
+; CHECK-BE-NEXT:    ldrh w10, [x0]
+; CHECK-BE-NEXT:    orr w8, w9, w8, lsl #8
+; CHECK-BE-NEXT:    orr w0, w8, w10, lsl #16
 ; CHECK-BE-NEXT:    ret
   %tmp1 = load i8, ptr %arg, align 4
   %tmp2 = zext i8 %tmp1 to i16
@@ -78,7 +82,9 @@ define i32 @load_i32_by_i16(ptr %arg) {
 ;
 ; CHECK-BE-LABEL: load_i32_by_i16:
 ; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldr w0, [x0]
+; CHECK-BE-NEXT:    ldrh w8, [x0]
+; CHECK-BE-NEXT:    ldrh w9, [x0, #2]
+; CHECK-BE-NEXT:    orr w0, w9, w8, lsl #16
 ; CHECK-BE-NEXT:    ret
   %tmp1 = load i16, ptr %arg, align 4
   %tmp2 = zext i16 %tmp1 to i32
@@ -101,7 +107,11 @@ define i32 @load_i32_by_i16_i8(ptr %arg) {
 ;
 ; CHECK-BE-LABEL: load_i32_by_i16_i8:
 ; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldr w0, [x0]
+; CHECK-BE-NEXT:    ldrb w8, [x0, #2]
+; CHECK-BE-NEXT:    ldrb w9, [x0, #3]
+; CHECK-BE-NEXT:    ldrh w10, [x0]
+; CHECK-BE-NEXT:    orr w8, w9, w8, lsl #8
+; CHECK-BE-NEXT:    orr w0, w8, w10, lsl #16
 ; CHECK-BE-NEXT:    ret
   %tmp2 = load i16, ptr %arg, align 4
   %tmp3 = zext i16 %tmp2 to i32
@@ -129,8 +139,21 @@ define i64 @load_i64_by_i8_bswap(ptr %arg) {
 ;
 ; CHECK-BE-LABEL: load_i64_by_i8_bswap:
 ; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldr x8, [x0]
-; CHECK-BE-NEXT:    rev x0, x8
+; CHECK-BE-NEXT:    ldrb w8, [x0]
+; CHECK-BE-NEXT:    ldrb w9, [x0, #1]
+; CHECK-BE-NEXT:    orr x8, x8, x9, lsl #8
+; CHECK-BE-NEXT:    ldrb w9, [x0, #2]
+; CHECK-BE-NEXT:    orr x8, x8, x9, lsl #16
+; CHECK-BE-NEXT:    ldrb w9, [x0, #3]
+; CHECK-BE-NEXT:    orr x8, x8, x9, lsl #24
+; CHECK-BE-NEXT:    ldrb w9, [x0, #4]
+; CHECK-BE-NEXT:    orr x8, x8, x9, lsl #32
+; CHECK-BE-NEXT:    ldrb w9, [x0, #5]
+; CHECK-BE-NEXT:    orr x8, x8, x9, lsl #40
+; CHECK-BE-NEXT:    ldrb w9, [x0, #6]
+; CHECK-BE-NEXT:    orr x8, x8, x9, lsl #48
+; CHECK-BE-NEXT:    ldrb w9, [x0, #7]
+; CHECK-BE-NEXT:    orr x0, x8, x9, lsl #56
 ; CHECK-BE-NEXT:    ret
   %tmp1 = load i8, ptr %arg, align 8
   %tmp2 = zext i8 %tmp1 to i64
@@ -182,7 +205,22 @@ define i64 @load_i64_by_i8(ptr %arg) {
 ;
 ; CHECK-BE-LABEL: load_i64_by_i8:
 ; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldr x0, [x0]
+; CHECK-BE-NEXT:    ldrb w8, [x0]
+; CHECK-BE-NEXT:    ldrb w9, [x0, #1]
+; CHECK-BE-NEXT:    lsl x8, x8, #56
+; CHECK-BE-NEXT:    orr x8, x8, x9, lsl #48
+; CHECK-BE-NEXT:    ldrb w9, [x0, #2]
+; CHECK-BE-NEXT:    orr x8, x8, x9, lsl #40
+; CHECK-BE-NEXT:    ldrb w9, [x0, #3]
+; CHECK-BE-NEXT:    orr x8, x8, x9, lsl #32
+; CHECK-BE-NEXT:    ldrb w9, [x0, #4]
+; CHECK-BE-NEXT:    orr x8, x8, x9, lsl #24
+; CHECK-BE-NEXT:    ldrb w9, [x0, #5]
+; CHECK-BE-NEXT:    orr x8, x8, x9, lsl #16
+; CHECK-BE-NEXT:    ldrb w9, [x0, #6]
+; CHECK-BE-NEXT:    orr x8, x8, x9, lsl #8
+; CHECK-BE-NEXT:    ldrb w9, [x0, #7]
+; CHECK-BE-NEXT:    orr x0, x8, x9
 ; CHECK-BE-NEXT:    ret
   %tmp1 = load i8, ptr %arg, align 8
   %tmp2 = zext i8 %tmp1 to i64
@@ -373,8 +411,12 @@ define i32 @load_i32_by_bswap_i16(ptr %arg) {
 ;
 ; CHECK-BE-LABEL: load_i32_by_bswap_i16:
 ; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldr w8, [x0]
-; CHECK-BE-NEXT:    rev w0, w8
+; CHECK-BE-NEXT:    ldrh w8, [x0, #2]
+; CHECK-BE-NEXT:    ldrh w9, [x0]
+; CHECK-BE-NEXT:    rev w8, w8
+; CHECK-BE-NEXT:    rev w9, w9
+; CHECK-BE-NEXT:    lsr w8, w8, #16
+; CHECK-BE-NEXT:    extr w0, w8, w9, #16
 ; CHECK-BE-NEXT:    ret
   %tmp1 = load i16, ptr %arg, align 4
   %tmp11 = call i16 @llvm.bswap.i16(i16 %tmp1)
@@ -398,7 +440,9 @@ define i32 @load_i32_by_sext_i16(ptr %arg) {
 ;
 ; CHECK-BE-LABEL: load_i32_by_sext_i16:
 ; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldr w0, [x0]
+; CHECK-BE-NEXT:    ldrsh w8, [x0]
+; CHECK-BE-NEXT:    ldrh w9, [x0, #2]
+; CHECK-BE-NEXT:    orr w0, w9, w8, lsl #16
 ; CHECK-BE-NEXT:    ret
   %tmp1 = load i16, ptr %arg, align 4
   %tmp2 = sext i16 %tmp1 to i32
@@ -423,9 +467,16 @@ define i32 @load_i32_by_i8_base_offset_index(ptr %arg, i32 %i) {
 ;
 ; CHECK-BE-LABEL: load_i32_by_i8_base_offset_index:
 ; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    add x8, x0, w1, uxtw
-; CHECK-BE-NEXT:    ldr w8, [x8, #12]
-; CHECK-BE-NEXT:    rev w0, w8
+; CHECK-BE-NEXT:    mov w8, w1
+; CHECK-BE-NEXT:    add x9, x0, #12
+; CHECK-BE-NEXT:    add x10, x9, x8
+; CHECK-BE-NEXT:    ldrb w8, [x9, x8]
+; CHECK-BE-NEXT:    ldrb w9, [x10, #1]
+; CHECK-BE-NEXT:    orr w8, w8, w9, lsl #8
+; CHECK-BE-NEXT:    ldrb w9, [x10, #2]
+; CHECK-BE-NEXT:    orr w8, w8, w9, lsl #16
+; CHECK-BE-NEXT:    ldrb w9, [x10, #3]
+; CHECK-BE-NEXT:    orr w0, w8, w9, lsl #24
 ; CHECK-BE-NEXT:    ret
   %tmp = add nuw nsw i32 %i, 3
   %tmp2 = add nuw nsw i32 %i, 2
@@ -513,8 +564,9 @@ define i32 @zext_load_i32_by_i8(ptr %arg) {
 ;
 ; CHECK-BE-LABEL: zext_load_i32_by_i8:
 ; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldrh w8, [x0]
-; CHECK-BE-NEXT:    rev16 w0, w8
+; CHECK-BE-NEXT:    ldrb w8, [x0]
+; CHECK-BE-NEXT:    ldrb w9, [x0, #1]
+; CHECK-BE-NEXT:    orr w0, w8, w9, lsl #8
 ; CHECK-BE-NEXT:    ret
   %tmp2 = load i8, ptr %arg, align 2
   %tmp3 = zext i8 %tmp2 to i32
@@ -593,7 +645,9 @@ define i32 @zext_load_i32_by_i8_bswap(ptr %arg) {
 ;
 ; CHECK-BE-LABEL: zext_load_i32_by_i8_bswap:
 ; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ldrh w0, [x0]
+; CHECK-BE-NEXT:    ldrb w8, [x0, #1]
+; CHECK-BE-NEXT:    ldrb w9, [x0]
+; CHECK-BE-NEXT:    orr w0, w8, w9, lsl #8
 ; CHECK-BE-NEXT:    ret
   %tmp1 = getelementptr inbounds i8, ptr %arg, i32 1
   %tmp2 = load i8, ptr %tmp1, align 1

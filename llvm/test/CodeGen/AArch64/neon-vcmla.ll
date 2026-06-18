@@ -10,14 +10,22 @@ define <4 x half> @test_16x4(<4 x half> %a, <4 x half> %b, <4 x half> %c) {
 ; CHECK-LE-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #0
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_16x4:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.4h, v2.4h
-; CHECK-BE-NEXT:    rev64 v1.4h, v1.4h
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #0
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_16x4:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.4h, v2.4h
+; CHECK-BE-SD-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #0
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_16x4:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev64 v2.4h, v2.4h
+; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #0
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x half> @llvm.aarch64.neon.vcmla.rot0.v4f16(<4 x half> %a, <4 x half> %b, <4 x half> %c)
   ret <4 x half> %res
@@ -30,14 +38,23 @@ define <4 x half> @test_16x4_lane_1(<4 x half> %a, <4 x half> %b, <4 x half> %c)
 ; CHECK-LE-NEXT:    fcmla v0.4h, v1.4h, v2.h[1], #0
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_16x4_lane_1:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v1.4h, v1.4h
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    rev64 v2.2s, v2.2s
-; CHECK-BE-NEXT:    fcmla v0.4h, v1.4h, v2.h[1], #0
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_16x4_lane_1:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    rev64 v2.2s, v2.2s
+; CHECK-BE-SD-NEXT:    fcmla v0.4h, v1.4h, v2.h[1], #0
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_16x4_lane_1:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v2.4h, v2.4h
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev32 v2.4h, v2.4h
+; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.h[1], #0
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %c.cast = bitcast <4 x half> %c to <2 x i32>
   %c.dup = shufflevector <2 x i32> %c.cast , <2 x i32> undef, <2 x i32> <i32 1, i32 1>
@@ -52,14 +69,22 @@ define <4 x half> @test_rot90_16x4(<4 x half> %a, <4 x half> %b, <4 x half> %c) 
 ; CHECK-LE-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #90
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot90_16x4:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.4h, v2.4h
-; CHECK-BE-NEXT:    rev64 v1.4h, v1.4h
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #90
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot90_16x4:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.4h, v2.4h
+; CHECK-BE-SD-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #90
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot90_16x4:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev64 v2.4h, v2.4h
+; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #90
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x half> @llvm.aarch64.neon.vcmla.rot90.v4f16(<4 x half> %a, <4 x half> %b, <4 x half> %c)
   ret <4 x half> %res
@@ -72,14 +97,23 @@ define <4 x half> @test_rot90_16x4_lane_0(<4 x half> %a, <4 x half> %b, <4 x hal
 ; CHECK-LE-NEXT:    fcmla v0.4h, v1.4h, v2.h[0], #90
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot90_16x4_lane_0:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v1.4h, v1.4h
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    rev64 v2.2s, v2.2s
-; CHECK-BE-NEXT:    fcmla v0.4h, v1.4h, v2.h[0], #90
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot90_16x4_lane_0:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    rev64 v2.2s, v2.2s
+; CHECK-BE-SD-NEXT:    fcmla v0.4h, v1.4h, v2.h[0], #90
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot90_16x4_lane_0:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v2.4h, v2.4h
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev32 v2.4h, v2.4h
+; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.h[0], #90
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %c.cast = bitcast <4 x half> %c to <2 x i32>
   %c.dup = shufflevector <2 x i32> %c.cast , <2 x i32> undef, <2 x i32> <i32 0, i32 0>
@@ -94,14 +128,22 @@ define <4 x half> @test_rot180_16x4(<4 x half> %a, <4 x half> %b, <4 x half> %c)
 ; CHECK-LE-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #180
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot180_16x4:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.4h, v2.4h
-; CHECK-BE-NEXT:    rev64 v1.4h, v1.4h
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #180
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot180_16x4:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.4h, v2.4h
+; CHECK-BE-SD-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #180
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot180_16x4:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev64 v2.4h, v2.4h
+; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #180
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x half> @llvm.aarch64.neon.vcmla.rot180.v4f16(<4 x half> %a, <4 x half> %b, <4 x half> %c)
   ret <4 x half> %res
@@ -113,15 +155,25 @@ define <4 x half> @test_rot180_16x4_lane_0(<4 x half> %a, <4 x half> %b, <8 x ha
 ; CHECK-LE-NEXT:    fcmla v0.4h, v1.4h, v2.h[0], #180
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot180_16x4_lane_0:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.4s, v2.4s
-; CHECK-BE-NEXT:    rev64 v1.4h, v1.4h
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.4h, v1.4h, v2.h[0], #180
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot180_16x4_lane_0:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-SD-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.4h, v1.4h, v2.h[0], #180
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot180_16x4_lane_0:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v2.8h, v2.8h
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    rev32 v2.8h, v2.8h
+; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.h[0], #180
+; CHECK-BE-GI-NEXT:    ret
 entry:
 
   %c.cast = bitcast <8 x half> %c to <4 x i32>
@@ -137,14 +189,22 @@ define <4 x half> @test_rot270_16x4(<4 x half> %a, <4 x half> %b, <4 x half> %c)
 ; CHECK-LE-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #270
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot270_16x4:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.4h, v2.4h
-; CHECK-BE-NEXT:    rev64 v1.4h, v1.4h
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #270
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot270_16x4:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.4h, v2.4h
+; CHECK-BE-SD-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #270
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot270_16x4:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev64 v2.4h, v2.4h
+; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #270
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x half> @llvm.aarch64.neon.vcmla.rot270.v4f16(<4 x half> %a, <4 x half> %b, <4 x half> %c)
   ret <4 x half> %res
@@ -156,14 +216,22 @@ define <2 x float> @test_32x2(<2 x float> %a, <2 x float> %b, <2 x float> %c) {
 ; CHECK-LE-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #0
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_32x2:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.2s, v2.2s
-; CHECK-BE-NEXT:    rev64 v1.2s, v1.2s
-; CHECK-BE-NEXT:    rev64 v0.2s, v0.2s
-; CHECK-BE-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #0
-; CHECK-BE-NEXT:    rev64 v0.2s, v0.2s
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_32x2:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.2s, v2.2s
+; CHECK-BE-SD-NEXT:    rev64 v1.2s, v1.2s
+; CHECK-BE-SD-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-BE-SD-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #0
+; CHECK-BE-SD-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_32x2:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-BE-GI-NEXT:    rev64 v1.2s, v1.2s
+; CHECK-BE-GI-NEXT:    rev64 v2.2s, v2.2s
+; CHECK-BE-GI-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #0
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x float> @llvm.aarch64.neon.vcmla.rot0.v2f32(<2 x float> %a, <2 x float> %b, <2 x float> %c)
   ret <2 x float> %res
@@ -175,14 +243,22 @@ define <2 x float> @test_rot90_32x2(<2 x float> %a, <2 x float> %b, <2 x float> 
 ; CHECK-LE-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #90
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot90_32x2:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.2s, v2.2s
-; CHECK-BE-NEXT:    rev64 v1.2s, v1.2s
-; CHECK-BE-NEXT:    rev64 v0.2s, v0.2s
-; CHECK-BE-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #90
-; CHECK-BE-NEXT:    rev64 v0.2s, v0.2s
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot90_32x2:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.2s, v2.2s
+; CHECK-BE-SD-NEXT:    rev64 v1.2s, v1.2s
+; CHECK-BE-SD-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-BE-SD-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #90
+; CHECK-BE-SD-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot90_32x2:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-BE-GI-NEXT:    rev64 v1.2s, v1.2s
+; CHECK-BE-GI-NEXT:    rev64 v2.2s, v2.2s
+; CHECK-BE-GI-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #90
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x float> @llvm.aarch64.neon.vcmla.rot90.v2f32(<2 x float> %a, <2 x float> %b, <2 x float> %c)
   ret <2 x float> %res
@@ -194,14 +270,22 @@ define <2 x float> @test_rot180_32x2(<2 x float> %a, <2 x float> %b, <2 x float>
 ; CHECK-LE-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #180
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot180_32x2:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.2s, v2.2s
-; CHECK-BE-NEXT:    rev64 v1.2s, v1.2s
-; CHECK-BE-NEXT:    rev64 v0.2s, v0.2s
-; CHECK-BE-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #180
-; CHECK-BE-NEXT:    rev64 v0.2s, v0.2s
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot180_32x2:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.2s, v2.2s
+; CHECK-BE-SD-NEXT:    rev64 v1.2s, v1.2s
+; CHECK-BE-SD-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-BE-SD-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #180
+; CHECK-BE-SD-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot180_32x2:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-BE-GI-NEXT:    rev64 v1.2s, v1.2s
+; CHECK-BE-GI-NEXT:    rev64 v2.2s, v2.2s
+; CHECK-BE-GI-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #180
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x float> @llvm.aarch64.neon.vcmla.rot180.v2f32(<2 x float> %a, <2 x float> %b, <2 x float> %c)
   ret <2 x float> %res
@@ -213,14 +297,22 @@ define <2 x float> @test_rot270_32x2(<2 x float> %a, <2 x float> %b, <2 x float>
 ; CHECK-LE-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #270
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot270_32x2:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.2s, v2.2s
-; CHECK-BE-NEXT:    rev64 v1.2s, v1.2s
-; CHECK-BE-NEXT:    rev64 v0.2s, v0.2s
-; CHECK-BE-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #270
-; CHECK-BE-NEXT:    rev64 v0.2s, v0.2s
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot270_32x2:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.2s, v2.2s
+; CHECK-BE-SD-NEXT:    rev64 v1.2s, v1.2s
+; CHECK-BE-SD-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-BE-SD-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #270
+; CHECK-BE-SD-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot270_32x2:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-BE-GI-NEXT:    rev64 v1.2s, v1.2s
+; CHECK-BE-GI-NEXT:    rev64 v2.2s, v2.2s
+; CHECK-BE-GI-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #270
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x float> @llvm.aarch64.neon.vcmla.rot270.v2f32(<2 x float> %a, <2 x float> %b, <2 x float> %c)
   ret <2 x float> %res
@@ -232,18 +324,29 @@ define <8 x half> @test_16x8(<8 x half> %a, <8 x half> %b, <8 x half> %c) {
 ; CHECK-LE-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #0
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_16x8:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.8h, v2.8h
-; CHECK-BE-NEXT:    rev64 v1.8h, v1.8h
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #0
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_16x8:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.8h, v2.8h
+; CHECK-BE-SD-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #0
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_16x8:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-GI-NEXT:    rev64 v2.8h, v2.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #0
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <8 x half> @llvm.aarch64.neon.vcmla.rot0.v8f16(<8 x half> %a, <8 x half> %b, <8 x half> %c)
   ret <8 x half> %res
@@ -255,18 +358,30 @@ define <8 x half> @test_16x8_lane_0(<8 x half> %a, <8 x half> %b, <8 x half> %c)
 ; CHECK-LE-NEXT:    fcmla v0.8h, v1.8h, v2.h[0], #0
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_16x8_lane_0:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v1.8h, v1.8h
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    rev64 v2.4s, v2.4s
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.8h, v1.8h, v2.h[0], #0
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_16x8_lane_0:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.8h, v1.8h, v2.h[0], #0
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_16x8_lane_0:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v2.8h, v2.8h
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    rev32 v2.8h, v2.8h
+; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.h[0], #0
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %c.cast = bitcast <8 x half> %c to <4 x i32>
   %c.dup = shufflevector <4 x i32> %c.cast , <4 x i32> undef, <4 x i32> <i32 0, i32 0, i32 0, i32 0>
@@ -281,18 +396,29 @@ define <8 x half> @test_rot90_16x8(<8 x half> %a, <8 x half> %b, <8 x half> %c) 
 ; CHECK-LE-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #90
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot90_16x8:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.8h, v2.8h
-; CHECK-BE-NEXT:    rev64 v1.8h, v1.8h
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #90
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot90_16x8:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.8h, v2.8h
+; CHECK-BE-SD-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #90
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot90_16x8:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-GI-NEXT:    rev64 v2.8h, v2.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #90
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <8 x half> @llvm.aarch64.neon.vcmla.rot90.v8f16(<8 x half> %a, <8 x half> %b, <8 x half> %c)
   ret <8 x half> %res
@@ -304,18 +430,30 @@ define <8 x half> @test_rot90_16x8_lane_1(<8 x half> %a, <8 x half> %b, <8 x hal
 ; CHECK-LE-NEXT:    fcmla v0.8h, v1.8h, v2.h[1], #90
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot90_16x8_lane_1:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v1.8h, v1.8h
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    rev64 v2.4s, v2.4s
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.8h, v1.8h, v2.h[1], #90
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot90_16x8_lane_1:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.8h, v1.8h, v2.h[1], #90
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot90_16x8_lane_1:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v2.8h, v2.8h
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    rev32 v2.8h, v2.8h
+; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.h[1], #90
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %c.cast = bitcast <8 x half> %c to <4 x i32>
   %c.dup = shufflevector <4 x i32> %c.cast , <4 x i32> undef, <4 x i32> <i32 1, i32 1, i32 1, i32 1>
@@ -330,18 +468,29 @@ define <8 x half> @test_rot180_16x8(<8 x half> %a, <8 x half> %b, <8 x half> %c)
 ; CHECK-LE-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #180
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot180_16x8:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.8h, v2.8h
-; CHECK-BE-NEXT:    rev64 v1.8h, v1.8h
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #180
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot180_16x8:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.8h, v2.8h
+; CHECK-BE-SD-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #180
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot180_16x8:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-GI-NEXT:    rev64 v2.8h, v2.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #180
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <8 x half> @llvm.aarch64.neon.vcmla.rot180.v8f16(<8 x half> %a, <8 x half> %b, <8 x half> %c)
   ret <8 x half> %res
@@ -353,18 +502,30 @@ define <8 x half> @test_rot180_16x8_lane_1(<8 x half> %a, <8 x half> %b, <8 x ha
 ; CHECK-LE-NEXT:    fcmla v0.8h, v1.8h, v2.h[1], #180
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot180_16x8_lane_1:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v1.8h, v1.8h
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    rev64 v2.4s, v2.4s
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.8h, v1.8h, v2.h[1], #180
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot180_16x8_lane_1:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.8h, v1.8h, v2.h[1], #180
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot180_16x8_lane_1:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v2.8h, v2.8h
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    rev32 v2.8h, v2.8h
+; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.h[1], #180
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %c.cast = bitcast <8 x half> %c to <4 x i32>
   %c.dup = shufflevector <4 x i32> %c.cast , <4 x i32> undef, <4 x i32> <i32 1, i32 1, i32 1, i32 1>
@@ -379,18 +540,29 @@ define <8 x half> @test_rot270_16x8(<8 x half> %a, <8 x half> %b, <8 x half> %c)
 ; CHECK-LE-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #270
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot270_16x8:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.8h, v2.8h
-; CHECK-BE-NEXT:    rev64 v1.8h, v1.8h
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #270
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot270_16x8:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.8h, v2.8h
+; CHECK-BE-SD-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #270
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot270_16x8:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-GI-NEXT:    rev64 v2.8h, v2.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #270
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <8 x half> @llvm.aarch64.neon.vcmla.rot270.v8f16(<8 x half> %a, <8 x half> %b, <8 x half> %c)
   ret <8 x half> %res
@@ -402,18 +574,30 @@ define <8 x half> @test_rot270_16x8_lane_0(<8 x half> %a, <8 x half> %b, <8 x ha
 ; CHECK-LE-NEXT:    fcmla v0.8h, v1.8h, v2.h[0], #270
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot270_16x8_lane_0:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v1.8h, v1.8h
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    rev64 v2.4s, v2.4s
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.8h, v1.8h, v2.h[0], #270
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot270_16x8_lane_0:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.8h, v1.8h, v2.h[0], #270
+; CHECK-BE-SD-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot270_16x8_lane_0:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v2.8h, v2.8h
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    rev64 v1.8h, v1.8h
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    rev32 v2.8h, v2.8h
+; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.h[0], #270
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %c.cast = bitcast <8 x half> %c to <4 x i32>
   %c.dup = shufflevector <4 x i32> %c.cast , <4 x i32> undef, <4 x i32> <i32 0, i32 0, i32 0, i32 0>
@@ -428,18 +612,29 @@ define <4 x float> @test_32x4(<4 x float> %a, <4 x float> %b, <4 x float> %c) {
 ; CHECK-LE-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #0
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_32x4:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.4s, v2.4s
-; CHECK-BE-NEXT:    rev64 v1.4s, v1.4s
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #0
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_32x4:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-SD-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #0
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_32x4:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-GI-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #0
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x float> @llvm.aarch64.neon.vcmla.rot0.v4f32(<4 x float> %a, <4 x float> %b, <4 x float> %c)
   ret <4 x float> %res
@@ -451,17 +646,29 @@ define <4 x float> @test_32x4_lane_0(<4 x float> %a, <4 x float> %b, <4 x float>
 ; CHECK-LE-NEXT:    fcmla v0.4s, v1.4s, v2.s[0], #0
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_32x4_lane_0:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v1.4s, v1.4s
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.4s, v1.4s, v2.s[0], #0
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_32x4_lane_0:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.4s, v1.4s, v2.s[0], #0
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_32x4_lane_0:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-GI-NEXT:    fcmla v0.4s, v1.4s, v2.s[0], #0
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %c.cast = bitcast <4 x float> %c to <2 x i64>
   %c.dup = shufflevector <2 x i64> %c.cast , <2 x i64> undef, <2 x i32> <i32 0, i32 0>
@@ -476,18 +683,29 @@ define <4 x float> @test_rot90_32x4(<4 x float> %a, <4 x float> %b, <4 x float> 
 ; CHECK-LE-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #90
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot90_32x4:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.4s, v2.4s
-; CHECK-BE-NEXT:    rev64 v1.4s, v1.4s
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #90
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot90_32x4:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-SD-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #90
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot90_32x4:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-GI-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #90
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x float> @llvm.aarch64.neon.vcmla.rot90.v4f32(<4 x float> %a, <4 x float> %b, <4 x float> %c)
   ret <4 x float> %res
@@ -499,18 +717,29 @@ define <4 x float> @test_rot180_32x4(<4 x float> %a, <4 x float> %b, <4 x float>
 ; CHECK-LE-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #180
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot180_32x4:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.4s, v2.4s
-; CHECK-BE-NEXT:    rev64 v1.4s, v1.4s
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #180
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot180_32x4:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-SD-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #180
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot180_32x4:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-GI-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #180
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x float> @llvm.aarch64.neon.vcmla.rot180.v4f32(<4 x float> %a, <4 x float> %b, <4 x float> %c)
   ret <4 x float> %res
@@ -522,18 +751,29 @@ define <4 x float> @test_rot270_32x4(<4 x float> %a, <4 x float> %b, <4 x float>
 ; CHECK-LE-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #270
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot270_32x4:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.4s, v2.4s
-; CHECK-BE-NEXT:    rev64 v1.4s, v1.4s
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #270
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot270_32x4:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-SD-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #270
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot270_32x4:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-GI-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #270
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x float> @llvm.aarch64.neon.vcmla.rot270.v4f32(<4 x float> %a, <4 x float> %b, <4 x float> %c)
   ret <4 x float> %res
@@ -545,14 +785,22 @@ define <2 x double> @test_64x2(<2 x double> %a, <2 x double> %b, <2 x double> %c
 ; CHECK-LE-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #0
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_64x2:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #0
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_64x2:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #0
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_64x2:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #0
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x double> @llvm.aarch64.neon.vcmla.rot0.v2f64(<2 x double> %a, <2 x double> %b, <2 x double> %c)
   ret <2 x double> %res
@@ -564,14 +812,22 @@ define <2 x double> @test_rot90_64x2(<2 x double> %a, <2 x double> %b, <2 x doub
 ; CHECK-LE-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #90
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot90_64x2:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #90
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot90_64x2:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #90
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot90_64x2:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #90
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x double> @llvm.aarch64.neon.vcmla.rot90.v2f64(<2 x double> %a, <2 x double> %b, <2 x double> %c)
   ret <2 x double> %res
@@ -583,14 +839,22 @@ define <2 x double> @test_rot180_64x2(<2 x double> %a, <2 x double> %b, <2 x dou
 ; CHECK-LE-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #180
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot180_64x2:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #180
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot180_64x2:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #180
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot180_64x2:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #180
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x double> @llvm.aarch64.neon.vcmla.rot180.v2f64(<2 x double> %a, <2 x double> %b, <2 x double> %c)
   ret <2 x double> %res
@@ -602,14 +866,22 @@ define <2 x double> @test_rot270_64x2(<2 x double> %a, <2 x double> %b, <2 x dou
 ; CHECK-LE-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #270
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: test_rot270_64x2:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #270
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: test_rot270_64x2:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #270
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: test_rot270_64x2:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #270
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x double> @llvm.aarch64.neon.vcmla.rot270.v2f64(<2 x double> %a, <2 x double> %b, <2 x double> %c)
   ret <2 x double> %res
@@ -628,18 +900,31 @@ define <4 x float> @reassoc_f32x4(<4 x float> %a, <4 x float> %b, <4 x float> %c
 ; CHECK-LE-GI-NEXT:    fadd v0.4s, v3.4s, v0.4s
 ; CHECK-LE-GI-NEXT:    ret
 ;
-; CHECK-BE-LABEL: reassoc_f32x4:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.4s, v2.4s
-; CHECK-BE-NEXT:    rev64 v1.4s, v1.4s
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #0
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: reassoc_f32x4:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-SD-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #0
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: reassoc_f32x4:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-GI-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    movi v3.2d, #0000000000000000
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v3.4s, v1.4s, v2.4s, #0
+; CHECK-BE-GI-NEXT:    fadd v0.4s, v3.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %d = tail call <4 x float> @llvm.aarch64.neon.vcmla.rot0.v4f32(<4 x float> zeroinitializer, <4 x float> %b, <4 x float> %c)
   %res = fadd fast <4 x float> %d, %a
@@ -659,18 +944,31 @@ define <4 x float> @reassoc_c_f32x4(<4 x float> %a, <4 x float> %b, <4 x float> 
 ; CHECK-LE-GI-NEXT:    fadd v0.4s, v0.4s, v3.4s
 ; CHECK-LE-GI-NEXT:    ret
 ;
-; CHECK-BE-LABEL: reassoc_c_f32x4:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.4s, v2.4s
-; CHECK-BE-NEXT:    rev64 v1.4s, v1.4s
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #90
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: reassoc_c_f32x4:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-SD-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #90
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: reassoc_c_f32x4:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-GI-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    movi v3.2d, #0000000000000000
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v3.4s, v1.4s, v2.4s, #90
+; CHECK-BE-GI-NEXT:    fadd v0.4s, v0.4s, v3.4s
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %d = tail call <4 x float> @llvm.aarch64.neon.vcmla.rot90.v4f32(<4 x float> zeroinitializer, <4 x float> %b, <4 x float> %c)
   %res = fadd fast <4 x float> %a, %d
@@ -690,14 +988,24 @@ define <4 x half> @reassoc_f16x4(<4 x half> %a, <4 x half> %b, <4 x half> %c) {
 ; CHECK-LE-GI-NEXT:    fadd v0.4h, v3.4h, v0.4h
 ; CHECK-LE-GI-NEXT:    ret
 ;
-; CHECK-BE-LABEL: reassoc_f16x4:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.4h, v2.4h
-; CHECK-BE-NEXT:    rev64 v1.4h, v1.4h
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #180
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: reassoc_f16x4:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.4h, v2.4h
+; CHECK-BE-SD-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #180
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: reassoc_f16x4:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev64 v2.4h, v2.4h
+; CHECK-BE-GI-NEXT:    movi v3.2d, #0000000000000000
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-GI-NEXT:    fcmla v3.4h, v1.4h, v2.4h, #180
+; CHECK-BE-GI-NEXT:    fadd v0.4h, v3.4h, v0.4h
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %d = tail call <4 x half> @llvm.aarch64.neon.vcmla.rot180.v4f16(<4 x half> zeroinitializer, <4 x half> %b, <4 x half> %c)
   %res = fadd fast <4 x half> %d, %a
@@ -717,14 +1025,24 @@ define <4 x half> @reassoc_c_f16x4(<4 x half> %a, <4 x half> %b, <4 x half> %c) 
 ; CHECK-LE-GI-NEXT:    fadd v0.4h, v0.4h, v3.4h
 ; CHECK-LE-GI-NEXT:    ret
 ;
-; CHECK-BE-LABEL: reassoc_c_f16x4:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.4h, v2.4h
-; CHECK-BE-NEXT:    rev64 v1.4h, v1.4h
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #270
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: reassoc_c_f16x4:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.4h, v2.4h
+; CHECK-BE-SD-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #270
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: reassoc_c_f16x4:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev64 v2.4h, v2.4h
+; CHECK-BE-GI-NEXT:    movi v3.2d, #0000000000000000
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-GI-NEXT:    fcmla v3.4h, v1.4h, v2.4h, #270
+; CHECK-BE-GI-NEXT:    fadd v0.4h, v0.4h, v3.4h
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %d = tail call <4 x half> @llvm.aarch64.neon.vcmla.rot270.v4f16(<4 x half> zeroinitializer, <4 x half> %b, <4 x half> %c)
   %res = fadd fast <4 x half> %a, %d
@@ -746,16 +1064,28 @@ define <2 x double> @reassoc_f64x2(<2 x double> %a, <2 x double> %b, <2 x double
 ; CHECK-LE-GI-NEXT:    fadd v0.2d, v4.2d, v0.2d
 ; CHECK-LE-GI-NEXT:    ret
 ;
-; CHECK-BE-LABEL: reassoc_f64x2:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ext v3.16b, v3.16b, v3.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #270
-; CHECK-BE-NEXT:    fcmla v0.2d, v2.2d, v3.2d, #270
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: reassoc_f64x2:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ext v3.16b, v3.16b, v3.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #270
+; CHECK-BE-SD-NEXT:    fcmla v0.2d, v2.2d, v3.2d, #270
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: reassoc_f64x2:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    ext v3.16b, v3.16b, v3.16b, #8
+; CHECK-BE-GI-NEXT:    movi v4.2d, #0000000000000000
+; CHECK-BE-GI-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #270
+; CHECK-BE-GI-NEXT:    fcmla v4.2d, v2.2d, v3.2d, #270
+; CHECK-BE-GI-NEXT:    fadd v0.2d, v4.2d, v0.2d
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %d = tail call <2 x double> @llvm.aarch64.neon.vcmla.rot270.v2f64(<2 x double> %a, <2 x double> %b, <2 x double> %c)
   %e = tail call <2 x double> @llvm.aarch64.neon.vcmla.rot270.v2f64(<2 x double> zeroinitializer, <2 x double> %c, <2 x double> %g)
@@ -779,17 +1109,29 @@ define <2 x double> @reassoc_c_f64x2(<2 x double> %a, <2 x double> %b, <2 x doub
 ; CHECK-LE-GI-NEXT:    fadd v0.2d, v0.2d, v4.2d
 ; CHECK-LE-GI-NEXT:    ret
 ;
-; CHECK-BE-LABEL: reassoc_c_f64x2:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v3.16b, v3.16b, v3.16b, #8
-; CHECK-BE-NEXT:    fadd v0.2d, v0.2d, v0.2d
-; CHECK-BE-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #270
-; CHECK-BE-NEXT:    fcmla v0.2d, v2.2d, v3.2d, #270
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: reassoc_c_f64x2:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v3.16b, v3.16b, v3.16b, #8
+; CHECK-BE-SD-NEXT:    fadd v0.2d, v0.2d, v0.2d
+; CHECK-BE-SD-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #270
+; CHECK-BE-SD-NEXT:    fcmla v0.2d, v2.2d, v3.2d, #270
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: reassoc_c_f64x2:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    ext v3.16b, v3.16b, v3.16b, #8
+; CHECK-BE-GI-NEXT:    mov v4.16b, v0.16b
+; CHECK-BE-GI-NEXT:    fcmla v0.2d, v2.2d, v3.2d, #270
+; CHECK-BE-GI-NEXT:    fcmla v4.2d, v1.2d, v2.2d, #270
+; CHECK-BE-GI-NEXT:    fadd v0.2d, v0.2d, v4.2d
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %d = tail call <2 x double> @llvm.aarch64.neon.vcmla.rot270.v2f64(<2 x double> %a, <2 x double> %b, <2 x double> %c)
   %e = tail call <2 x double> @llvm.aarch64.neon.vcmla.rot270.v2f64(<2 x double> %a, <2 x double> %c, <2 x double> %g)
@@ -805,20 +1147,33 @@ define <4 x float> @reassoc_nonfast_f32x4(<4 x float> %a, <4 x float> %b, <4 x f
 ; CHECK-LE-NEXT:    fadd v0.4s, v3.4s, v0.4s
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: reassoc_nonfast_f32x4:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.4s, v2.4s
-; CHECK-BE-NEXT:    rev64 v1.4s, v1.4s
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    movi v3.2d, #0000000000000000
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    fcmla v3.4s, v1.4s, v2.4s, #0
-; CHECK-BE-NEXT:    fadd v0.4s, v3.4s, v0.4s
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: reassoc_nonfast_f32x4:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-SD-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    movi v3.2d, #0000000000000000
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v3.4s, v1.4s, v2.4s, #0
+; CHECK-BE-SD-NEXT:    fadd v0.4s, v3.4s, v0.4s
+; CHECK-BE-SD-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-SD-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: reassoc_nonfast_f32x4:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v1.4s, v1.4s
+; CHECK-BE-GI-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    movi v3.2d, #0000000000000000
+; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v3.4s, v1.4s, v2.4s, #0
+; CHECK-BE-GI-NEXT:    fadd v0.4s, v3.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %d = tail call <4 x float> @llvm.aarch64.neon.vcmla.rot0.v4f32(<4 x float> zeroinitializer, <4 x float> %b, <4 x float> %c)
   %res = fadd <4 x float> %d, %a
@@ -832,16 +1187,26 @@ define <4 x half> @be_vcmla_lane_f16(<4 x half> %0, <4 x half> %1, <4 x i32> %2)
 ; CHECK-LE-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: be_vcmla_lane_f16:
-; CHECK-BE:       // %bb.0: // %entry
-; CHECK-BE-NEXT:    rev64 v2.4s, v2.4s
-; CHECK-BE-NEXT:    rev64 v1.4h, v1.4h
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
-; CHECK-BE-NEXT:    fcmla v0.4h, v1.4h, v2.h[0], #0
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    ret
+; CHECK-BE-SD-LABEL: be_vcmla_lane_f16:
+; CHECK-BE-SD:       // %bb.0: // %entry
+; CHECK-BE-SD-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-SD-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-SD-NEXT:    fcmla v0.4h, v1.4h, v2.h[0], #0
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-SD-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: be_vcmla_lane_f16:
+; CHECK-BE-GI:       // %bb.0: // %entry
+; CHECK-BE-GI-NEXT:    rev64 v2.4s, v2.4s
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
+; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
+; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.h[0], #0
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-GI-NEXT:    ret
 entry:
   %vecinit21 = shufflevector <4 x i32> %2, <4 x i32> poison, <2 x i32> zeroinitializer
   %3 = bitcast <2 x i32> %vecinit21 to <4 x half>
@@ -850,5 +1215,4 @@ entry:
   ret <4 x half> %shuffle22
 }
 ;; NOTE: These prefixes are unused and the list is autogenerated. Do not add tests below this line:
-; CHECK-BE-GI: {{.*}}
-; CHECK-BE-SD: {{.*}}
+; CHECK-BE: {{.*}}

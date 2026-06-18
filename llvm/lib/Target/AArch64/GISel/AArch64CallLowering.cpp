@@ -1543,3 +1543,5 @@ bool AArch64CallLowering::lowerCall(MachineIRBuilder &MIRBuilder,
 bool AArch64CallLowering::isTypeIsValidForThisReturn(EVT Ty) const {
   return Ty.getSizeInBits() == 64;
 }
+
+bool AArch64CallLowering::enableBigEndian() const { return true; }

@@ -14,15 +14,24 @@ define <8 x i8> @vtrni8(ptr %A, ptr %B) nounwind {
 ; CHECK-LE-NEXT:    add v0.8b, v2.8b, v0.8b
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrni8:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.8b }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.8b }, [x1]
-; CHECK-BE-NEXT:    trn1 v2.8b, v0.8b, v1.8b
-; CHECK-BE-NEXT:    trn2 v0.8b, v0.8b, v1.8b
-; CHECK-BE-NEXT:    add v0.8b, v2.8b, v0.8b
-; CHECK-BE-NEXT:    rev64 v0.8b, v0.8b
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrni8:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.8b }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.8b }, [x1]
+; CHECK-SD-BE-NEXT:    trn1 v2.8b, v0.8b, v1.8b
+; CHECK-SD-BE-NEXT:    trn2 v0.8b, v0.8b, v1.8b
+; CHECK-SD-BE-NEXT:    add v0.8b, v2.8b, v0.8b
+; CHECK-SD-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrni8:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.8b }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.8b }, [x1]
+; CHECK-GI-BE-NEXT:    trn1 v2.8b, v0.8b, v1.8b
+; CHECK-GI-BE-NEXT:    trn2 v0.8b, v0.8b, v1.8b
+; CHECK-GI-BE-NEXT:    add v0.8b, v2.8b, v0.8b
+; CHECK-GI-BE-NEXT:    ret
 	%tmp1 = load <8 x i8>, ptr %A
 	%tmp2 = load <8 x i8>, ptr %B
 	%tmp3 = shufflevector <8 x i8> %tmp1, <8 x i8> %tmp2, <8 x i32> <i32 0, i32 8, i32 2, i32 10, i32 4, i32 12, i32 6, i32 14>
@@ -41,15 +50,24 @@ define <4 x i16> @vtrni16(ptr %A, ptr %B) nounwind {
 ; CHECK-LE-NEXT:    add v0.4h, v2.4h, v0.4h
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrni16:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.4h }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.4h }, [x1]
-; CHECK-BE-NEXT:    trn1 v2.4h, v0.4h, v1.4h
-; CHECK-BE-NEXT:    trn2 v0.4h, v0.4h, v1.4h
-; CHECK-BE-NEXT:    add v0.4h, v2.4h, v0.4h
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrni16:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.4h }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.4h }, [x1]
+; CHECK-SD-BE-NEXT:    trn1 v2.4h, v0.4h, v1.4h
+; CHECK-SD-BE-NEXT:    trn2 v0.4h, v0.4h, v1.4h
+; CHECK-SD-BE-NEXT:    add v0.4h, v2.4h, v0.4h
+; CHECK-SD-BE-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrni16:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.4h }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.4h }, [x1]
+; CHECK-GI-BE-NEXT:    trn1 v2.4h, v0.4h, v1.4h
+; CHECK-GI-BE-NEXT:    trn2 v0.4h, v0.4h, v1.4h
+; CHECK-GI-BE-NEXT:    add v0.4h, v2.4h, v0.4h
+; CHECK-GI-BE-NEXT:    ret
 	%tmp1 = load <4 x i16>, ptr %A
 	%tmp2 = load <4 x i16>, ptr %B
 	%tmp3 = shufflevector <4 x i16> %tmp1, <4 x i16> %tmp2, <4 x i32> <i32 0, i32 4, i32 2, i32 6>
@@ -66,13 +84,13 @@ define <8 x i8> @vtrni16_viabitcast(ptr %A, ptr %B) nounwind {
 ; CHECK-SD-LE-NEXT:    trn1 v0.4h, v0.4h, v1.4h
 ; CHECK-SD-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrni16_viabitcast:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.4h }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.4h }, [x1]
-; CHECK-BE-NEXT:    trn1 v0.4h, v0.4h, v1.4h
-; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrni16_viabitcast:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.4h }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.4h }, [x1]
+; CHECK-SD-BE-NEXT:    trn1 v0.4h, v0.4h, v1.4h
+; CHECK-SD-BE-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-SD-BE-NEXT:    ret
 ;
 ; CHECK-GI-LE-LABEL: vtrni16_viabitcast:
 ; CHECK-GI-LE:       // %bb.0:
@@ -84,6 +102,19 @@ define <8 x i8> @vtrni16_viabitcast(ptr %A, ptr %B) nounwind {
 ; CHECK-GI-LE-NEXT:    tbl v0.16b, { v0.16b }, v1.16b
 ; CHECK-GI-LE-NEXT:    // kill: def $d0 killed $d0 killed $q0
 ; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrni16_viabitcast:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.4h }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.4h }, [x1]
+; CHECK-GI-BE-NEXT:    adrp x8, .LCPI2_0
+; CHECK-GI-BE-NEXT:    rev16 v0.8b, v0.8b
+; CHECK-GI-BE-NEXT:    rev16 v1.8b, v1.8b
+; CHECK-GI-BE-NEXT:    mov v0.d[1], v1.d[0]
+; CHECK-GI-BE-NEXT:    ldr d1, [x8, :lo12:.LCPI2_0]
+; CHECK-GI-BE-NEXT:    tbl v0.16b, { v0.16b }, v1.16b
+; CHECK-GI-BE-NEXT:    // kill: def $d0 killed $d0 killed $q0
+; CHECK-GI-BE-NEXT:    ret
   %l1 = load <4 x i16>, ptr %A
   %l2 = load <4 x i16>, ptr %B
   %b1 = bitcast <4 x i16> %l1 to <8 x i8>
@@ -101,13 +132,20 @@ define <2 x i32> @vtrni32(ptr %A, ptr %B) nounwind {
 ; CHECK-LE-NEXT:    addp v0.2s, v0.2s, v1.2s
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrni32:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.2s }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.2s }, [x1]
-; CHECK-BE-NEXT:    addp v0.2s, v0.2s, v1.2s
-; CHECK-BE-NEXT:    rev64 v0.2s, v0.2s
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrni32:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.2s }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.2s }, [x1]
+; CHECK-SD-BE-NEXT:    addp v0.2s, v0.2s, v1.2s
+; CHECK-SD-BE-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrni32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.2s }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.2s }, [x1]
+; CHECK-GI-BE-NEXT:    addp v0.2s, v0.2s, v1.2s
+; CHECK-GI-BE-NEXT:    ret
 	%tmp1 = load <2 x i32>, ptr %A
 	%tmp2 = load <2 x i32>, ptr %B
 	%tmp3 = shufflevector <2 x i32> %tmp1, <2 x i32> %tmp2, <2 x i32> <i32 0, i32 2>
@@ -124,13 +162,20 @@ define <2 x float> @vtrnf(ptr %A, ptr %B) nounwind {
 ; CHECK-LE-NEXT:    faddp v0.2s, v0.2s, v1.2s
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrnf:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.2s }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.2s }, [x1]
-; CHECK-BE-NEXT:    faddp v0.2s, v0.2s, v1.2s
-; CHECK-BE-NEXT:    rev64 v0.2s, v0.2s
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrnf:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.2s }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.2s }, [x1]
+; CHECK-SD-BE-NEXT:    faddp v0.2s, v0.2s, v1.2s
+; CHECK-SD-BE-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrnf:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.2s }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.2s }, [x1]
+; CHECK-GI-BE-NEXT:    faddp v0.2s, v0.2s, v1.2s
+; CHECK-GI-BE-NEXT:    ret
 	%tmp1 = load <2 x float>, ptr %A
 	%tmp2 = load <2 x float>, ptr %B
 	%tmp3 = shufflevector <2 x float> %tmp1, <2 x float> %tmp2, <2 x i32> <i32 0, i32 2>
@@ -149,16 +194,25 @@ define <16 x i8> @vtrnQi8(ptr %A, ptr %B) nounwind {
 ; CHECK-LE-NEXT:    add v0.16b, v2.16b, v0.16b
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrnQi8:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.16b }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.16b }, [x1]
-; CHECK-BE-NEXT:    trn1 v2.16b, v0.16b, v1.16b
-; CHECK-BE-NEXT:    trn2 v0.16b, v0.16b, v1.16b
-; CHECK-BE-NEXT:    add v0.16b, v2.16b, v0.16b
-; CHECK-BE-NEXT:    rev64 v0.16b, v0.16b
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrnQi8:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.16b }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.16b }, [x1]
+; CHECK-SD-BE-NEXT:    trn1 v2.16b, v0.16b, v1.16b
+; CHECK-SD-BE-NEXT:    trn2 v0.16b, v0.16b, v1.16b
+; CHECK-SD-BE-NEXT:    add v0.16b, v2.16b, v0.16b
+; CHECK-SD-BE-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-SD-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrnQi8:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.16b }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.16b }, [x1]
+; CHECK-GI-BE-NEXT:    trn1 v2.16b, v0.16b, v1.16b
+; CHECK-GI-BE-NEXT:    trn2 v0.16b, v0.16b, v1.16b
+; CHECK-GI-BE-NEXT:    add v0.16b, v2.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ret
 	%tmp1 = load <16 x i8>, ptr %A
 	%tmp2 = load <16 x i8>, ptr %B
 	%tmp3 = shufflevector <16 x i8> %tmp1, <16 x i8> %tmp2, <16 x i32> <i32 0, i32 16, i32 2, i32 18, i32 4, i32 20, i32 6, i32 22, i32 8, i32 24, i32 10, i32 26, i32 12, i32 28, i32 14, i32 30>
@@ -177,16 +231,25 @@ define <8 x i16> @vtrnQi16(ptr %A, ptr %B) nounwind {
 ; CHECK-LE-NEXT:    add v0.8h, v2.8h, v0.8h
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrnQi16:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.8h }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.8h }, [x1]
-; CHECK-BE-NEXT:    trn1 v2.8h, v0.8h, v1.8h
-; CHECK-BE-NEXT:    trn2 v0.8h, v0.8h, v1.8h
-; CHECK-BE-NEXT:    add v0.8h, v2.8h, v0.8h
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrnQi16:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.8h }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.8h }, [x1]
+; CHECK-SD-BE-NEXT:    trn1 v2.8h, v0.8h, v1.8h
+; CHECK-SD-BE-NEXT:    trn2 v0.8h, v0.8h, v1.8h
+; CHECK-SD-BE-NEXT:    add v0.8h, v2.8h, v0.8h
+; CHECK-SD-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-SD-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrnQi16:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.8h }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.8h }, [x1]
+; CHECK-GI-BE-NEXT:    trn1 v2.8h, v0.8h, v1.8h
+; CHECK-GI-BE-NEXT:    trn2 v0.8h, v0.8h, v1.8h
+; CHECK-GI-BE-NEXT:    add v0.8h, v2.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ret
 	%tmp1 = load <8 x i16>, ptr %A
 	%tmp2 = load <8 x i16>, ptr %B
 	%tmp3 = shufflevector <8 x i16> %tmp1, <8 x i16> %tmp2, <8 x i32> <i32 0, i32 8, i32 2, i32 10, i32 4, i32 12, i32 6, i32 14>
@@ -205,16 +268,25 @@ define <4 x i32> @vtrnQi32(ptr %A, ptr %B) nounwind {
 ; CHECK-LE-NEXT:    add v0.4s, v2.4s, v0.4s
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrnQi32:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.4s }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.4s }, [x1]
-; CHECK-BE-NEXT:    trn1 v2.4s, v0.4s, v1.4s
-; CHECK-BE-NEXT:    trn2 v0.4s, v0.4s, v1.4s
-; CHECK-BE-NEXT:    add v0.4s, v2.4s, v0.4s
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrnQi32:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.4s }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.4s }, [x1]
+; CHECK-SD-BE-NEXT:    trn1 v2.4s, v0.4s, v1.4s
+; CHECK-SD-BE-NEXT:    trn2 v0.4s, v0.4s, v1.4s
+; CHECK-SD-BE-NEXT:    add v0.4s, v2.4s, v0.4s
+; CHECK-SD-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-SD-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrnQi32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.4s }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.4s }, [x1]
+; CHECK-GI-BE-NEXT:    trn1 v2.4s, v0.4s, v1.4s
+; CHECK-GI-BE-NEXT:    trn2 v0.4s, v0.4s, v1.4s
+; CHECK-GI-BE-NEXT:    add v0.4s, v2.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ret
 	%tmp1 = load <4 x i32>, ptr %A
 	%tmp2 = load <4 x i32>, ptr %B
 	%tmp3 = shufflevector <4 x i32> %tmp1, <4 x i32> %tmp2, <4 x i32> <i32 0, i32 4, i32 2, i32 6>
@@ -233,16 +305,25 @@ define <4 x float> @vtrnQf(ptr %A, ptr %B) nounwind {
 ; CHECK-LE-NEXT:    fadd v0.4s, v2.4s, v0.4s
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrnQf:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.4s }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.4s }, [x1]
-; CHECK-BE-NEXT:    trn1 v2.4s, v0.4s, v1.4s
-; CHECK-BE-NEXT:    trn2 v0.4s, v0.4s, v1.4s
-; CHECK-BE-NEXT:    fadd v0.4s, v2.4s, v0.4s
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrnQf:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.4s }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.4s }, [x1]
+; CHECK-SD-BE-NEXT:    trn1 v2.4s, v0.4s, v1.4s
+; CHECK-SD-BE-NEXT:    trn2 v0.4s, v0.4s, v1.4s
+; CHECK-SD-BE-NEXT:    fadd v0.4s, v2.4s, v0.4s
+; CHECK-SD-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-SD-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrnQf:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.4s }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.4s }, [x1]
+; CHECK-GI-BE-NEXT:    trn1 v2.4s, v0.4s, v1.4s
+; CHECK-GI-BE-NEXT:    trn2 v0.4s, v0.4s, v1.4s
+; CHECK-GI-BE-NEXT:    fadd v0.4s, v2.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ret
 	%tmp1 = load <4 x float>, ptr %A
 	%tmp2 = load <4 x float>, ptr %B
 	%tmp3 = shufflevector <4 x float> %tmp1, <4 x float> %tmp2, <4 x i32> <i32 0, i32 4, i32 2, i32 6>
@@ -257,13 +338,20 @@ define <8 x i8> @vtrni8_trn1_flipped(<8 x i8> %A, <8 x i8> %B) nounwind {
 ; CHECK-LE-NEXT:    trn1 v0.8b, v1.8b, v0.8b
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrni8_trn1_flipped:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    rev64 v0.8b, v0.8b
-; CHECK-BE-NEXT:    rev64 v1.8b, v1.8b
-; CHECK-BE-NEXT:    trn1 v0.8b, v1.8b, v0.8b
-; CHECK-BE-NEXT:    rev64 v0.8b, v0.8b
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrni8_trn1_flipped:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-SD-BE-NEXT:    rev64 v1.8b, v1.8b
+; CHECK-SD-BE-NEXT:    trn1 v0.8b, v1.8b, v0.8b
+; CHECK-SD-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrni8_trn1_flipped:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-GI-BE-NEXT:    rev64 v1.8b, v1.8b
+; CHECK-GI-BE-NEXT:    trn1 v0.8b, v1.8b, v0.8b
+; CHECK-GI-BE-NEXT:    ret
   %tmp1 = shufflevector <8 x i8> %A, <8 x i8> %B, <8 x i32> <i32 8, i32 0, i32 10, i32 2, i32 12, i32 4, i32 14, i32 6>
   ret <8 x i8> %tmp1
 }
@@ -274,13 +362,20 @@ define <8 x i8> @vtrni8_trn2_flipped(<8 x i8> %A, <8 x i8> %B) nounwind {
 ; CHECK-LE-NEXT:    trn2 v0.8b, v1.8b, v0.8b
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrni8_trn2_flipped:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    rev64 v0.8b, v0.8b
-; CHECK-BE-NEXT:    rev64 v1.8b, v1.8b
-; CHECK-BE-NEXT:    trn2 v0.8b, v1.8b, v0.8b
-; CHECK-BE-NEXT:    rev64 v0.8b, v0.8b
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrni8_trn2_flipped:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-SD-BE-NEXT:    rev64 v1.8b, v1.8b
+; CHECK-SD-BE-NEXT:    trn2 v0.8b, v1.8b, v0.8b
+; CHECK-SD-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrni8_trn2_flipped:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-GI-BE-NEXT:    rev64 v1.8b, v1.8b
+; CHECK-GI-BE-NEXT:    trn2 v0.8b, v1.8b, v0.8b
+; CHECK-GI-BE-NEXT:    ret
   %tmp1 = shufflevector <8 x i8> %A, <8 x i8> %B, <8 x i32> <i32 9, i32 1, i32 11, i32 3, i32 13, i32 5, i32 15, i32 7>
   ret <8 x i8> %tmp1
 }
@@ -293,15 +388,24 @@ define <8 x i8> @vtrni8_both_flipped_with_poison_values(<8 x i8> %A, <8 x i8> %B
 ; CHECK-LE-NEXT:    add v0.8b, v2.8b, v0.8b
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrni8_both_flipped_with_poison_values:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    rev64 v0.8b, v0.8b
-; CHECK-BE-NEXT:    rev64 v1.8b, v1.8b
-; CHECK-BE-NEXT:    trn1 v2.8b, v1.8b, v0.8b
-; CHECK-BE-NEXT:    trn2 v0.8b, v1.8b, v0.8b
-; CHECK-BE-NEXT:    add v0.8b, v2.8b, v0.8b
-; CHECK-BE-NEXT:    rev64 v0.8b, v0.8b
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrni8_both_flipped_with_poison_values:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-SD-BE-NEXT:    rev64 v1.8b, v1.8b
+; CHECK-SD-BE-NEXT:    trn1 v2.8b, v1.8b, v0.8b
+; CHECK-SD-BE-NEXT:    trn2 v0.8b, v1.8b, v0.8b
+; CHECK-SD-BE-NEXT:    add v0.8b, v2.8b, v0.8b
+; CHECK-SD-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrni8_both_flipped_with_poison_values:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-GI-BE-NEXT:    rev64 v1.8b, v1.8b
+; CHECK-GI-BE-NEXT:    trn1 v2.8b, v1.8b, v0.8b
+; CHECK-GI-BE-NEXT:    trn2 v0.8b, v1.8b, v0.8b
+; CHECK-GI-BE-NEXT:    add v0.8b, v2.8b, v0.8b
+; CHECK-GI-BE-NEXT:    ret
   %tmp1 = shufflevector <8 x i8> %A, <8 x i8> %B, <8 x i32> <i32 poison, i32 0, i32 poison, i32 2, i32 poison, i32 4, i32 14, i32 6>
   %tmp2 = shufflevector <8 x i8> %A, <8 x i8> %B, <8 x i32> <i32 poison, i32 1, i32 poison, i32 3, i32 13, i32 5, i32 15, i32 poison>
   %tmp3 = add <8 x i8> %tmp1, %tmp2
@@ -320,15 +424,24 @@ define <8 x i8> @vtrni8_undef(ptr %A, ptr %B) nounwind {
 ; CHECK-LE-NEXT:    add v0.8b, v2.8b, v0.8b
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrni8_undef:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.8b }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.8b }, [x1]
-; CHECK-BE-NEXT:    trn1 v2.8b, v0.8b, v1.8b
-; CHECK-BE-NEXT:    trn2 v0.8b, v0.8b, v1.8b
-; CHECK-BE-NEXT:    add v0.8b, v2.8b, v0.8b
-; CHECK-BE-NEXT:    rev64 v0.8b, v0.8b
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrni8_undef:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.8b }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.8b }, [x1]
+; CHECK-SD-BE-NEXT:    trn1 v2.8b, v0.8b, v1.8b
+; CHECK-SD-BE-NEXT:    trn2 v0.8b, v0.8b, v1.8b
+; CHECK-SD-BE-NEXT:    add v0.8b, v2.8b, v0.8b
+; CHECK-SD-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrni8_undef:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.8b }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.8b }, [x1]
+; CHECK-GI-BE-NEXT:    trn1 v2.8b, v0.8b, v1.8b
+; CHECK-GI-BE-NEXT:    trn2 v0.8b, v0.8b, v1.8b
+; CHECK-GI-BE-NEXT:    add v0.8b, v2.8b, v0.8b
+; CHECK-GI-BE-NEXT:    ret
 	%tmp1 = load <8 x i8>, ptr %A
 	%tmp2 = load <8 x i8>, ptr %B
 	%tmp3 = shufflevector <8 x i8> %tmp1, <8 x i8> %tmp2, <8 x i32> <i32 0, i32 undef, i32 2, i32 10, i32 undef, i32 12, i32 6, i32 14>
@@ -347,16 +460,25 @@ define <8 x i16> @vtrnQi16_undef(ptr %A, ptr %B) nounwind {
 ; CHECK-LE-NEXT:    add v0.8h, v2.8h, v0.8h
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrnQi16_undef:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.8h }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.8h }, [x1]
-; CHECK-BE-NEXT:    trn1 v2.8h, v0.8h, v1.8h
-; CHECK-BE-NEXT:    trn2 v0.8h, v0.8h, v1.8h
-; CHECK-BE-NEXT:    add v0.8h, v2.8h, v0.8h
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrnQi16_undef:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.8h }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.8h }, [x1]
+; CHECK-SD-BE-NEXT:    trn1 v2.8h, v0.8h, v1.8h
+; CHECK-SD-BE-NEXT:    trn2 v0.8h, v0.8h, v1.8h
+; CHECK-SD-BE-NEXT:    add v0.8h, v2.8h, v0.8h
+; CHECK-SD-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-SD-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrnQi16_undef:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.8h }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.8h }, [x1]
+; CHECK-GI-BE-NEXT:    trn1 v2.8h, v0.8h, v1.8h
+; CHECK-GI-BE-NEXT:    trn2 v0.8h, v0.8h, v1.8h
+; CHECK-GI-BE-NEXT:    add v0.8h, v2.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ret
 	%tmp1 = load <8 x i16>, ptr %A
 	%tmp2 = load <8 x i16>, ptr %B
 	%tmp3 = shufflevector <8 x i16> %tmp1, <8 x i16> %tmp2, <8 x i32> <i32 0, i32 8, i32 undef, i32 undef, i32 4, i32 12, i32 6, i32 14>
@@ -375,16 +497,25 @@ define <8 x i16> @vtrnQi16_undef_01(ptr %A, ptr %B) nounwind {
 ; CHECK-LE-NEXT:    add v0.8h, v2.8h, v0.8h
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrnQi16_undef_01:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.8h }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.8h }, [x1]
-; CHECK-BE-NEXT:    trn1 v2.8h, v0.8h, v1.8h
-; CHECK-BE-NEXT:    trn2 v0.8h, v0.8h, v1.8h
-; CHECK-BE-NEXT:    add v0.8h, v2.8h, v0.8h
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrnQi16_undef_01:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.8h }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.8h }, [x1]
+; CHECK-SD-BE-NEXT:    trn1 v2.8h, v0.8h, v1.8h
+; CHECK-SD-BE-NEXT:    trn2 v0.8h, v0.8h, v1.8h
+; CHECK-SD-BE-NEXT:    add v0.8h, v2.8h, v0.8h
+; CHECK-SD-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-SD-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrnQi16_undef_01:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.8h }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.8h }, [x1]
+; CHECK-GI-BE-NEXT:    trn1 v2.8h, v0.8h, v1.8h
+; CHECK-GI-BE-NEXT:    trn2 v0.8h, v0.8h, v1.8h
+; CHECK-GI-BE-NEXT:    add v0.8h, v2.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ret
 	%tmp1 = load <8 x i16>, ptr %A
 	%tmp2 = load <8 x i16>, ptr %B
 	%tmp3 = shufflevector <8 x i16> %tmp1, <8 x i16> %tmp2, <8 x i32> <i32 poison, i32 poison, i32 2, i32 poison, i32 4, i32 12, i32 6, i32 14>
@@ -403,16 +534,25 @@ define <8 x i16> @vtrnQi16_undef_0(ptr %A, ptr %B) nounwind {
 ; CHECK-LE-NEXT:    add v0.8h, v2.8h, v0.8h
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrnQi16_undef_0:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.8h }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.8h }, [x1]
-; CHECK-BE-NEXT:    trn1 v2.8h, v0.8h, v1.8h
-; CHECK-BE-NEXT:    trn2 v0.8h, v0.8h, v1.8h
-; CHECK-BE-NEXT:    add v0.8h, v2.8h, v0.8h
-; CHECK-BE-NEXT:    rev64 v0.8h, v0.8h
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrnQi16_undef_0:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.8h }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.8h }, [x1]
+; CHECK-SD-BE-NEXT:    trn1 v2.8h, v0.8h, v1.8h
+; CHECK-SD-BE-NEXT:    trn2 v0.8h, v0.8h, v1.8h
+; CHECK-SD-BE-NEXT:    add v0.8h, v2.8h, v0.8h
+; CHECK-SD-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-SD-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrnQi16_undef_0:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.8h }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.8h }, [x1]
+; CHECK-GI-BE-NEXT:    trn1 v2.8h, v0.8h, v1.8h
+; CHECK-GI-BE-NEXT:    trn2 v0.8h, v0.8h, v1.8h
+; CHECK-GI-BE-NEXT:    add v0.8h, v2.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ret
 	%tmp1 = load <8 x i16>, ptr %A
 	%tmp2 = load <8 x i16>, ptr %B
 	%tmp3 = shufflevector <8 x i16> %tmp1, <8 x i16> %tmp2, <8 x i32> <i32 poison, i32 8, i32 poison, i32 poison, i32 4, i32 12, i32 6, i32 14>
@@ -431,16 +571,25 @@ define <4 x i32> @vtrnQi32_undef_1(ptr %A, ptr %B) nounwind {
 ; CHECK-LE-NEXT:    add v0.4s, v2.4s, v0.4s
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrnQi32_undef_1:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.4s }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.4s }, [x1]
-; CHECK-BE-NEXT:    trn1 v2.4s, v0.4s, v1.4s
-; CHECK-BE-NEXT:    trn2 v0.4s, v0.4s, v1.4s
-; CHECK-BE-NEXT:    add v0.4s, v2.4s, v0.4s
-; CHECK-BE-NEXT:    rev64 v0.4s, v0.4s
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrnQi32_undef_1:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.4s }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.4s }, [x1]
+; CHECK-SD-BE-NEXT:    trn1 v2.4s, v0.4s, v1.4s
+; CHECK-SD-BE-NEXT:    trn2 v0.4s, v0.4s, v1.4s
+; CHECK-SD-BE-NEXT:    add v0.4s, v2.4s, v0.4s
+; CHECK-SD-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-SD-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrnQi32_undef_1:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.4s }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.4s }, [x1]
+; CHECK-GI-BE-NEXT:    trn1 v2.4s, v0.4s, v1.4s
+; CHECK-GI-BE-NEXT:    trn2 v0.4s, v0.4s, v1.4s
+; CHECK-GI-BE-NEXT:    add v0.4s, v2.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ret
 	%tmp1 = load <4 x i32>, ptr %A
 	%tmp2 = load <4 x i32>, ptr %B
 	%tmp3 = shufflevector <4 x i32> %tmp1, <4 x i32> %tmp2, <4 x i32> <i32 0, i32 poison, i32 2, i32 6>
@@ -459,16 +608,25 @@ define <16 x i8> @vtrnQi8_undef_012(ptr %A, ptr %B) nounwind {
 ; CHECK-LE-NEXT:    add v0.16b, v2.16b, v0.16b
 ; CHECK-LE-NEXT:    ret
 ;
-; CHECK-BE-LABEL: vtrnQi8_undef_012:
-; CHECK-BE:       // %bb.0:
-; CHECK-BE-NEXT:    ld1 { v0.16b }, [x0]
-; CHECK-BE-NEXT:    ld1 { v1.16b }, [x1]
-; CHECK-BE-NEXT:    trn1 v2.16b, v0.16b, v1.16b
-; CHECK-BE-NEXT:    trn2 v0.16b, v0.16b, v1.16b
-; CHECK-BE-NEXT:    add v0.16b, v2.16b, v0.16b
-; CHECK-BE-NEXT:    rev64 v0.16b, v0.16b
-; CHECK-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
-; CHECK-BE-NEXT:    ret
+; CHECK-SD-BE-LABEL: vtrnQi8_undef_012:
+; CHECK-SD-BE:       // %bb.0:
+; CHECK-SD-BE-NEXT:    ld1 { v0.16b }, [x0]
+; CHECK-SD-BE-NEXT:    ld1 { v1.16b }, [x1]
+; CHECK-SD-BE-NEXT:    trn1 v2.16b, v0.16b, v1.16b
+; CHECK-SD-BE-NEXT:    trn2 v0.16b, v0.16b, v1.16b
+; CHECK-SD-BE-NEXT:    add v0.16b, v2.16b, v0.16b
+; CHECK-SD-BE-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-SD-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-SD-BE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: vtrnQi8_undef_012:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ld1 { v0.16b }, [x0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.16b }, [x1]
+; CHECK-GI-BE-NEXT:    trn1 v2.16b, v0.16b, v1.16b
+; CHECK-GI-BE-NEXT:    trn2 v0.16b, v0.16b, v1.16b
+; CHECK-GI-BE-NEXT:    add v0.16b, v2.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ret
 	%tmp1 = load <16 x i8>, ptr %A
 	%tmp2 = load <16 x i8>, ptr %B
 	%tmp3 = shufflevector <16 x i8> %tmp1, <16 x i8> %tmp2, <16 x i32> <i32 poison, i32 poison, i32 poison, i32 18, i32 4, i32 poison, i32 6, i32 22, i32 poison, i32 24, i32 10, i32 26, i32 12, i32 28, i32 14, i32 30>
@@ -477,5 +635,4 @@ define <16 x i8> @vtrnQi8_undef_012(ptr %A, ptr %B) nounwind {
 	ret <16 x i8> %tmp5
 }
 ;; NOTE: These prefixes are unused and the list is autogenerated. Do not add tests below this line:
-; CHECK-GI-BE: {{.*}}
-; CHECK-SD-BE: {{.*}}
+; CHECK-BE: {{.*}}

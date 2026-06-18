@@ -23,9 +23,15 @@ define <2 x i32> @test_v8i8_to_v2i32(<8 x i8> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v8i8_to_v2i32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v8i8_to_v2i32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v8i8_to_v2i32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-GI-BE-NEXT:    rev32 v0.8b, v0.8b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <8 x i8> %in to <2 x i32>
   ret <2 x i32> %val
 }
@@ -35,9 +41,15 @@ define <2 x float> @test_v8i8_to_v2f32(<8 x i8> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v8i8_to_v2f32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v8i8_to_v2f32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v8i8_to_v2f32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-GI-BE-NEXT:    rev32 v0.8b, v0.8b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <8 x i8> %in to <2 x float>
   ret <2 x float> %val
 }
@@ -47,9 +59,15 @@ define <4 x i16> @test_v8i8_to_v4i16(<8 x i8> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v8i8_to_v4i16:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v8i8_to_v4i16:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v8i8_to_v4i16:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-GI-BE-NEXT:    rev16 v0.8b, v0.8b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <8 x i8> %in to <4 x i16>
   ret <4 x i16> %val
 }
@@ -59,9 +77,14 @@ define <8 x i8> @test_v8i8_to_v8i8(<8 x i8> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v8i8_to_v8i8:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v8i8_to_v8i8:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v8i8_to_v8i8:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <8 x i8> %in to <8 x i8>
   ret <8 x i8> %val
 }
@@ -85,9 +108,15 @@ define <2 x i32> @test_v4i16_to_v2i32(<4 x i16> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4i16_to_v2i32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4i16_to_v2i32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4i16_to_v2i32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-GI-BE-NEXT:    rev32 v0.4h, v0.4h
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x i16> %in to <2 x i32>
   ret <2 x i32> %val
 }
@@ -97,9 +126,15 @@ define <2 x float> @test_v4i16_to_v2f32(<4 x i16> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4i16_to_v2f32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4i16_to_v2f32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4i16_to_v2f32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-GI-BE-NEXT:    rev32 v0.4h, v0.4h
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x i16> %in to <2 x float>
   ret <2 x float> %val
 }
@@ -109,9 +144,14 @@ define <4 x i16> @test_v4i16_to_v4i16(<4 x i16> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4i16_to_v4i16:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4i16_to_v4i16:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4i16_to_v4i16:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x i16> %in to <4 x i16>
   ret <4 x i16> %val
 }
@@ -121,9 +161,15 @@ define <8 x i8> @test_v4i16_to_v8i8(<4 x i16> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4i16_to_v8i8:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4i16_to_v8i8:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4i16_to_v8i8:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-GI-BE-NEXT:    rev16 v0.8b, v0.8b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x i16> %in to <8 x i8>
   ret <8 x i8> %val
 }
@@ -147,9 +193,14 @@ define <2 x i32> @test_v2i32_to_v2i32(<2 x i32> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2i32_to_v2i32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2i32_to_v2i32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2i32_to_v2i32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x i32> %in to <2 x i32>
   ret <2 x i32> %val
 }
@@ -159,9 +210,14 @@ define <2 x float> @test_v2i32_to_v2f32(<2 x i32> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2i32_to_v2f32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2i32_to_v2f32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2i32_to_v2f32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x i32> %in to <2 x float>
   ret <2 x float> %val
 }
@@ -171,9 +227,15 @@ define <4 x i16> @test_v2i32_to_v4i16(<2 x i32> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2i32_to_v4i16:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2i32_to_v4i16:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2i32_to_v4i16:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-GI-BE-NEXT:    rev32 v0.4h, v0.4h
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x i32> %in to <4 x i16>
   ret <4 x i16> %val
 }
@@ -183,9 +245,15 @@ define <8 x i8> @test_v2i32_to_v8i8(<2 x i32> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2i32_to_v8i8:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2i32_to_v8i8:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2i32_to_v8i8:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-GI-BE-NEXT:    rev32 v0.8b, v0.8b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x i32> %in to <8 x i8>
   ret <8 x i8> %val
 }
@@ -209,9 +277,14 @@ define <2 x i32> @test_v2f32_to_v2i32(<2 x float> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2f32_to_v2i32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2f32_to_v2i32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2f32_to_v2i32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x float> %in to <2 x i32>
   ret <2 x i32> %val
 }
@@ -221,9 +294,14 @@ define <2 x float> @test_v2f32_to_v2f32(<2 x float> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2f32_to_v2f32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2f32_to_v2f32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2f32_to_v2f32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x float> %in to <2 x float>
   ret <2 x float> %val
 }
@@ -233,9 +311,15 @@ define <4 x i16> @test_v2f32_to_v4i16(<2 x float> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2f32_to_v4i16:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2f32_to_v4i16:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2f32_to_v4i16:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-GI-BE-NEXT:    rev32 v0.4h, v0.4h
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x float> %in to <4 x i16>
   ret <4 x i16> %val
 }
@@ -245,9 +329,15 @@ define <8 x i8> @test_v2f32_to_v8i8(<2 x float> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2f32_to_v8i8:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2f32_to_v8i8:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2f32_to_v8i8:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-GI-BE-NEXT:    rev32 v0.8b, v0.8b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x float> %in to <8 x i8>
   ret <8 x i8> %val
 }
@@ -271,9 +361,14 @@ define <2 x i32> @test_v1i64_to_v2i32(<1 x i64> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v1i64_to_v2i32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v1i64_to_v2i32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v1i64_to_v2i32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <1 x i64> %in to <2 x i32>
   ret <2 x i32> %val
 }
@@ -283,9 +378,14 @@ define <2 x float> @test_v1i64_to_v2f32(<1 x i64> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v1i64_to_v2f32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v1i64_to_v2f32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v1i64_to_v2f32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.2s, v0.2s
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <1 x i64> %in to <2 x float>
   ret <2 x float> %val
 }
@@ -295,9 +395,14 @@ define <4 x i16> @test_v1i64_to_v4i16(<1 x i64> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v1i64_to_v4i16:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v1i64_to_v4i16:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v1i64_to_v4i16:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <1 x i64> %in to <4 x i16>
   ret <4 x i16> %val
 }
@@ -307,9 +412,14 @@ define <8 x i8> @test_v1i64_to_v8i8(<1 x i64> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v1i64_to_v8i8:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v1i64_to_v8i8:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v1i64_to_v8i8:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <1 x i64> %in to <8 x i8>
   ret <8 x i8> %val
 }
@@ -322,9 +432,16 @@ define <2 x double> @test_v16i8_to_v2f64(<16 x i8> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v16i8_to_v2f64:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v16i8_to_v2f64:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v16i8_to_v2f64:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <16 x i8> %in to <2 x double>
   ret <2 x double> %val
 }
@@ -334,9 +451,16 @@ define <2 x i64> @test_v16i8_to_v2i64(<16 x i8> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v16i8_to_v2i64:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v16i8_to_v2i64:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v16i8_to_v2i64:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <16 x i8> %in to <2 x i64>
   ret <2 x i64> %val
 }
@@ -346,9 +470,16 @@ define <4 x i32> @test_v16i8_to_v4i32(<16 x i8> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v16i8_to_v4i32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v16i8_to_v4i32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v16i8_to_v4i32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev32 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <16 x i8> %in to <4 x i32>
   ret <4 x i32> %val
 }
@@ -358,9 +489,16 @@ define <4 x float> @test_v16i8_to_v2f32(<16 x i8> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v16i8_to_v2f32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v16i8_to_v2f32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v16i8_to_v2f32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev32 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <16 x i8> %in to <4 x float>
   ret <4 x float> %val
 }
@@ -370,9 +508,16 @@ define <8 x i16> @test_v16i8_to_v8i16(<16 x i8> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v16i8_to_v8i16:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v16i8_to_v8i16:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v16i8_to_v8i16:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev16 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <16 x i8> %in to <8 x i16>
   ret <8 x i16> %val
 }
@@ -382,9 +527,15 @@ define <16 x i8> @test_v16i8_to_v16i8(<16 x i8> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v16i8_to_v16i8:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v16i8_to_v16i8:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v16i8_to_v16i8:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <16 x i8> %in to <16 x i8>
   ret <16 x i8> %val
 }
@@ -396,9 +547,16 @@ define <2 x double> @test_v8i16_to_v2f64(<8 x i16> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v8i16_to_v2f64:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v8i16_to_v2f64:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v8i16_to_v2f64:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <8 x i16> %in to <2 x double>
   ret <2 x double> %val
 }
@@ -409,9 +567,16 @@ define <2 x i64> @test_v8i16_to_v2i64(<8 x i16> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v8i16_to_v2i64:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v8i16_to_v2i64:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v8i16_to_v2i64:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <8 x i16> %in to <2 x i64>
   ret <2 x i64> %val
 }
@@ -421,9 +586,16 @@ define <4 x i32> @test_v8i16_to_v4i32(<8 x i16> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v8i16_to_v4i32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v8i16_to_v4i32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v8i16_to_v4i32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev32 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <8 x i16> %in to <4 x i32>
   ret <4 x i32> %val
 }
@@ -433,9 +605,16 @@ define <4 x float> @test_v8i16_to_v2f32(<8 x i16> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v8i16_to_v2f32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v8i16_to_v2f32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v8i16_to_v2f32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev32 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <8 x i16> %in to <4 x float>
   ret <4 x float> %val
 }
@@ -445,9 +624,15 @@ define <8 x i16> @test_v8i16_to_v8i16(<8 x i16> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v8i16_to_v8i16:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v8i16_to_v8i16:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v8i16_to_v8i16:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <8 x i16> %in to <8 x i16>
   ret <8 x i16> %val
 }
@@ -457,9 +642,16 @@ define <16 x i8> @test_v8i16_to_v16i8(<8 x i16> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v8i16_to_v16i8:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v8i16_to_v16i8:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v8i16_to_v16i8:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev16 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <8 x i16> %in to <16 x i8>
   ret <16 x i8> %val
 }
@@ -471,9 +663,16 @@ define <2 x double> @test_v4i32_to_v2f64(<4 x i32> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4i32_to_v2f64:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4i32_to_v2f64:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4i32_to_v2f64:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x i32> %in to <2 x double>
   ret <2 x double> %val
 }
@@ -483,9 +682,16 @@ define <2 x i64> @test_v4i32_to_v2i64(<4 x i32> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4i32_to_v2i64:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4i32_to_v2i64:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4i32_to_v2i64:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x i32> %in to <2 x i64>
   ret <2 x i64> %val
 }
@@ -495,9 +701,15 @@ define <4 x i32> @test_v4i32_to_v4i32(<4 x i32> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4i32_to_v4i32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4i32_to_v4i32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4i32_to_v4i32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x i32> %in to <4 x i32>
   ret <4 x i32> %val
 }
@@ -507,9 +719,15 @@ define <4 x float> @test_v4i32_to_v2f32(<4 x i32> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4i32_to_v2f32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4i32_to_v2f32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4i32_to_v2f32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x i32> %in to <4 x float>
   ret <4 x float> %val
 }
@@ -519,9 +737,16 @@ define <8 x i16> @test_v4i32_to_v8i16(<4 x i32> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4i32_to_v8i16:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4i32_to_v8i16:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4i32_to_v8i16:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev32 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x i32> %in to <8 x i16>
   ret <8 x i16> %val
 }
@@ -531,9 +756,16 @@ define <16 x i8> @test_v4i32_to_v16i8(<4 x i32> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4i32_to_v16i8:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4i32_to_v16i8:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4i32_to_v16i8:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev32 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x i32> %in to <16 x i8>
   ret <16 x i8> %val
 }
@@ -545,9 +777,16 @@ define <2 x double> @test_v4f32_to_v2f64(<4 x float> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4f32_to_v2f64:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4f32_to_v2f64:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4f32_to_v2f64:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x float> %in to <2 x double>
   ret <2 x double> %val
 }
@@ -557,9 +796,16 @@ define <2 x i64> @test_v4f32_to_v2i64(<4 x float> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4f32_to_v2i64:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4f32_to_v2i64:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4f32_to_v2i64:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x float> %in to <2 x i64>
   ret <2 x i64> %val
 }
@@ -569,9 +815,15 @@ define <4 x i32> @test_v4f32_to_v4i32(<4 x float> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4f32_to_v4i32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4f32_to_v4i32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4f32_to_v4i32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x float> %in to <4 x i32>
   ret <4 x i32> %val
 }
@@ -581,9 +833,15 @@ define <4 x float> @test_v4f32_to_v4f32(<4 x float> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4f32_to_v4f32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4f32_to_v4f32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4f32_to_v4f32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x float> %in to <4 x float>
   ret <4 x float> %val
 }
@@ -593,9 +851,16 @@ define <8 x i16> @test_v4f32_to_v8i16(<4 x float> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4f32_to_v8i16:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4f32_to_v8i16:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4f32_to_v8i16:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev32 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x float> %in to <8 x i16>
   ret <8 x i16> %val
 }
@@ -605,9 +870,16 @@ define <16 x i8> @test_v4f32_to_v16i8(<4 x float> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v4f32_to_v16i8:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v4f32_to_v16i8:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v4f32_to_v16i8:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev32 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <4 x float> %in to <16 x i8>
   ret <16 x i8> %val
 }
@@ -619,9 +891,14 @@ define <2 x double> @test_v2i64_to_v2f64(<2 x i64> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2i64_to_v2f64:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2i64_to_v2f64:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2i64_to_v2f64:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x i64> %in to <2 x double>
   ret <2 x double> %val
 }
@@ -631,9 +908,14 @@ define <2 x i64> @test_v2i64_to_v2i64(<2 x i64> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2i64_to_v2i64:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2i64_to_v2i64:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2i64_to_v2i64:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x i64> %in to <2 x i64>
   ret <2 x i64> %val
 }
@@ -643,9 +925,15 @@ define <4 x i32> @test_v2i64_to_v4i32(<2 x i64> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2i64_to_v4i32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2i64_to_v4i32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2i64_to_v4i32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x i64> %in to <4 x i32>
   ret <4 x i32> %val
 }
@@ -655,9 +943,15 @@ define <4 x float> @test_v2i64_to_v4f32(<2 x i64> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2i64_to_v4f32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2i64_to_v4f32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2i64_to_v4f32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x i64> %in to <4 x float>
   ret <4 x float> %val
 }
@@ -667,9 +961,15 @@ define <8 x i16> @test_v2i64_to_v8i16(<2 x i64> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2i64_to_v8i16:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2i64_to_v8i16:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2i64_to_v8i16:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x i64> %in to <8 x i16>
   ret <8 x i16> %val
 }
@@ -679,9 +979,15 @@ define <16 x i8> @test_v2i64_to_v16i8(<2 x i64> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2i64_to_v16i8:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2i64_to_v16i8:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2i64_to_v16i8:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x i64> %in to <16 x i8>
   ret <16 x i8> %val
 }
@@ -693,9 +999,14 @@ define <2 x double> @test_v2f64_to_v2f64(<2 x double> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2f64_to_v2f64:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2f64_to_v2f64:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2f64_to_v2f64:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x double> %in to <2 x double>
   ret <2 x double> %val
 }
@@ -705,9 +1016,14 @@ define <2 x i64> @test_v2f64_to_v2i64(<2 x double> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2f64_to_v2i64:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2f64_to_v2i64:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2f64_to_v2i64:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x double> %in to <2 x i64>
   ret <2 x i64> %val
 }
@@ -717,9 +1033,15 @@ define <4 x i32> @test_v2f64_to_v4i32(<2 x double> %in) nounwind {
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2f64_to_v4i32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2f64_to_v4i32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2f64_to_v4i32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x double> %in to <4 x i32>
   ret <4 x i32> %val
 }
@@ -729,9 +1051,15 @@ define <4 x float> @test_v2f64_to_v4f32(<2 x double> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2f64_to_v4f32:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2f64_to_v4f32:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2f64_to_v4f32:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x double> %in to <4 x float>
   ret <4 x float> %val
 }
@@ -741,9 +1069,15 @@ define <8 x i16> @test_v2f64_to_v8i16(<2 x double> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2f64_to_v8i16:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2f64_to_v8i16:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2f64_to_v8i16:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x double> %in to <8 x i16>
   ret <8 x i16> %val
 }
@@ -753,9 +1087,15 @@ define <16 x i8> @test_v2f64_to_v16i8(<2 x double> %in) nounwind{
 ; CHECK:       // %bb.0:
 ; CHECK-NEXT:    ret
 ;
-; CHECK-GI-LABEL: test_v2f64_to_v16i8:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    ret
+; CHECK-GI-LE-LABEL: test_v2f64_to_v16i8:
+; CHECK-GI-LE:       // %bb.0:
+; CHECK-GI-LE-NEXT:    ret
+;
+; CHECK-GI-BE-LABEL: test_v2f64_to_v16i8:
+; CHECK-GI-BE:       // %bb.0:
+; CHECK-GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; CHECK-GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-BE-NEXT:    ret
   %val = bitcast <2 x double> %in to <16 x i8>
   ret <16 x i8> %val
 }
@@ -775,22 +1115,14 @@ define <2 x i16> @bitcast_i32_to_v2i16(i32 %word) {
 ; CHECK-BE-NEXT:    rev64 v0.2s, v0.2s
 ; CHECK-BE-NEXT:    ret
 ;
-; CHECK-GI-LE-LABEL: bitcast_i32_to_v2i16:
-; CHECK-GI-LE:       // %bb.0:
-; CHECK-GI-LE-NEXT:    fmov s0, w0
-; CHECK-GI-LE-NEXT:    mov h1, v0.h[1]
-; CHECK-GI-LE-NEXT:    fmov w8, s1
-; CHECK-GI-LE-NEXT:    mov v0.s[1], w8
-; CHECK-GI-LE-NEXT:    // kill: def $d0 killed $d0 killed $q0
-; CHECK-GI-LE-NEXT:    ret
-;
-; CHECK-GI-BE-LABEL: bitcast_i32_to_v2i16:
-; CHECK-GI-BE:       // %bb.0:
-; CHECK-GI-BE-NEXT:    fmov s0, w0
-; CHECK-GI-BE-NEXT:    rev32 v0.4h, v0.4h
-; CHECK-GI-BE-NEXT:    zip1 v0.4h, v0.4h, v0.4h
-; CHECK-GI-BE-NEXT:    rev64 v0.2s, v0.2s
-; CHECK-GI-BE-NEXT:    ret
+; CHECK-GI-LABEL: bitcast_i32_to_v2i16:
+; CHECK-GI:       // %bb.0:
+; CHECK-GI-NEXT:    fmov s0, w0
+; CHECK-GI-NEXT:    mov h1, v0.h[1]
+; CHECK-GI-NEXT:    fmov w8, s1
+; CHECK-GI-NEXT:    mov v0.s[1], w8
+; CHECK-GI-NEXT:    // kill: def $d0 killed $d0 killed $q0
+; CHECK-GI-NEXT:    ret
   %ret = bitcast i32 %word to <2 x i16>
   ret <2 x i16> %ret
 }
@@ -810,28 +1142,20 @@ define <4 x i8> @bitcast_i32_to_v4i8(i32 %word) {
 ; CHECK-BE-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-BE-NEXT:    ret
 ;
-; CHECK-GI-LE-LABEL: bitcast_i32_to_v4i8:
-; CHECK-GI-LE:       // %bb.0:
-; CHECK-GI-LE-NEXT:    fmov s0, w0
-; CHECK-GI-LE-NEXT:    mov b1, v0.b[1]
-; CHECK-GI-LE-NEXT:    mov b2, v0.b[2]
-; CHECK-GI-LE-NEXT:    fmov w8, s1
-; CHECK-GI-LE-NEXT:    mov b1, v0.b[3]
-; CHECK-GI-LE-NEXT:    mov v0.h[1], w8
-; CHECK-GI-LE-NEXT:    fmov w8, s2
-; CHECK-GI-LE-NEXT:    mov v0.h[2], w8
-; CHECK-GI-LE-NEXT:    fmov w8, s1
-; CHECK-GI-LE-NEXT:    mov v0.h[3], w8
-; CHECK-GI-LE-NEXT:    // kill: def $d0 killed $d0 killed $q0
-; CHECK-GI-LE-NEXT:    ret
-;
-; CHECK-GI-BE-LABEL: bitcast_i32_to_v4i8:
-; CHECK-GI-BE:       // %bb.0:
-; CHECK-GI-BE-NEXT:    fmov s0, w0
-; CHECK-GI-BE-NEXT:    rev32 v0.8b, v0.8b
-; CHECK-GI-BE-NEXT:    zip1 v0.8b, v0.8b, v0.8b
-; CHECK-GI-BE-NEXT:    rev64 v0.4h, v0.4h
-; CHECK-GI-BE-NEXT:    ret
+; CHECK-GI-LABEL: bitcast_i32_to_v4i8:
+; CHECK-GI:       // %bb.0:
+; CHECK-GI-NEXT:    fmov s0, w0
+; CHECK-GI-NEXT:    mov b1, v0.b[1]
+; CHECK-GI-NEXT:    mov b2, v0.b[2]
+; CHECK-GI-NEXT:    fmov w8, s1
+; CHECK-GI-NEXT:    mov b1, v0.b[3]
+; CHECK-GI-NEXT:    mov v0.h[1], w8
+; CHECK-GI-NEXT:    fmov w8, s2
+; CHECK-GI-NEXT:    mov v0.h[2], w8
+; CHECK-GI-NEXT:    fmov w8, s1
+; CHECK-GI-NEXT:    mov v0.h[3], w8
+; CHECK-GI-NEXT:    // kill: def $d0 killed $d0 killed $q0
+; CHECK-GI-NEXT:    ret
   %ret = bitcast i32 %word to <4 x i8>
   ret <4 x i8> %ret
 }
