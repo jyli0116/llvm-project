@@ -4,6 +4,7 @@
 ; RUN: llc < %s -mtriple=aarch64-unknown-unknown -mattr=+neon,+dotprod | FileCheck %s --check-prefixes=CHECK,DOT
 ; RUN: llc < %s -mtriple=aarch64-unknown-unknown -mattr=+sve | FileCheck %s --check-prefixes=CHECK,SVE
 ; RUN: llc < %s -mtriple=aarch64_be-unknown-unknown | FileCheck %s --check-prefixes=BE
+; RUN: llc < %s -global-isel -global-isel-abort=0 -mtriple=aarch64_be-unknown-unknown | FileCheck %s --check-prefixes=GI-BE
 ; RUN: llc < %s -global-isel -mtriple=aarch64-unknown-unknown | FileCheck %s --check-prefix=GISEL
 ; RUN: llc < %s -O0 -global-isel -mtriple=aarch64-unknown-unknown | FileCheck %s --check-prefix=GISELO0
 ; RUN: llc < %s -global-isel -mtriple=aarch64-unknown-unknown -mattr=+neon | FileCheck %s --check-prefixes=GISEL,NEON-GISEL
@@ -65,6 +66,18 @@ define i8 @popcount128(ptr nocapture nonnull readonly %0) {
 ; BE-NEXT:    rev64 v0.4s, v0.4s
 ; BE-NEXT:    mov w0, v0.s[1]
 ; BE-NEXT:    ret
+;
+; GI-BE-LABEL: popcount128:
+; GI-BE:       // %bb.0: // %Entry
+; GI-BE-NEXT:    ldr d0, [x0]
+; GI-BE-NEXT:    add x8, x0, #8
+; GI-BE-NEXT:    ld1 { v0.d }[1], [x8]
+; GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; GI-BE-NEXT:    cnt v0.16b, v0.16b
+; GI-BE-NEXT:    addv b0, v0.16b
+; GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; GI-BE-NEXT:    mov w0, v0.s[1]
+; GI-BE-NEXT:    ret
 ;
 ; GISEL-LABEL: popcount128:
 ; GISEL:       // %bb.0: // %Entry
@@ -199,6 +212,27 @@ define i16 @popcount256(ptr nocapture nonnull readonly %0) {
 ; BE-NEXT:    add w0, w9, w8
 ; BE-NEXT:    ret
 ;
+; GI-BE-LABEL: popcount256:
+; GI-BE:       // %bb.0: // %Entry
+; GI-BE-NEXT:    ldr d0, [x0]
+; GI-BE-NEXT:    ldr d1, [x0, #16]
+; GI-BE-NEXT:    add x8, x0, #24
+; GI-BE-NEXT:    add x9, x0, #8
+; GI-BE-NEXT:    ld1 { v0.d }[1], [x9]
+; GI-BE-NEXT:    ld1 { v1.d }[1], [x8]
+; GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; GI-BE-NEXT:    rev64 v1.16b, v1.16b
+; GI-BE-NEXT:    cnt v0.16b, v0.16b
+; GI-BE-NEXT:    cnt v1.16b, v1.16b
+; GI-BE-NEXT:    addv b0, v0.16b
+; GI-BE-NEXT:    addv b1, v1.16b
+; GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; GI-BE-NEXT:    rev64 v1.4s, v1.4s
+; GI-BE-NEXT:    mov w8, v0.s[1]
+; GI-BE-NEXT:    mov w9, v1.s[1]
+; GI-BE-NEXT:    add w0, w9, w8
+; GI-BE-NEXT:    ret
+;
 ; GISEL-LABEL: popcount256:
 ; GISEL:       // %bb.0: // %Entry
 ; GISEL-NEXT:    ldp x8, x9, [x0]
@@ -319,6 +353,17 @@ define <1 x i128> @popcount1x128(<1 x i128> %0) {
 ; BE-NEXT:    fmov x1, d0
 ; BE-NEXT:    ret
 ;
+; GI-BE-LABEL: popcount1x128:
+; GI-BE:       // %bb.0: // %Entry
+; GI-BE-NEXT:    fmov d0, x0
+; GI-BE-NEXT:    mov x0, xzr
+; GI-BE-NEXT:    mov v0.d[1], x1
+; GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; GI-BE-NEXT:    cnt v0.16b, v0.16b
+; GI-BE-NEXT:    addv b0, v0.16b
+; GI-BE-NEXT:    fmov x1, d0
+; GI-BE-NEXT:    ret
+;
 ; GISEL-LABEL: popcount1x128:
 ; GISEL:       // %bb.0: // %Entry
 ; GISEL-NEXT:    mov v0.d[0], x0
@@ -396,6 +441,17 @@ define <2 x i64> @popcount2x64(<2 x i64> %0) {
 ; BE-NEXT:    uaddlp v0.2d, v0.4s
 ; BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; BE-NEXT:    ret
+;
+; GI-BE-LABEL: popcount2x64:
+; GI-BE:       // %bb.0: // %Entry
+; GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; GI-BE-NEXT:    cnt v0.16b, v0.16b
+; GI-BE-NEXT:    uaddlp v0.8h, v0.16b
+; GI-BE-NEXT:    uaddlp v0.4s, v0.8h
+; GI-BE-NEXT:    uaddlp v0.2d, v0.4s
+; GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; GI-BE-NEXT:    ret
 ;
 ; GISELO0-LABEL: popcount2x64:
 ; GISELO0:       // %bb.0: // %Entry
@@ -482,6 +538,15 @@ define <1 x i64> @popcount1x64(<1 x i64> %0) {
 ; BE-NEXT:    uaddlp v0.1d, v0.2s
 ; BE-NEXT:    ret
 ;
+; GI-BE-LABEL: popcount1x64:
+; GI-BE:       // %bb.0: // %Entry
+; GI-BE-NEXT:    rev64 v0.8b, v0.8b
+; GI-BE-NEXT:    cnt v0.8b, v0.8b
+; GI-BE-NEXT:    uaddlp v0.4h, v0.8b
+; GI-BE-NEXT:    uaddlp v0.2s, v0.4h
+; GI-BE-NEXT:    uaddlp v0.1d, v0.2s
+; GI-BE-NEXT:    ret
+;
 ; GISEL-LABEL: popcount1x64:
 ; GISEL:       // %bb.0: // %Entry
 ; GISEL-NEXT:    cnt v0.8b, v0.8b
@@ -549,6 +614,17 @@ define <4 x i32> @popcount4x32(<4 x i32> %0) {
 ; BE-NEXT:    rev64 v0.4s, v0.4s
 ; BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; BE-NEXT:    ret
+;
+; GI-BE-LABEL: popcount4x32:
+; GI-BE:       // %bb.0: // %Entry
+; GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; GI-BE-NEXT:    cnt v0.16b, v0.16b
+; GI-BE-NEXT:    uaddlp v0.8h, v0.16b
+; GI-BE-NEXT:    uaddlp v0.4s, v0.8h
+; GI-BE-NEXT:    rev64 v0.4s, v0.4s
+; GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; GI-BE-NEXT:    ret
 ;
 ; GISELO0-LABEL: popcount4x32:
 ; GISELO0:       // %bb.0: // %Entry
@@ -627,6 +703,15 @@ define <2 x i32> @popcount2x32(<2 x i32> %0) {
 ; BE-NEXT:    rev64 v0.2s, v0.2s
 ; BE-NEXT:    ret
 ;
+; GI-BE-LABEL: popcount2x32:
+; GI-BE:       // %bb.0: // %Entry
+; GI-BE-NEXT:    rev64 v0.8b, v0.8b
+; GI-BE-NEXT:    cnt v0.8b, v0.8b
+; GI-BE-NEXT:    uaddlp v0.4h, v0.8b
+; GI-BE-NEXT:    uaddlp v0.2s, v0.4h
+; GI-BE-NEXT:    rev64 v0.2s, v0.2s
+; GI-BE-NEXT:    ret
+;
 ; GISELO0-LABEL: popcount2x32:
 ; GISELO0:       // %bb.0: // %Entry
 ; GISELO0-NEXT:    cnt v0.8b, v0.8b
@@ -700,6 +785,16 @@ define <8 x i16> @popcount8x16(<8 x i16> %0) {
 ; BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; BE-NEXT:    ret
 ;
+; GI-BE-LABEL: popcount8x16:
+; GI-BE:       // %bb.0: // %Entry
+; GI-BE-NEXT:    rev64 v0.16b, v0.16b
+; GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; GI-BE-NEXT:    cnt v0.16b, v0.16b
+; GI-BE-NEXT:    uaddlp v0.8h, v0.16b
+; GI-BE-NEXT:    rev64 v0.8h, v0.8h
+; GI-BE-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
+; GI-BE-NEXT:    ret
+;
 ; GISEL-LABEL: popcount8x16:
 ; GISEL:       // %bb.0: // %Entry
 ; GISEL-NEXT:    cnt v0.16b, v0.16b
@@ -752,6 +847,14 @@ define <4 x i16> @popcount4x16(<4 x i16> %0) {
 ; BE-NEXT:    uaddlp v0.4h, v0.8b
 ; BE-NEXT:    rev64 v0.4h, v0.4h
 ; BE-NEXT:    ret
+;
+; GI-BE-LABEL: popcount4x16:
+; GI-BE:       // %bb.0: // %Entry
+; GI-BE-NEXT:    rev64 v0.8b, v0.8b
+; GI-BE-NEXT:    cnt v0.8b, v0.8b
+; GI-BE-NEXT:    uaddlp v0.4h, v0.8b
+; GI-BE-NEXT:    rev64 v0.4h, v0.4h
+; GI-BE-NEXT:    ret
 ;
 ; GISEL-LABEL: popcount4x16:
 ; GISEL:       // %bb.0: // %Entry
@@ -853,6 +956,21 @@ define i32 @ctpop_into_extract(ptr %p) {
 ; BE-NEXT:    st1 { v0.2s }, [x8]
 ; BE-NEXT:    ret
 ;
+; GI-BE-LABEL: ctpop_into_extract:
+; GI-BE:       // %bb.0:
+; GI-BE-NEXT:    ld1 { v0.2s }, [x0]
+; GI-BE-NEXT:    movi v2.2d, #0xffffffffffffffff
+; GI-BE-NEXT:    mov x8, x0
+; GI-BE-NEXT:    mov w0, wzr
+; GI-BE-NEXT:    fmov w9, s0
+; GI-BE-NEXT:    fmov s1, w9
+; GI-BE-NEXT:    cnt v1.8b, v1.8b
+; GI-BE-NEXT:    addv b1, v1.8b
+; GI-BE-NEXT:    mov v2.s[1], v1.s[0]
+; GI-BE-NEXT:    sub v0.2s, v0.2s, v2.2s
+; GI-BE-NEXT:    st1 { v0.2s }, [x8]
+; GI-BE-NEXT:    ret
+;
 ; GISEL-LABEL: ctpop_into_extract:
 ; GISEL:       // %bb.0:
 ; GISEL-NEXT:    ldr d0, [x0]
@@ -923,6 +1041,14 @@ define <8 x i8> @bitcast_upper_bits(i32 %b, <8 x i8> %v) {
 ; BE-NEXT:    add v0.8b, v1.8b, v0.8b
 ; BE-NEXT:    rev64 v0.8b, v0.8b
 ; BE-NEXT:    ret
+;
+; GI-BE-LABEL: bitcast_upper_bits:
+; GI-BE:       // %bb.0:
+; GI-BE-NEXT:    rev64 v0.8b, v0.8b
+; GI-BE-NEXT:    fmov s1, w0
+; GI-BE-NEXT:    add v0.8b, v1.8b, v0.8b
+; GI-BE-NEXT:    rev64 v0.8b, v0.8b
+; GI-BE-NEXT:    ret
 ;
 ; GISEL-LABEL: bitcast_upper_bits:
 ; GISEL:       // %bb.0:

@@ -1,4 +1,5 @@
 ; RUN: llc -mtriple=aarch64_be < %s | FileCheck %s
+; RUN: llc -mtriple=aarch64_be -global-isel < %s | FileCheck %s
 
 ; CHECK-LABEL: G:
 ; CHECK: .byte 11
