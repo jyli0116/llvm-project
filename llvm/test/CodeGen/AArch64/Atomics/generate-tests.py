@@ -352,6 +352,7 @@ def header(f, triple, features, filter_args: str):
                         "-",
                         "-verify-machineinstrs",
                         f"-mtriple={triple}",
+                        "-global-isel=0",
                         f"-mattr={feat.mattr}",
                         OptFlag,
                         "|",
