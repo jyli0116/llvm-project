@@ -233,8 +233,8 @@ private:
                    unsigned Opc1, unsigned Opc2, bool isExt);
 
   bool selectIndexedExtLoad(MachineInstr &I, MachineRegisterInfo &MRI);
-  bool selectIndexedLoad(MachineInstr &I, MachineRegisterInfo &MRI);
-  bool selectIndexedStore(GIndexedStore &I, MachineRegisterInfo &MRI);
+  bool selectIndexedLoad(MachineInstr &I, MachineFunction &MF, MachineRegisterInfo &MRI);
+  bool selectIndexedStore(GIndexedStore &I, MachineFunction &MF, MachineRegisterInfo &MRI);
 
   unsigned emitConstantPoolEntry(const Constant *CPVal,
                                  MachineFunction &MF) const;
@@ -3103,9 +3103,9 @@ bool AArch64InstructionSelector::select(MachineInstr &I) {
   case TargetOpcode::G_INDEXED_SEXTLOAD:
     return selectIndexedExtLoad(I, MRI);
   case TargetOpcode::G_INDEXED_LOAD:
-    return selectIndexedLoad(I, MRI);
+    return selectIndexedLoad(I, MF, MRI);
   case TargetOpcode::G_INDEXED_STORE:
-    return selectIndexedStore(cast<GIndexedStore>(I), MRI);
+    return selectIndexedStore(cast<GIndexedStore>(I), MF, MRI);
 
   case TargetOpcode::G_LSHR:
   case TargetOpcode::G_ASHR:
@@ -5550,20 +5550,68 @@ bool AArch64InstructionSelector::selectIndexedExtLoad(
 }
 
 bool AArch64InstructionSelector::selectIndexedLoad(MachineInstr &MI,
+                                                   MachineFunction &MF,
                                                    MachineRegisterInfo &MRI) {
   auto &Ld = cast<GIndexedLoad>(MI);
   Register Dst = Ld.getDstReg();
+  LLT DstTy = MRI.getType(Dst);
   Register WriteBack = Ld.getWritebackReg();
   Register Base = Ld.getBaseReg();
   Register Offset = Ld.getOffsetReg();
-  assert(MRI.getType(Dst).getSizeInBits() <= 128 &&
+  bool isBE = MF.getDataLayout().isBigEndian();    
+
+  assert(DstTy.getSizeInBits() <= 128 &&
          "Unexpected type for indexed load");
   unsigned MemSize = Ld.getMMO().getMemoryType().getSizeInBytes();
 
-  if (MemSize < MRI.getType(Dst).getSizeInBytes())
+  if (MemSize < DstTy.getSizeInBytes())
     return selectIndexedExtLoad(MI, MRI);
 
   unsigned Opc = 0;
+  if (isBE && DstTy.isVector()) {
+    unsigned ScalarLog = Log2_32(DstTy.getScalarSizeInBits()) - 3;
+    assert(ScalarLog <= 3 && "Unexpected index store size");
+
+    if (Ld.isPre()) {
+      static constexpr unsigned Opcodes64Bit[] = {
+        AArch64::LD1Onev8b, AArch64::LD1Onev4h, AArch64::LD1Onev2s,
+        AArch64::LD1Onev1d};
+      static constexpr unsigned Opcodes128Bit[] = {
+        AArch64::LD1Onev16b, AArch64::LD1Onev8h, AArch64::LD1Onev4s,
+        AArch64::LD1Onev2d};
+
+      if (DstTy.getSizeInBits() == 64) {
+        Opc = Opcodes64Bit[ScalarLog];
+      } else {
+        Opc = Opcodes128Bit[ScalarLog];
+      }
+    } else {
+      static constexpr unsigned Opcodes64Bit[] = {
+        AArch64::LD1Onev8b_POST, AArch64::LD1Onev4h_POST, AArch64::LD1Onev2s_POST,
+        AArch64::LD1Onev1d_POST};
+      static constexpr unsigned Opcodes128Bit[] = {
+        AArch64::LD1Onev16b_POST, AArch64::LD1Onev8h_POST, AArch64::LD1Onev4s_POST,
+        AArch64::LD1Onev2d_POST};
+
+      if (DstTy.getSizeInBits() == 64) {
+        Opc = Opcodes64Bit[ScalarLog];
+      } else {
+        Opc = Opcodes128Bit[ScalarLog];
+      }
+    }
+
+    auto LdMI =
+        MIB.buildInstr(Opc, {WriteBack, Dst}, {Base});
+    if (!Ld.isPre())
+    {
+      LdMI = LdMI.addReg(AArch64::XZR);
+    }
+    LdMI.cloneMemRefs(Ld);
+    constrainSelectedInstRegOperands(*LdMI, TII, TRI, RBI);
+    MI.eraseFromParent();
+    return true;
+  }
+
   if (Ld.isPre()) {
     static constexpr unsigned GPROpcodes[] = {
         AArch64::LDRBBpre, AArch64::LDRHHpre, AArch64::LDRWpre,
@@ -5599,12 +5647,15 @@ bool AArch64InstructionSelector::selectIndexedLoad(MachineInstr &MI,
 }
 
 bool AArch64InstructionSelector::selectIndexedStore(GIndexedStore &I,
+                                                    MachineFunction &MF,
                                                     MachineRegisterInfo &MRI) {
   Register Dst = I.getWritebackReg();
   Register Val = I.getValueReg();
+  LLT ValTy = MRI.getType(Val);
   Register Base = I.getBaseReg();
   Register Offset = I.getOffsetReg();
-  assert(MRI.getType(Val).getSizeInBits() <= 128 &&
+  bool isBE = MF.getDataLayout().isBigEndian();   
+  assert(ValTy.getSizeInBits() <= 128 &&
          "Unexpected type for indexed store");
 
   LocationSize MemSize = I.getMMO().getSize();
@@ -5615,6 +5666,49 @@ bool AArch64InstructionSelector::selectIndexedStore(GIndexedStore &I,
   unsigned MemSizeLog2 = Log2_32(MemSizeInBytes);
 
   unsigned Opc = 0;
+  if (isBE && ValTy.isVector()) {
+    unsigned ScalarLog = Log2_32(ValTy.getScalarSizeInBits()) - 3;
+    assert(ScalarLog <= 3 && "Unexpected index store size");
+
+    if (I.isPre()) {
+      static constexpr unsigned Opcodes64Bit[] = {
+        AArch64::ST1Onev8b, AArch64::ST1Onev4h, AArch64::ST1Onev2s,
+        AArch64::ST1Onev1d};
+      static constexpr unsigned Opcodes128Bit[] = {
+        AArch64::ST1Onev16b, AArch64::ST1Onev8h, AArch64::ST1Onev4s,
+        AArch64::ST1Onev2d};
+
+      if (ValTy.getSizeInBits() == 64) {
+        Opc = Opcodes64Bit[ScalarLog];
+      } else {
+        Opc = Opcodes128Bit[ScalarLog];
+      }
+    } else {
+      static constexpr unsigned Opcodes64Bit[] = {
+        AArch64::ST1Onev8b_POST, AArch64::ST1Onev4h_POST, AArch64::ST1Onev2s_POST,
+        AArch64::ST1Onev1d_POST};
+      static constexpr unsigned Opcodes128Bit[] = {
+        AArch64::ST1Onev16b_POST, AArch64::ST1Onev8h_POST, AArch64::ST1Onev4s_POST,
+        AArch64::ST1Onev2d_POST};
+
+      if (ValTy.getSizeInBits() == 64) {
+        Opc = Opcodes64Bit[ScalarLog];
+      } else {
+        Opc = Opcodes128Bit[ScalarLog];
+      }
+    }
+
+    auto Str =
+        MIB.buildInstr(Opc, {Dst}, {Val, Base});
+    if (!I.isPre())
+    {
+      Str = Str.addReg(AArch64::XZR);
+    }
+    Str.cloneMemRefs(I);
+    constrainSelectedInstRegOperands(*Str, TII, TRI, RBI);
+    I.eraseFromParent();
+    return true;
+  }
   if (I.isPre()) {
     static constexpr unsigned GPROpcodes[] = {
         AArch64::STRBBpre, AArch64::STRHHpre, AArch64::STRWpre,
