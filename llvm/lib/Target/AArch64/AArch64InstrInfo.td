@@ -10341,6 +10341,13 @@ def : Pat<(i64 (bitconvert (v4bf16 V64:$Vn))),
           (REV64v4i16 (COPY_TO_REGCLASS V64:$Vn, GPR64))>;
 def : Pat<(i64 (bitconvert (v2f32 V64:$Vn))),
           (REV64v2i32 (COPY_TO_REGCLASS V64:$Vn, GPR64))>;
+
+def : Pat<(i64 (bitconvert (v8i8  V64:$Vn))),
+          (COPY_TO_REGCLASS (REV64v8i8 V64:$Vn), GPR64)>;
+def : Pat<(i64 (bitconvert (v4i16 V64:$Vn))),
+          (COPY_TO_REGCLASS (REV64v4i16 V64:$Vn), GPR64)>;
+def : Pat<(i64 (bitconvert (v2i32 V64:$Vn))),
+          (COPY_TO_REGCLASS (REV64v2i32 V64:$Vn), GPR64)>;
 }
 def : Pat<(v1i64 (bitconvert GPR64:$Xn)), (COPY_TO_REGCLASS GPR64:$Xn, FPR64)>;
 def : Pat<(v1f64 (bitconvert GPR64:$Xn)), (COPY_TO_REGCLASS GPR64:$Xn, FPR64)>;

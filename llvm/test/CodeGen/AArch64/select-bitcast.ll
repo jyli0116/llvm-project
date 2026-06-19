@@ -1227,27 +1227,50 @@ define <8 x i8> @broadcast_u8_to_v8i8_zext(i8 %x) {
 ; CHECK-BE-NEXT:    rev64 v0.8b, v0.8b
 ; CHECK-BE-NEXT:    ret
 ;
-; CHECK-GI-LABEL: broadcast_u8_to_v8i8_zext:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    uxtb w8, w0
-; CHECK-GI-NEXT:    fmov s1, w0
-; CHECK-GI-NEXT:    movi v0.8b, #1
-; CHECK-GI-NEXT:    lsr w9, w8, #1
-; CHECK-GI-NEXT:    mov v1.b[1], w9
-; CHECK-GI-NEXT:    lsr w9, w8, #2
-; CHECK-GI-NEXT:    mov v1.b[2], w9
-; CHECK-GI-NEXT:    lsr w9, w8, #3
-; CHECK-GI-NEXT:    mov v1.b[3], w9
-; CHECK-GI-NEXT:    lsr w9, w8, #4
-; CHECK-GI-NEXT:    mov v1.b[4], w9
-; CHECK-GI-NEXT:    lsr w9, w8, #5
-; CHECK-GI-NEXT:    mov v1.b[5], w9
-; CHECK-GI-NEXT:    lsr w9, w8, #6
-; CHECK-GI-NEXT:    lsr w8, w8, #7
-; CHECK-GI-NEXT:    mov v1.b[6], w9
-; CHECK-GI-NEXT:    mov v1.b[7], w8
-; CHECK-GI-NEXT:    and v0.8b, v1.8b, v0.8b
-; CHECK-GI-NEXT:    ret
+; CHECK-LE-GI-LABEL: broadcast_u8_to_v8i8_zext:
+; CHECK-LE-GI:       // %bb.0:
+; CHECK-LE-GI-NEXT:    uxtb w8, w0
+; CHECK-LE-GI-NEXT:    fmov s1, w0
+; CHECK-LE-GI-NEXT:    movi v0.8b, #1
+; CHECK-LE-GI-NEXT:    lsr w9, w8, #1
+; CHECK-LE-GI-NEXT:    mov v1.b[1], w9
+; CHECK-LE-GI-NEXT:    lsr w9, w8, #2
+; CHECK-LE-GI-NEXT:    mov v1.b[2], w9
+; CHECK-LE-GI-NEXT:    lsr w9, w8, #3
+; CHECK-LE-GI-NEXT:    mov v1.b[3], w9
+; CHECK-LE-GI-NEXT:    lsr w9, w8, #4
+; CHECK-LE-GI-NEXT:    mov v1.b[4], w9
+; CHECK-LE-GI-NEXT:    lsr w9, w8, #5
+; CHECK-LE-GI-NEXT:    mov v1.b[5], w9
+; CHECK-LE-GI-NEXT:    lsr w9, w8, #6
+; CHECK-LE-GI-NEXT:    lsr w8, w8, #7
+; CHECK-LE-GI-NEXT:    mov v1.b[6], w9
+; CHECK-LE-GI-NEXT:    mov v1.b[7], w8
+; CHECK-LE-GI-NEXT:    and v0.8b, v1.8b, v0.8b
+; CHECK-LE-GI-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: broadcast_u8_to_v8i8_zext:
+; CHECK-BE-GI:       // %bb.0:
+; CHECK-BE-GI-NEXT:    uxtb w8, w0
+; CHECK-BE-GI-NEXT:    fmov s1, w0
+; CHECK-BE-GI-NEXT:    movi v0.8b, #1
+; CHECK-BE-GI-NEXT:    lsr w9, w8, #1
+; CHECK-BE-GI-NEXT:    mov v1.b[1], w9
+; CHECK-BE-GI-NEXT:    lsr w9, w8, #2
+; CHECK-BE-GI-NEXT:    mov v1.b[2], w9
+; CHECK-BE-GI-NEXT:    lsr w9, w8, #3
+; CHECK-BE-GI-NEXT:    mov v1.b[3], w9
+; CHECK-BE-GI-NEXT:    lsr w9, w8, #4
+; CHECK-BE-GI-NEXT:    mov v1.b[4], w9
+; CHECK-BE-GI-NEXT:    lsr w9, w8, #5
+; CHECK-BE-GI-NEXT:    mov v1.b[5], w9
+; CHECK-BE-GI-NEXT:    lsr w9, w8, #6
+; CHECK-BE-GI-NEXT:    lsr w8, w8, #7
+; CHECK-BE-GI-NEXT:    mov v1.b[6], w9
+; CHECK-BE-GI-NEXT:    mov v1.b[7], w8
+; CHECK-BE-GI-NEXT:    and v0.8b, v1.8b, v0.8b
+; CHECK-BE-GI-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-BE-GI-NEXT:    ret
   %v1 = bitcast i8 %x to <8 x i1>
   %v8 = zext <8 x i1> %v1 to <8 x i8>
   ret <8 x i8> %v8
@@ -1272,27 +1295,50 @@ define <8 x i8> @broadcast_u8_to_v8i8_sext(i8 %x) {
 ; CHECK-BE-NEXT:    rev64 v0.8b, v0.8b
 ; CHECK-BE-NEXT:    ret
 ;
-; CHECK-GI-LABEL: broadcast_u8_to_v8i8_sext:
-; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    uxtb w8, w0
-; CHECK-GI-NEXT:    fmov s0, w0
-; CHECK-GI-NEXT:    lsr w9, w8, #1
-; CHECK-GI-NEXT:    mov v0.b[1], w9
-; CHECK-GI-NEXT:    lsr w9, w8, #2
-; CHECK-GI-NEXT:    mov v0.b[2], w9
-; CHECK-GI-NEXT:    lsr w9, w8, #3
-; CHECK-GI-NEXT:    mov v0.b[3], w9
-; CHECK-GI-NEXT:    lsr w9, w8, #4
-; CHECK-GI-NEXT:    mov v0.b[4], w9
-; CHECK-GI-NEXT:    lsr w9, w8, #5
-; CHECK-GI-NEXT:    mov v0.b[5], w9
-; CHECK-GI-NEXT:    lsr w9, w8, #6
-; CHECK-GI-NEXT:    lsr w8, w8, #7
-; CHECK-GI-NEXT:    mov v0.b[6], w9
-; CHECK-GI-NEXT:    mov v0.b[7], w8
-; CHECK-GI-NEXT:    shl v0.8b, v0.8b, #7
-; CHECK-GI-NEXT:    cmlt v0.8b, v0.8b, #0
-; CHECK-GI-NEXT:    ret
+; CHECK-LE-GI-LABEL: broadcast_u8_to_v8i8_sext:
+; CHECK-LE-GI:       // %bb.0:
+; CHECK-LE-GI-NEXT:    uxtb w8, w0
+; CHECK-LE-GI-NEXT:    fmov s0, w0
+; CHECK-LE-GI-NEXT:    lsr w9, w8, #1
+; CHECK-LE-GI-NEXT:    mov v0.b[1], w9
+; CHECK-LE-GI-NEXT:    lsr w9, w8, #2
+; CHECK-LE-GI-NEXT:    mov v0.b[2], w9
+; CHECK-LE-GI-NEXT:    lsr w9, w8, #3
+; CHECK-LE-GI-NEXT:    mov v0.b[3], w9
+; CHECK-LE-GI-NEXT:    lsr w9, w8, #4
+; CHECK-LE-GI-NEXT:    mov v0.b[4], w9
+; CHECK-LE-GI-NEXT:    lsr w9, w8, #5
+; CHECK-LE-GI-NEXT:    mov v0.b[5], w9
+; CHECK-LE-GI-NEXT:    lsr w9, w8, #6
+; CHECK-LE-GI-NEXT:    lsr w8, w8, #7
+; CHECK-LE-GI-NEXT:    mov v0.b[6], w9
+; CHECK-LE-GI-NEXT:    mov v0.b[7], w8
+; CHECK-LE-GI-NEXT:    shl v0.8b, v0.8b, #7
+; CHECK-LE-GI-NEXT:    cmlt v0.8b, v0.8b, #0
+; CHECK-LE-GI-NEXT:    ret
+;
+; CHECK-BE-GI-LABEL: broadcast_u8_to_v8i8_sext:
+; CHECK-BE-GI:       // %bb.0:
+; CHECK-BE-GI-NEXT:    uxtb w8, w0
+; CHECK-BE-GI-NEXT:    fmov s0, w0
+; CHECK-BE-GI-NEXT:    lsr w9, w8, #1
+; CHECK-BE-GI-NEXT:    mov v0.b[1], w9
+; CHECK-BE-GI-NEXT:    lsr w9, w8, #2
+; CHECK-BE-GI-NEXT:    mov v0.b[2], w9
+; CHECK-BE-GI-NEXT:    lsr w9, w8, #3
+; CHECK-BE-GI-NEXT:    mov v0.b[3], w9
+; CHECK-BE-GI-NEXT:    lsr w9, w8, #4
+; CHECK-BE-GI-NEXT:    mov v0.b[4], w9
+; CHECK-BE-GI-NEXT:    lsr w9, w8, #5
+; CHECK-BE-GI-NEXT:    mov v0.b[5], w9
+; CHECK-BE-GI-NEXT:    lsr w9, w8, #6
+; CHECK-BE-GI-NEXT:    lsr w8, w8, #7
+; CHECK-BE-GI-NEXT:    mov v0.b[6], w9
+; CHECK-BE-GI-NEXT:    mov v0.b[7], w8
+; CHECK-BE-GI-NEXT:    shl v0.8b, v0.8b, #7
+; CHECK-BE-GI-NEXT:    cmlt v0.8b, v0.8b, #0
+; CHECK-BE-GI-NEXT:    rev64 v0.8b, v0.8b
+; CHECK-BE-GI-NEXT:    ret
   %v1 = bitcast i8 %x to <8 x i1>
   %v8 = sext <8 x i1> %v1 to <8 x i8>
   ret <8 x i8> %v8
@@ -2160,3 +2206,4 @@ start:
 
 ;; NOTE: These prefixes are unused and the list is autogenerated. Do not add tests below this line:
 ; CHECK: {{.*}}
+; CHECK-GI: {{.*}}

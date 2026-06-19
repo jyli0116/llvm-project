@@ -876,6 +876,13 @@ bool CallLowering::handleAssignments(ValueHandler &Handler,
       CCValAssign &VA = ArgLocs[j + Idx];
       const ISD::ArgFlagsTy Flags = Args[i].Flags[Part];
 
+      if (VA.getLocInfo() == CCValAssign::BCvt && !Handler.isIncomingArgumentHandler()) {
+        if (LocTy != OrigTy && LocTy.getSizeInBits() == OrigTy.getSizeInBits()) {
+          Register Cast = MIRBuilder.buildBitcast(LocTy, Args[i].OrigRegs[0]).getReg(0);
+          ArgReg = Cast;
+        }
+      }
+
       // We found an indirect parameter passing, and we have an
       // OutgoingValueHandler as our handler (so we are at the call site or the
       // return value). In this case, start the construction of the following

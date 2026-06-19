@@ -37,6 +37,8 @@ define <4 x i32> @test_smull_high_s16_base(<8 x i16> %a, <8 x i16> %b) #0 {
 ; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    smull2 v0.4s, v0.8h, v1.8h
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %s1 = shufflevector <8 x i16> %a, <8 x i16> undef, <4 x i32> <i32 4, i32 5, i32 6, i32 7>
@@ -69,6 +71,8 @@ define <4 x i32> @test_smull_high_s16_bitcasta1(<2 x i64> %aa, <8 x i16> %b) #0 
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
 ; CHECK-BE-GI-NEXT:    smull2 v0.4s, v0.8h, v1.8h
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %a = bitcast <2 x i64> %aa to <8 x i16>
@@ -103,6 +107,8 @@ define <4 x i32> @test_smull_high_s16_bitcastb1(<8 x i16> %a, <16 x i8> %bb) #0 
 ; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    rev16 v1.16b, v1.16b
 ; CHECK-BE-GI-NEXT:    smull2 v0.4s, v0.8h, v1.8h
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %b = bitcast <16 x i8> %bb to <8 x i16>
@@ -140,6 +146,8 @@ define <4 x i32> @test_smull_high_s16_bitcasta2(<2 x i64> %a, <8 x i16> %b) #0 {
 ; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    mov d1, v1.d[1]
 ; CHECK-BE-GI-NEXT:    smull v0.4s, v0.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %s1a = shufflevector <2 x i64> %a, <2 x i64> undef, <1 x i32> <i32 1>
@@ -179,6 +187,8 @@ define <4 x i32> @test_smull_high_s16_bitcastb2(<8 x i16> %a, <16 x i8> %b) #0 {
 ; CHECK-BE-GI-NEXT:    mov d0, v0.d[1]
 ; CHECK-BE-GI-NEXT:    rev16 v1.8b, v1.8b
 ; CHECK-BE-GI-NEXT:    smull v0.4s, v0.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %s1 = shufflevector <8 x i16> %a, <8 x i16> undef, <4 x i32> <i32 4, i32 5, i32 6, i32 7>
@@ -227,6 +237,8 @@ define <4 x i32> @test_smull_high_s16_bitcasta1_wrongindex(<2 x i64> %aa, <8 x i
 ; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #4
 ; CHECK-BE-GI-NEXT:    mov d1, v1.d[1]
 ; CHECK-BE-GI-NEXT:    smull v0.4s, v0.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %a = bitcast <2 x i64> %aa to <8 x i16>
@@ -275,6 +287,8 @@ define <4 x i32> @test_smull_high_s16_bitcastb1_wrongindex(<8 x i16> %a, <16 x i
 ; CHECK-BE-GI-NEXT:    mov d0, v0.d[1]
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v0.16b, #6
 ; CHECK-BE-GI-NEXT:    smull v0.4s, v0.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %b = bitcast <16 x i8> %bb to <8 x i16>
@@ -323,6 +337,8 @@ define <4 x i32> @test_smull_high_s16_bitcasta2_wrongindex(<4 x i32> %a, <8 x i1
 ; CHECK-BE-GI-NEXT:    mov d1, v1.d[1]
 ; CHECK-BE-GI-NEXT:    rev32 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    smull v0.4s, v0.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %s1a = shufflevector <4 x i32> %a, <4 x i32> undef, <2 x i32> <i32 1, i32 2>
@@ -371,6 +387,8 @@ define <4 x i32> @test_smull_high_s16_bitcastb2_wrongindex(<8 x i16> %a, <16 x i
 ; CHECK-BE-GI-NEXT:    mov d0, v0.d[1]
 ; CHECK-BE-GI-NEXT:    rev16 v1.8b, v1.8b
 ; CHECK-BE-GI-NEXT:    smull v0.4s, v0.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %s1 = shufflevector <8 x i16> %a, <8 x i16> undef, <4 x i32> <i32 4, i32 5, i32 6, i32 7>
@@ -412,6 +430,8 @@ define <4 x i32> @test_smull_high_s16_splata1(<2 x i64> %aa, <8 x i16> %b) #0 {
 ; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
 ; CHECK-BE-GI-NEXT:    mov d1, v1.d[1]
 ; CHECK-BE-GI-NEXT:    smull v0.4s, v1.4h, v0.h[3]
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %a = bitcast <2 x i64> %aa to <8 x i16>
@@ -453,6 +473,8 @@ define <4 x i32> @test_smull_high_s16_splatb1(<8 x i16> %a, <16 x i8> %bb) #0 {
 ; CHECK-BE-GI-NEXT:    rev16 v1.16b, v1.16b
 ; CHECK-BE-GI-NEXT:    mov d0, v0.d[1]
 ; CHECK-BE-GI-NEXT:    smull v0.4s, v0.4h, v1.h[3]
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %b = bitcast <16 x i8> %bb to <8 x i16>
@@ -501,6 +523,8 @@ define <4 x i32> @test_smull_high_s16_splata2(<4 x i32> %a, <8 x i16> %b) #0 {
 ; CHECK-BE-GI-NEXT:    mov d1, v1.d[1]
 ; CHECK-BE-GI-NEXT:    rev32 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    smull v0.4s, v0.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %s1a = shufflevector <4 x i32> %a, <4 x i32> undef, <2 x i32> <i32 3, i32 3>
@@ -549,6 +573,8 @@ define <4 x i32> @test_smull_high_s16_splatb2(<8 x i16> %a, <16 x i8> %b) #0 {
 ; CHECK-BE-GI-NEXT:    mov d0, v0.d[1]
 ; CHECK-BE-GI-NEXT:    rev16 v1.8b, v1.8b
 ; CHECK-BE-GI-NEXT:    smull v0.4s, v0.4h, v1.4h
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %s1 = shufflevector <8 x i16> %a, <8 x i16> undef, <4 x i32> <i32 4, i32 5, i32 6, i32 7>
@@ -584,6 +610,8 @@ define <4 x i32> @test_umull_high_s16_bitcasta1(<2 x i64> %aa, <8 x i16> %b) #0 
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
 ; CHECK-BE-GI-NEXT:    umull2 v0.4s, v0.8h, v1.8h
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %a = bitcast <2 x i64> %aa to <8 x i16>
@@ -618,6 +646,8 @@ define <8 x i16> @test_vabdl_high_u82(<16 x i8> %a, <8 x i16> %bb) {
 ; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    rev16 v1.16b, v1.16b
 ; CHECK-BE-GI-NEXT:    uabdl2 v0.8h, v0.16b, v1.16b
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %b = bitcast <8 x i16> %bb to <16 x i8>
@@ -653,6 +683,8 @@ define <8 x i16> @test_vabdl_high_s82(<16 x i8> %a, <8 x i16> %bb) {
 ; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    rev16 v1.16b, v1.16b
 ; CHECK-BE-GI-NEXT:    sabdl2 v0.8h, v0.16b, v1.16b
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %b = bitcast <8 x i16> %bb to <16 x i8>
@@ -692,6 +724,8 @@ define <4 x i32> @test_vqdmlal_high_s16_bitcast(<4 x i32> %a, <8 x i16> %b, <16 
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    rev16 v2.16b, v2.16b
 ; CHECK-BE-GI-NEXT:    sqdmlal2 v0.4s, v1.8h, v2.8h
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %c = bitcast <16 x i8> %cc to <8 x i16>
@@ -741,6 +775,8 @@ define <8 x i16> @test_pmull_high_p8_128(i128 %aa, i128 %bb) {
 ; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    pmull2 v0.8h, v0.16b, v1.16b
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %a = bitcast i128 %aa to <16 x i8>
@@ -775,6 +811,8 @@ define <8 x i16> @test_pmull_high_p8_64(<2 x i64> %aa, <2 x i64> %bb) {
 ; CHECK-BE-GI-NEXT:    rev64 v0.16b, v0.16b
 ; CHECK-BE-GI-NEXT:    rev64 v1.16b, v1.16b
 ; CHECK-BE-GI-NEXT:    pmull2 v0.8h, v0.16b, v1.16b
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %a = bitcast <2 x i64> %aa to <16 x i8>
@@ -820,10 +858,14 @@ define <8 x i16> @foov8i16(<16 x i8> %a1, <2 x i64> %b1) {
 ; CHECK-BE-GI-NEXT:    rev64 v1.4s, v1.4s
 ; CHECK-BE-GI-NEXT:    rev32 v0.16b, v0.16b
 ; CHECK-BE-GI-NEXT:    shrn v1.4h, v1.4s, #5
-; CHECK-BE-GI-NEXT:    fmov x8, d1
+; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
 ; CHECK-BE-GI-NEXT:    shrn v0.4h, v0.4s, #5
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
+; CHECK-BE-GI-NEXT:    fmov x8, d1
 ; CHECK-BE-GI-NEXT:    mov v0.d[1], x8
 ; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
   %a0 = bitcast <16 x i8> %a1 to <4 x i32>
   %b0 = bitcast <2 x i64> %b1 to <4 x i32>
@@ -865,6 +907,7 @@ define <2 x i64> @hadd32_zext_asr(<16 x i8> %src1a) {
 ; CHECK-BE-GI-NEXT:    rev32 v0.16b, v0.16b
 ; CHECK-BE-GI-NEXT:    mov d0, v0.d[1]
 ; CHECK-BE-GI-NEXT:    ushll v0.2d, v0.2s, #1
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
   %src1 = bitcast <16 x i8> %src1a to <4 x i32>
   %s1 = shufflevector <4 x i32> %src1, <4 x i32> undef, <2 x i32> <i32 2, i32 3>
@@ -903,6 +946,7 @@ define <2 x i64> @test_umull_high_s16_splata1(<2 x i64> %aa, <4 x i32> %b) #0 {
 ; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
 ; CHECK-BE-GI-NEXT:    mov d1, v1.d[1]
 ; CHECK-BE-GI-NEXT:    umull v0.2d, v1.2s, v0.s[1]
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %a = bitcast <2 x i64> %aa to <4 x i32>

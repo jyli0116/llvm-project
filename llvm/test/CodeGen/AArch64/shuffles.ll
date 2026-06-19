@@ -163,12 +163,14 @@ define <4 x i32> @test_shuf2(<16 x i32> %x, <16 x i32> %y) {
 ;
 ; CHECKBE-GI-LABEL: test_shuf2:
 ; CHECKBE-GI:       // %bb.0:
-; CHECKBE-GI-NEXT:    mov s1, v5.s[2]
-; CHECKBE-GI-NEXT:    mov s0, v4.s[1]
+; CHECKBE-GI-NEXT:    mov s0, v5.s[2]
+; CHECKBE-GI-NEXT:    mov s1, v4.s[1]
 ; CHECKBE-GI-NEXT:    mov s3, v2.s[3]
-; CHECKBE-GI-NEXT:    mov v0.s[1], v1.s[0]
-; CHECKBE-GI-NEXT:    mov v0.s[2], v3.s[0]
-; CHECKBE-GI-NEXT:    mov v0.s[3], v2.s[0]
+; CHECKBE-GI-NEXT:    mov v1.s[1], v0.s[0]
+; CHECKBE-GI-NEXT:    mov v1.s[2], v3.s[0]
+; CHECKBE-GI-NEXT:    mov v1.s[3], v2.s[0]
+; CHECKBE-GI-NEXT:    rev64 v0.4s, v1.4s
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
   %s3 = shufflevector <16 x i32> %x, <16 x i32> %y, <4 x i32> <i32 29, i32 26, i32 7, i32 4>
   ret <4 x i32> %s3
@@ -223,6 +225,8 @@ define <4 x i32> @test_shuf3(<16 x i32> %x, <16 x i32> %y) {
 ; CHECKBE-GI-NEXT:    mov v4.s[2], v6.s[0]
 ; CHECKBE-GI-NEXT:    mov v4.s[3], v7.s[0]
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v3.16b, v4.16b }, v0.16b
+; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
   %s3 = shufflevector <16 x i32> %x, <16 x i32> %y, <4 x i32> <i32 3, i32 6, i32 5, i32 2>
   ret <4 x i32> %s3
@@ -266,6 +270,8 @@ define <4 x i32> @test_shuf4(<16 x i32> %x, <16 x i32> %y) {
 ; CHECKBE-GI-NEXT:    mov v0.s[1], v1.s[0]
 ; CHECKBE-GI-NEXT:    mov v0.s[2], v2.s[0]
 ; CHECKBE-GI-NEXT:    mov v0.s[3], v4.s[0]
+; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
   %s3 = shufflevector <16 x i32> %x, <16 x i32> %y, <4 x i32> <i32 9, i32 8, i32 17, i32 28>
   ret <4 x i32> %s3
@@ -311,6 +317,8 @@ define <4 x i32> @test_shuf5(<16 x i32> %x, <16 x i32> %y) {
 ; CHECKBE-GI-NEXT:    mov v0.s[1], v7.s[0]
 ; CHECKBE-GI-NEXT:    mov v0.s[2], v1.s[0]
 ; CHECKBE-GI-NEXT:    mov v0.s[3], v2.s[0]
+; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
   %s3 = shufflevector <16 x i32> %x, <16 x i32> %y, <4 x i32> <i32 27, i32 16, i32 31, i32 30>
   ret <4 x i32> %s3
@@ -356,6 +364,8 @@ define <4 x i32> @test1503(<4 x i32> %a, <4 x i32> %b)
 ; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI5_0]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
+; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
 {
   %r = shufflevector <4 x i32> %a, <4 x i32> %b, <4 x i32> <i32 1, i32 5, i32 0, i32 3>
@@ -400,6 +410,8 @@ define <4 x i32> @test4366(<4 x i32> %a, <4 x i32> %b)
 ; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI6_0]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
+; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
 {
   %r = shufflevector <4 x i32> %a, <4 x i32> %b, <4 x i32> <i32 4, i32 3, i32 6, i32 6>
@@ -446,6 +458,8 @@ define <4 x i32> @test7367(<4 x i32> %a, <4 x i32> %b)
 ; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI7_0]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
+; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
 {
   %r = shufflevector <4 x i32> %a, <4 x i32> %b, <4 x i32> <i32 7, i32 3, i32 6, i32 7>
@@ -490,6 +504,8 @@ define <4 x i32> @test4045(<4 x i32> %a, <4 x i32> %b)
 ; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI8_0]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
+; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
 {
   %r = shufflevector <4 x i32> %a, <4 x i32> %b, <4 x i32> <i32 4, i32 0, i32 4, i32 5>
@@ -532,6 +548,8 @@ define <4 x i32> @test0067(<4 x i32> %a, <4 x i32> %b)
 ; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI9_0]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
+; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
 {
   %r = shufflevector <4 x i32> %a, <4 x i32> %b, <4 x i32> <i32 0, i32 0, i32 6, i32 7>
@@ -575,6 +593,8 @@ define <4 x i32> @test_shuf6(<4 x i32> %a, <4 x i32> %b)
 ; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI10_0]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
+; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
 {
   %r = shufflevector <4 x i32> %a, <4 x i32> %b, <4 x i32> <i32 0, i32 0, i32 7, i32 7>
@@ -618,7 +638,7 @@ define <4 x i16> @test_shuf7(<4 x i16> %a, <4 x i16> %b)
 ; CHECKBE-GI-NEXT:    mov v0.d[1], v1.d[0]
 ; CHECKBE-GI-NEXT:    ldr d1, [x8, :lo12:.LCPI11_0]
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v0.16b }, v1.16b
-; CHECKBE-GI-NEXT:    // kill: def $d0 killed $d0 killed $q0
+; CHECKBE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECKBE-GI-NEXT:    ret
 {
   %r = shufflevector <4 x i16> %a, <4 x i16> %b, <4 x i32> <i32 0, i32 0, i32 7, i32 7>
@@ -668,7 +688,7 @@ define <8 x i8> @test_shuf8(<8 x i8> %a, <8 x i8> %b)
 ; CHECKBE-GI-NEXT:    mov v0.d[1], v1.d[0]
 ; CHECKBE-GI-NEXT:    ldr d1, [x8, :lo12:.LCPI12_0]
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v0.16b }, v1.16b
-; CHECKBE-GI-NEXT:    // kill: def $d0 killed $d0 killed $q0
+; CHECKBE-GI-NEXT:    rev64 v0.8b, v0.8b
 ; CHECKBE-GI-NEXT:    ret
 {
   %r = shufflevector <8 x i8> %a, <8 x i8> %b, <8 x i32> <i32 0, i32 0, i32 0, i32 0, i32 8, i32 8, i32 8, i32 8>
@@ -717,6 +737,8 @@ define <8 x i16> @test_shuf9(<8 x i16> %a, <8 x i16> %b)
 ; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI13_0]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
+; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
 {
   %r = shufflevector <8 x i16> %a, <8 x i16> %b, <8 x i32> <i32 0, i32 0, i32 0, i32 0, i32 8, i32 8, i32 8, i32 8>
@@ -758,6 +780,8 @@ define <16 x i8> @test_shuf10(<16 x i8> %a, <16 x i8> %b)
 ; CHECKBE-GI-NEXT:    ldr q2, [x8, :lo12:.LCPI14_0]
 ; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v0.16b, v1.16b }, v2.16b
+; CHECKBE-GI-NEXT:    rev64 v0.16b, v0.16b
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
 {
   %r = shufflevector <16 x i8> %a, <16 x i8> %b, <16 x i32> <i32 0, i32 0, i32 0, i32 0, i32 0, i32 0, i32 0, i32 0, i32     8, i32 8, i32 8, i32 8, i32 8, i32 8, i32 8, i32 8 >
@@ -806,6 +830,8 @@ define <8 x half> @test_shuf11(<8 x half> %a, <8 x half> %b)
 ; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI15_0]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
+; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
 {
   %r = shufflevector <8 x half> %a, <8 x half> %b, <8 x i32> <i32 0, i32 0, i32 0, i32 0, i32 8, i32 8, i32 8, i32 8>
@@ -854,6 +880,8 @@ define <8 x half> @test_shuf12(<8 x half> %a, <8 x half> %b)
 ; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI16_0]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
+; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
 {
   %r = shufflevector <8 x half> %a, <8 x half> %b, <8 x i32> <i32 0, i32 0, i32 0, i32 0, i32 0, i32 8, i32 1, i32 15>
@@ -902,6 +930,8 @@ define <8 x half> @test_shuf13(<8 x half> %a, <8 x half> %b)
 ; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI17_0]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
+; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
 {
   %r = shufflevector <8 x half> %a, <8 x half> %b, <8 x i32> <i32 1, i32 2, i32 0, i32 0, i32 0, i32 8, i32 1, i32 15>
@@ -950,6 +980,8 @@ define <8 x half> @test_shuf14(<8 x half> %a, <8 x half> %b)
 ; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI18_0]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
+; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
 {
   %r = shufflevector <8 x half> %a, <8 x half> %b, <8 x i32> <i32 1, i32 2, i32 1, i32 1, i32 0, i32 8, i32 1, i32 15>
@@ -998,6 +1030,8 @@ define <8 x half> @test_shuf15(<8 x half> %a, <8 x half> %b)
 ; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI19_0]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
+; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
 {
   %r = shufflevector <8 x half> %a, <8 x half> %b, <8 x i32> <i32 1, i32 2, i32 7, i32 2, i32 0, i32 3, i32 2, i32 15>
@@ -1031,6 +1065,8 @@ define <4 x i32> @extract_shuffle(<8 x i16> %j, <4 x i16> %k) {
 ; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    mov d0, v0.d[1]
 ; CHECKBE-GI-NEXT:    ushll v0.4s, v0.4h, #3
+; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    ret
   %a = shufflevector <8 x i16> %j, <8 x i16> poison, <8 x i32> <i32 4, i32 5, i32 6, i32 7, i32 poison, i32 poison, i32 poison, i32 poison>
   %b = shufflevector <8 x i16> %a, <8 x i16> poison, <4 x i32> <i32 0, i32 1, i32 2, i32 3>

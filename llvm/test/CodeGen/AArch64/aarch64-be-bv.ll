@@ -863,42 +863,52 @@ define dso_local void @modimm_t1_call() {
 ;
 ; CHECK-GI-LABEL: modimm_t1_call:
 ; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    sub sp, sp, #48
-; CHECK-GI-NEXT:    str d8, [sp, #32] // 8-byte Spill
-; CHECK-GI-NEXT:    str x30, [sp, #40] // 8-byte Spill
-; CHECK-GI-NEXT:    .cfi_def_cfa_offset 48
-; CHECK-GI-NEXT:    .cfi_offset w30, -8
-; CHECK-GI-NEXT:    .cfi_offset b8, -16
-; CHECK-GI-NEXT:    adrp x10, .LCPI32_1
+; CHECK-GI-NEXT:    sub sp, sp, #64
+; CHECK-GI-NEXT:    stp d9, d8, [sp, #32] // 16-byte Folded Spill
+; CHECK-GI-NEXT:    str x30, [sp, #48] // 8-byte Spill
+; CHECK-GI-NEXT:    .cfi_def_cfa_offset 64
+; CHECK-GI-NEXT:    .cfi_offset w30, -16
+; CHECK-GI-NEXT:    .cfi_offset b8, -24
+; CHECK-GI-NEXT:    .cfi_offset b9, -32
 ; CHECK-GI-NEXT:    adrp x8, .LCPI32_3
-; CHECK-GI-NEXT:    adrp x11, .LCPI32_0
-; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI32_1]
-; CHECK-GI-NEXT:    adrp x9, .LCPI32_2
+; CHECK-GI-NEXT:    adrp x9, .LCPI32_1
+; CHECK-GI-NEXT:    adrp x10, .LCPI32_0
 ; CHECK-GI-NEXT:    ldr d0, [x8, :lo12:.LCPI32_3]
-; CHECK-GI-NEXT:    ldr d8, [x9, :lo12:.LCPI32_2]
+; CHECK-GI-NEXT:    ldr q1, [x9, :lo12:.LCPI32_1]
+; CHECK-GI-NEXT:    adrp x8, .LCPI32_2
+; CHECK-GI-NEXT:    ldr d9, [x8, :lo12:.LCPI32_2]
+; CHECK-GI-NEXT:    movi v8.2s, #6
+; CHECK-GI-NEXT:    rev64 v0.8b, v0.8b
 ; CHECK-GI-NEXT:    str q1, [sp] // 16-byte Spill
-; CHECK-GI-NEXT:    ldr q1, [x11, :lo12:.LCPI32_0]
+; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI32_0]
 ; CHECK-GI-NEXT:    str q1, [sp, #16] // 16-byte Spill
 ; CHECK-GI-NEXT:    bl f_v8i8
-; CHECK-GI-NEXT:    fmov d0, d8
+; CHECK-GI-NEXT:    rev64 v0.4h, v9.4h
 ; CHECK-GI-NEXT:    bl f_v4i16
-; CHECK-GI-NEXT:    movi v0.2s, #6
+; CHECK-GI-NEXT:    rev64 v0.2s, v8.2s
 ; CHECK-GI-NEXT:    bl f_v2i32
 ; CHECK-GI-NEXT:    mov x8, #5 // =0x5
 ; CHECK-GI-NEXT:    movk x8, #5, lsl #32
 ; CHECK-GI-NEXT:    fmov d0, x8
 ; CHECK-GI-NEXT:    bl f_v1i64
 ; CHECK-GI-NEXT:    ldr q0, [sp] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v16i8
 ; CHECK-GI-NEXT:    ldr q0, [sp, #16] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v8i16
 ; CHECK-GI-NEXT:    movi v0.4s, #3
+; CHECK-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v4i32
 ; CHECK-GI-NEXT:    movi v0.4s, #2
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v2i64
-; CHECK-GI-NEXT:    ldr x30, [sp, #40] // 8-byte Reload
-; CHECK-GI-NEXT:    ldr d8, [sp, #32] // 8-byte Reload
-; CHECK-GI-NEXT:    add sp, sp, #48
+; CHECK-GI-NEXT:    ldp d9, d8, [sp, #32] // 16-byte Folded Reload
+; CHECK-GI-NEXT:    ldr x30, [sp, #48] // 8-byte Reload
+; CHECK-GI-NEXT:    add sp, sp, #64
 ; CHECK-GI-NEXT:    ret
   call i8 @f_v8i8(<8 x i8> <i8 8, i8 0, i8 0, i8 0, i8 8, i8 0, i8 0, i8 0>)
   call i16 @f_v4i16(<4 x i16> <i16 7, i16 0, i16 7, i16 0>)
@@ -949,42 +959,52 @@ define dso_local void @modimm_t2_call() {
 ;
 ; CHECK-GI-LABEL: modimm_t2_call:
 ; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    sub sp, sp, #48
-; CHECK-GI-NEXT:    str d8, [sp, #32] // 8-byte Spill
-; CHECK-GI-NEXT:    str x30, [sp, #40] // 8-byte Spill
-; CHECK-GI-NEXT:    .cfi_def_cfa_offset 48
-; CHECK-GI-NEXT:    .cfi_offset w30, -8
-; CHECK-GI-NEXT:    .cfi_offset b8, -16
-; CHECK-GI-NEXT:    adrp x10, .LCPI33_1
+; CHECK-GI-NEXT:    sub sp, sp, #64
+; CHECK-GI-NEXT:    stp d9, d8, [sp, #32] // 16-byte Folded Spill
+; CHECK-GI-NEXT:    str x30, [sp, #48] // 8-byte Spill
+; CHECK-GI-NEXT:    .cfi_def_cfa_offset 64
+; CHECK-GI-NEXT:    .cfi_offset w30, -16
+; CHECK-GI-NEXT:    .cfi_offset b8, -24
+; CHECK-GI-NEXT:    .cfi_offset b9, -32
 ; CHECK-GI-NEXT:    adrp x8, .LCPI33_3
-; CHECK-GI-NEXT:    adrp x11, .LCPI33_0
-; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI33_1]
-; CHECK-GI-NEXT:    adrp x9, .LCPI33_2
+; CHECK-GI-NEXT:    adrp x9, .LCPI33_1
+; CHECK-GI-NEXT:    adrp x10, .LCPI33_0
 ; CHECK-GI-NEXT:    ldr d0, [x8, :lo12:.LCPI33_3]
-; CHECK-GI-NEXT:    ldr d8, [x9, :lo12:.LCPI33_2]
+; CHECK-GI-NEXT:    ldr q1, [x9, :lo12:.LCPI33_1]
+; CHECK-GI-NEXT:    adrp x8, .LCPI33_2
+; CHECK-GI-NEXT:    ldr d9, [x8, :lo12:.LCPI33_2]
+; CHECK-GI-NEXT:    movi v8.2s, #6, lsl #8
+; CHECK-GI-NEXT:    rev64 v0.8b, v0.8b
 ; CHECK-GI-NEXT:    str q1, [sp] // 16-byte Spill
-; CHECK-GI-NEXT:    ldr q1, [x11, :lo12:.LCPI33_0]
+; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI33_0]
 ; CHECK-GI-NEXT:    str q1, [sp, #16] // 16-byte Spill
 ; CHECK-GI-NEXT:    bl f_v8i8
-; CHECK-GI-NEXT:    fmov d0, d8
+; CHECK-GI-NEXT:    rev64 v0.4h, v9.4h
 ; CHECK-GI-NEXT:    bl f_v4i16
-; CHECK-GI-NEXT:    movi v0.2s, #6, lsl #8
+; CHECK-GI-NEXT:    rev64 v0.2s, v8.2s
 ; CHECK-GI-NEXT:    bl f_v2i32
 ; CHECK-GI-NEXT:    mov x8, #1280 // =0x500
 ; CHECK-GI-NEXT:    movk x8, #1280, lsl #32
 ; CHECK-GI-NEXT:    fmov d0, x8
 ; CHECK-GI-NEXT:    bl f_v1i64
 ; CHECK-GI-NEXT:    ldr q0, [sp] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v16i8
 ; CHECK-GI-NEXT:    ldr q0, [sp, #16] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v8i16
 ; CHECK-GI-NEXT:    movi v0.4s, #3, lsl #8
+; CHECK-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v4i32
 ; CHECK-GI-NEXT:    movi v0.4s, #2, lsl #8
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v2i64
-; CHECK-GI-NEXT:    ldr x30, [sp, #40] // 8-byte Reload
-; CHECK-GI-NEXT:    ldr d8, [sp, #32] // 8-byte Reload
-; CHECK-GI-NEXT:    add sp, sp, #48
+; CHECK-GI-NEXT:    ldp d9, d8, [sp, #32] // 16-byte Folded Reload
+; CHECK-GI-NEXT:    ldr x30, [sp, #48] // 8-byte Reload
+; CHECK-GI-NEXT:    add sp, sp, #64
 ; CHECK-GI-NEXT:    ret
   call i8 @f_v8i8(<8 x i8> <i8 0, i8 8, i8 0, i8 0, i8 0, i8 8, i8 0, i8 0>)
   call i16 @f_v4i16(<4 x i16> <i16 1792, i16 0, i16 1792, i16 0>)
@@ -1035,42 +1055,52 @@ define dso_local void @modimm_t3_call() {
 ;
 ; CHECK-GI-LABEL: modimm_t3_call:
 ; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    sub sp, sp, #48
-; CHECK-GI-NEXT:    str d8, [sp, #32] // 8-byte Spill
-; CHECK-GI-NEXT:    str x30, [sp, #40] // 8-byte Spill
-; CHECK-GI-NEXT:    .cfi_def_cfa_offset 48
-; CHECK-GI-NEXT:    .cfi_offset w30, -8
-; CHECK-GI-NEXT:    .cfi_offset b8, -16
-; CHECK-GI-NEXT:    adrp x10, .LCPI34_1
+; CHECK-GI-NEXT:    sub sp, sp, #64
+; CHECK-GI-NEXT:    stp d9, d8, [sp, #32] // 16-byte Folded Spill
+; CHECK-GI-NEXT:    str x30, [sp, #48] // 8-byte Spill
+; CHECK-GI-NEXT:    .cfi_def_cfa_offset 64
+; CHECK-GI-NEXT:    .cfi_offset w30, -16
+; CHECK-GI-NEXT:    .cfi_offset b8, -24
+; CHECK-GI-NEXT:    .cfi_offset b9, -32
 ; CHECK-GI-NEXT:    adrp x8, .LCPI34_3
-; CHECK-GI-NEXT:    adrp x11, .LCPI34_0
-; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI34_1]
-; CHECK-GI-NEXT:    adrp x9, .LCPI34_2
+; CHECK-GI-NEXT:    adrp x9, .LCPI34_1
+; CHECK-GI-NEXT:    adrp x10, .LCPI34_0
 ; CHECK-GI-NEXT:    ldr d0, [x8, :lo12:.LCPI34_3]
-; CHECK-GI-NEXT:    ldr d8, [x9, :lo12:.LCPI34_2]
+; CHECK-GI-NEXT:    ldr q1, [x9, :lo12:.LCPI34_1]
+; CHECK-GI-NEXT:    adrp x8, .LCPI34_2
+; CHECK-GI-NEXT:    ldr d9, [x8, :lo12:.LCPI34_2]
+; CHECK-GI-NEXT:    movi v8.2s, #6, lsl #16
+; CHECK-GI-NEXT:    rev64 v0.8b, v0.8b
 ; CHECK-GI-NEXT:    str q1, [sp] // 16-byte Spill
-; CHECK-GI-NEXT:    ldr q1, [x11, :lo12:.LCPI34_0]
+; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI34_0]
 ; CHECK-GI-NEXT:    str q1, [sp, #16] // 16-byte Spill
 ; CHECK-GI-NEXT:    bl f_v8i8
-; CHECK-GI-NEXT:    fmov d0, d8
+; CHECK-GI-NEXT:    rev64 v0.4h, v9.4h
 ; CHECK-GI-NEXT:    bl f_v4i16
-; CHECK-GI-NEXT:    movi v0.2s, #6, lsl #16
+; CHECK-GI-NEXT:    rev64 v0.2s, v8.2s
 ; CHECK-GI-NEXT:    bl f_v2i32
 ; CHECK-GI-NEXT:    mov x8, #327680 // =0x50000
 ; CHECK-GI-NEXT:    movk x8, #5, lsl #48
 ; CHECK-GI-NEXT:    fmov d0, x8
 ; CHECK-GI-NEXT:    bl f_v1i64
 ; CHECK-GI-NEXT:    ldr q0, [sp] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v16i8
 ; CHECK-GI-NEXT:    ldr q0, [sp, #16] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v8i16
 ; CHECK-GI-NEXT:    movi v0.4s, #3, lsl #16
+; CHECK-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v4i32
 ; CHECK-GI-NEXT:    movi v0.4s, #2, lsl #16
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v2i64
-; CHECK-GI-NEXT:    ldr x30, [sp, #40] // 8-byte Reload
-; CHECK-GI-NEXT:    ldr d8, [sp, #32] // 8-byte Reload
-; CHECK-GI-NEXT:    add sp, sp, #48
+; CHECK-GI-NEXT:    ldp d9, d8, [sp, #32] // 16-byte Folded Reload
+; CHECK-GI-NEXT:    ldr x30, [sp, #48] // 8-byte Reload
+; CHECK-GI-NEXT:    add sp, sp, #64
 ; CHECK-GI-NEXT:    ret
   call i8 @f_v8i8(<8 x i8> <i8 0, i8 0, i8 8, i8 0, i8 0, i8 0, i8 8, i8 0>)
   call i16 @f_v4i16(<4 x i16> <i16 0, i16 7, i16 0, i16 7>)
@@ -1121,42 +1151,52 @@ define dso_local void @modimm_t4_call() {
 ;
 ; CHECK-GI-LABEL: modimm_t4_call:
 ; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    sub sp, sp, #48
-; CHECK-GI-NEXT:    str d8, [sp, #32] // 8-byte Spill
-; CHECK-GI-NEXT:    str x30, [sp, #40] // 8-byte Spill
-; CHECK-GI-NEXT:    .cfi_def_cfa_offset 48
-; CHECK-GI-NEXT:    .cfi_offset w30, -8
-; CHECK-GI-NEXT:    .cfi_offset b8, -16
-; CHECK-GI-NEXT:    adrp x10, .LCPI35_1
+; CHECK-GI-NEXT:    sub sp, sp, #64
+; CHECK-GI-NEXT:    stp d9, d8, [sp, #32] // 16-byte Folded Spill
+; CHECK-GI-NEXT:    str x30, [sp, #48] // 8-byte Spill
+; CHECK-GI-NEXT:    .cfi_def_cfa_offset 64
+; CHECK-GI-NEXT:    .cfi_offset w30, -16
+; CHECK-GI-NEXT:    .cfi_offset b8, -24
+; CHECK-GI-NEXT:    .cfi_offset b9, -32
 ; CHECK-GI-NEXT:    adrp x8, .LCPI35_3
-; CHECK-GI-NEXT:    adrp x11, .LCPI35_0
-; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI35_1]
-; CHECK-GI-NEXT:    adrp x9, .LCPI35_2
+; CHECK-GI-NEXT:    adrp x9, .LCPI35_1
+; CHECK-GI-NEXT:    adrp x10, .LCPI35_0
 ; CHECK-GI-NEXT:    ldr d0, [x8, :lo12:.LCPI35_3]
-; CHECK-GI-NEXT:    ldr d8, [x9, :lo12:.LCPI35_2]
+; CHECK-GI-NEXT:    ldr q1, [x9, :lo12:.LCPI35_1]
+; CHECK-GI-NEXT:    adrp x8, .LCPI35_2
+; CHECK-GI-NEXT:    ldr d9, [x8, :lo12:.LCPI35_2]
+; CHECK-GI-NEXT:    movi v8.2s, #6, lsl #24
+; CHECK-GI-NEXT:    rev64 v0.8b, v0.8b
 ; CHECK-GI-NEXT:    str q1, [sp] // 16-byte Spill
-; CHECK-GI-NEXT:    ldr q1, [x11, :lo12:.LCPI35_0]
+; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI35_0]
 ; CHECK-GI-NEXT:    str q1, [sp, #16] // 16-byte Spill
 ; CHECK-GI-NEXT:    bl f_v8i8
-; CHECK-GI-NEXT:    fmov d0, d8
+; CHECK-GI-NEXT:    rev64 v0.4h, v9.4h
 ; CHECK-GI-NEXT:    bl f_v4i16
-; CHECK-GI-NEXT:    movi v0.2s, #6, lsl #24
+; CHECK-GI-NEXT:    rev64 v0.2s, v8.2s
 ; CHECK-GI-NEXT:    bl f_v2i32
 ; CHECK-GI-NEXT:    mov x8, #83886080 // =0x5000000
 ; CHECK-GI-NEXT:    movk x8, #1280, lsl #48
 ; CHECK-GI-NEXT:    fmov d0, x8
 ; CHECK-GI-NEXT:    bl f_v1i64
 ; CHECK-GI-NEXT:    ldr q0, [sp] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v16i8
 ; CHECK-GI-NEXT:    ldr q0, [sp, #16] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v8i16
 ; CHECK-GI-NEXT:    movi v0.4s, #3, lsl #24
+; CHECK-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v4i32
 ; CHECK-GI-NEXT:    movi v0.4s, #2, lsl #24
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v2i64
-; CHECK-GI-NEXT:    ldr x30, [sp, #40] // 8-byte Reload
-; CHECK-GI-NEXT:    ldr d8, [sp, #32] // 8-byte Reload
-; CHECK-GI-NEXT:    add sp, sp, #48
+; CHECK-GI-NEXT:    ldp d9, d8, [sp, #32] // 16-byte Folded Reload
+; CHECK-GI-NEXT:    ldr x30, [sp, #48] // 8-byte Reload
+; CHECK-GI-NEXT:    add sp, sp, #64
 ; CHECK-GI-NEXT:    ret
   call i8 @f_v8i8(<8 x i8> <i8 0, i8 0, i8 0, i8 8, i8 0, i8 0, i8 0, i8 8>)
   call i16 @f_v4i16(<4 x i16> <i16 0, i16 1792, i16 0, i16 1792>)
@@ -1207,34 +1247,48 @@ define dso_local void @modimm_t5_call() {
 ;
 ; CHECK-GI-LABEL: modimm_t5_call:
 ; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    sub sp, sp, #32
-; CHECK-GI-NEXT:    str x30, [sp, #16] // 8-byte Spill
-; CHECK-GI-NEXT:    .cfi_def_cfa_offset 32
+; CHECK-GI-NEXT:    sub sp, sp, #48
+; CHECK-GI-NEXT:    stp d9, d8, [sp, #16] // 16-byte Folded Spill
+; CHECK-GI-NEXT:    str x30, [sp, #32] // 8-byte Spill
+; CHECK-GI-NEXT:    .cfi_def_cfa_offset 48
 ; CHECK-GI-NEXT:    .cfi_offset w30, -16
+; CHECK-GI-NEXT:    .cfi_offset b8, -24
+; CHECK-GI-NEXT:    .cfi_offset b9, -32
 ; CHECK-GI-NEXT:    adrp x8, .LCPI36_1
 ; CHECK-GI-NEXT:    adrp x9, .LCPI36_0
+; CHECK-GI-NEXT:    movi v8.4h, #7
 ; CHECK-GI-NEXT:    ldr d0, [x8, :lo12:.LCPI36_1]
 ; CHECK-GI-NEXT:    ldr q1, [x9, :lo12:.LCPI36_0]
+; CHECK-GI-NEXT:    movi v9.4h, #6
+; CHECK-GI-NEXT:    rev64 v0.8b, v0.8b
 ; CHECK-GI-NEXT:    str q1, [sp] // 16-byte Spill
 ; CHECK-GI-NEXT:    bl f_v8i8
-; CHECK-GI-NEXT:    movi v0.4h, #7
+; CHECK-GI-NEXT:    rev64 v0.4h, v8.4h
 ; CHECK-GI-NEXT:    bl f_v4i16
-; CHECK-GI-NEXT:    movi v0.4h, #6
+; CHECK-GI-NEXT:    rev64 v0.2s, v9.2s
 ; CHECK-GI-NEXT:    bl f_v2i32
 ; CHECK-GI-NEXT:    mov x8, #1125917086973956 // =0x4000400040004
 ; CHECK-GI-NEXT:    orr x8, x8, #0x1000100010001
 ; CHECK-GI-NEXT:    fmov d0, x8
 ; CHECK-GI-NEXT:    bl f_v1i64
 ; CHECK-GI-NEXT:    ldr q0, [sp] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v16i8
 ; CHECK-GI-NEXT:    movi v0.8h, #4
+; CHECK-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v8i16
 ; CHECK-GI-NEXT:    movi v0.8h, #3
+; CHECK-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v4i32
 ; CHECK-GI-NEXT:    movi v0.8h, #2
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v2i64
-; CHECK-GI-NEXT:    ldr x30, [sp, #16] // 8-byte Reload
-; CHECK-GI-NEXT:    add sp, sp, #32
+; CHECK-GI-NEXT:    ldp d9, d8, [sp, #16] // 16-byte Folded Reload
+; CHECK-GI-NEXT:    ldr x30, [sp, #32] // 8-byte Reload
+; CHECK-GI-NEXT:    add sp, sp, #48
 ; CHECK-GI-NEXT:    ret
   call i8 @f_v8i8(<8 x i8> <i8 8, i8 0, i8 8, i8 0, i8 8, i8 0, i8 8, i8 0>)
   call i16 @f_v4i16(<4 x i16> <i16 7, i16 7, i16 7, i16 7>)
@@ -1285,34 +1339,48 @@ define dso_local void @modimm_t6_call() {
 ;
 ; CHECK-GI-LABEL: modimm_t6_call:
 ; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    sub sp, sp, #32
-; CHECK-GI-NEXT:    str x30, [sp, #16] // 8-byte Spill
-; CHECK-GI-NEXT:    .cfi_def_cfa_offset 32
+; CHECK-GI-NEXT:    sub sp, sp, #48
+; CHECK-GI-NEXT:    stp d9, d8, [sp, #16] // 16-byte Folded Spill
+; CHECK-GI-NEXT:    str x30, [sp, #32] // 8-byte Spill
+; CHECK-GI-NEXT:    .cfi_def_cfa_offset 48
 ; CHECK-GI-NEXT:    .cfi_offset w30, -16
+; CHECK-GI-NEXT:    .cfi_offset b8, -24
+; CHECK-GI-NEXT:    .cfi_offset b9, -32
 ; CHECK-GI-NEXT:    adrp x8, .LCPI37_1
 ; CHECK-GI-NEXT:    adrp x9, .LCPI37_0
+; CHECK-GI-NEXT:    movi v8.4h, #7, lsl #8
 ; CHECK-GI-NEXT:    ldr d0, [x8, :lo12:.LCPI37_1]
 ; CHECK-GI-NEXT:    ldr q1, [x9, :lo12:.LCPI37_0]
+; CHECK-GI-NEXT:    movi v9.4h, #6, lsl #8
+; CHECK-GI-NEXT:    rev64 v0.8b, v0.8b
 ; CHECK-GI-NEXT:    str q1, [sp] // 16-byte Spill
 ; CHECK-GI-NEXT:    bl f_v8i8
-; CHECK-GI-NEXT:    movi v0.4h, #7, lsl #8
+; CHECK-GI-NEXT:    rev64 v0.4h, v8.4h
 ; CHECK-GI-NEXT:    bl f_v4i16
-; CHECK-GI-NEXT:    movi v0.4h, #6, lsl #8
+; CHECK-GI-NEXT:    rev64 v0.2s, v9.2s
 ; CHECK-GI-NEXT:    bl f_v2i32
 ; CHECK-GI-NEXT:    mov x8, #72058693566333184 // =0x100010001000100
 ; CHECK-GI-NEXT:    orr x8, x8, #0x400040004000400
 ; CHECK-GI-NEXT:    fmov d0, x8
 ; CHECK-GI-NEXT:    bl f_v1i64
 ; CHECK-GI-NEXT:    ldr q0, [sp] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v16i8
 ; CHECK-GI-NEXT:    movi v0.8h, #4, lsl #8
+; CHECK-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v8i16
 ; CHECK-GI-NEXT:    movi v0.8h, #3, lsl #8
+; CHECK-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v4i32
 ; CHECK-GI-NEXT:    movi v0.8h, #2, lsl #8
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v2i64
-; CHECK-GI-NEXT:    ldr x30, [sp, #16] // 8-byte Reload
-; CHECK-GI-NEXT:    add sp, sp, #32
+; CHECK-GI-NEXT:    ldp d9, d8, [sp, #16] // 16-byte Folded Reload
+; CHECK-GI-NEXT:    ldr x30, [sp, #32] // 8-byte Reload
+; CHECK-GI-NEXT:    add sp, sp, #48
 ; CHECK-GI-NEXT:    ret
   call i8 @f_v8i8(<8 x i8> <i8 0, i8 8, i8 0, i8 8, i8 0, i8 8, i8 0, i8 8>)
   call i16 @f_v4i16(<4 x i16> <i16 1792, i16 1792, i16 1792, i16 1792>)
@@ -1363,42 +1431,52 @@ define dso_local void @modimm_t7_call() {
 ;
 ; CHECK-GI-LABEL: modimm_t7_call:
 ; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    sub sp, sp, #48
-; CHECK-GI-NEXT:    str d8, [sp, #32] // 8-byte Spill
-; CHECK-GI-NEXT:    str x30, [sp, #40] // 8-byte Spill
-; CHECK-GI-NEXT:    .cfi_def_cfa_offset 48
-; CHECK-GI-NEXT:    .cfi_offset w30, -8
-; CHECK-GI-NEXT:    .cfi_offset b8, -16
-; CHECK-GI-NEXT:    adrp x10, .LCPI38_1
+; CHECK-GI-NEXT:    sub sp, sp, #64
+; CHECK-GI-NEXT:    stp d9, d8, [sp, #32] // 16-byte Folded Spill
+; CHECK-GI-NEXT:    str x30, [sp, #48] // 8-byte Spill
+; CHECK-GI-NEXT:    .cfi_def_cfa_offset 64
+; CHECK-GI-NEXT:    .cfi_offset w30, -16
+; CHECK-GI-NEXT:    .cfi_offset b8, -24
+; CHECK-GI-NEXT:    .cfi_offset b9, -32
 ; CHECK-GI-NEXT:    adrp x8, .LCPI38_3
-; CHECK-GI-NEXT:    adrp x11, .LCPI38_0
-; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI38_1]
-; CHECK-GI-NEXT:    adrp x9, .LCPI38_2
+; CHECK-GI-NEXT:    adrp x9, .LCPI38_1
+; CHECK-GI-NEXT:    adrp x10, .LCPI38_0
 ; CHECK-GI-NEXT:    ldr d0, [x8, :lo12:.LCPI38_3]
-; CHECK-GI-NEXT:    ldr d8, [x9, :lo12:.LCPI38_2]
+; CHECK-GI-NEXT:    ldr q1, [x9, :lo12:.LCPI38_1]
+; CHECK-GI-NEXT:    adrp x8, .LCPI38_2
+; CHECK-GI-NEXT:    ldr d9, [x8, :lo12:.LCPI38_2]
+; CHECK-GI-NEXT:    movi v8.2s, #6, msl #8
+; CHECK-GI-NEXT:    rev64 v0.8b, v0.8b
 ; CHECK-GI-NEXT:    str q1, [sp] // 16-byte Spill
-; CHECK-GI-NEXT:    ldr q1, [x11, :lo12:.LCPI38_0]
+; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI38_0]
 ; CHECK-GI-NEXT:    str q1, [sp, #16] // 16-byte Spill
 ; CHECK-GI-NEXT:    bl f_v8i8
-; CHECK-GI-NEXT:    fmov d0, d8
+; CHECK-GI-NEXT:    rev64 v0.4h, v9.4h
 ; CHECK-GI-NEXT:    bl f_v4i16
-; CHECK-GI-NEXT:    movi v0.2s, #6, msl #8
+; CHECK-GI-NEXT:    rev64 v0.2s, v8.2s
 ; CHECK-GI-NEXT:    bl f_v2i32
 ; CHECK-GI-NEXT:    mov x8, #1535 // =0x5ff
 ; CHECK-GI-NEXT:    movk x8, #1535, lsl #32
 ; CHECK-GI-NEXT:    fmov d0, x8
 ; CHECK-GI-NEXT:    bl f_v1i64
 ; CHECK-GI-NEXT:    ldr q0, [sp] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v16i8
 ; CHECK-GI-NEXT:    ldr q0, [sp, #16] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v8i16
 ; CHECK-GI-NEXT:    movi v0.4s, #3, msl #8
+; CHECK-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v4i32
 ; CHECK-GI-NEXT:    movi v0.4s, #2, msl #8
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v2i64
-; CHECK-GI-NEXT:    ldr x30, [sp, #40] // 8-byte Reload
-; CHECK-GI-NEXT:    ldr d8, [sp, #32] // 8-byte Reload
-; CHECK-GI-NEXT:    add sp, sp, #48
+; CHECK-GI-NEXT:    ldp d9, d8, [sp, #32] // 16-byte Folded Reload
+; CHECK-GI-NEXT:    ldr x30, [sp, #48] // 8-byte Reload
+; CHECK-GI-NEXT:    add sp, sp, #64
 ; CHECK-GI-NEXT:    ret
   call i8 @f_v8i8(<8 x i8> <i8 255, i8 8, i8 0, i8 0, i8 255, i8 8, i8 0, i8 0>)
   call i16 @f_v4i16(<4 x i16> <i16 2047, i16 0, i16 2047, i16 0>)
@@ -1449,42 +1527,52 @@ define dso_local void @modimm_t8_call() {
 ;
 ; CHECK-GI-LABEL: modimm_t8_call:
 ; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    sub sp, sp, #48
-; CHECK-GI-NEXT:    str d8, [sp, #32] // 8-byte Spill
-; CHECK-GI-NEXT:    str x30, [sp, #40] // 8-byte Spill
-; CHECK-GI-NEXT:    .cfi_def_cfa_offset 48
-; CHECK-GI-NEXT:    .cfi_offset w30, -8
-; CHECK-GI-NEXT:    .cfi_offset b8, -16
-; CHECK-GI-NEXT:    adrp x10, .LCPI39_1
+; CHECK-GI-NEXT:    sub sp, sp, #64
+; CHECK-GI-NEXT:    stp d9, d8, [sp, #32] // 16-byte Folded Spill
+; CHECK-GI-NEXT:    str x30, [sp, #48] // 8-byte Spill
+; CHECK-GI-NEXT:    .cfi_def_cfa_offset 64
+; CHECK-GI-NEXT:    .cfi_offset w30, -16
+; CHECK-GI-NEXT:    .cfi_offset b8, -24
+; CHECK-GI-NEXT:    .cfi_offset b9, -32
 ; CHECK-GI-NEXT:    adrp x8, .LCPI39_3
-; CHECK-GI-NEXT:    adrp x11, .LCPI39_0
-; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI39_1]
-; CHECK-GI-NEXT:    adrp x9, .LCPI39_2
+; CHECK-GI-NEXT:    adrp x9, .LCPI39_1
+; CHECK-GI-NEXT:    adrp x10, .LCPI39_0
 ; CHECK-GI-NEXT:    ldr d0, [x8, :lo12:.LCPI39_3]
-; CHECK-GI-NEXT:    ldr d8, [x9, :lo12:.LCPI39_2]
+; CHECK-GI-NEXT:    ldr q1, [x9, :lo12:.LCPI39_1]
+; CHECK-GI-NEXT:    adrp x8, .LCPI39_2
+; CHECK-GI-NEXT:    ldr d9, [x8, :lo12:.LCPI39_2]
+; CHECK-GI-NEXT:    movi v8.2s, #6, msl #16
+; CHECK-GI-NEXT:    rev64 v0.8b, v0.8b
 ; CHECK-GI-NEXT:    str q1, [sp] // 16-byte Spill
-; CHECK-GI-NEXT:    ldr q1, [x11, :lo12:.LCPI39_0]
+; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI39_0]
 ; CHECK-GI-NEXT:    str q1, [sp, #16] // 16-byte Spill
 ; CHECK-GI-NEXT:    bl f_v8i8
-; CHECK-GI-NEXT:    fmov d0, d8
+; CHECK-GI-NEXT:    rev64 v0.4h, v9.4h
 ; CHECK-GI-NEXT:    bl f_v4i16
-; CHECK-GI-NEXT:    movi v0.2s, #6, msl #16
+; CHECK-GI-NEXT:    rev64 v0.2s, v8.2s
 ; CHECK-GI-NEXT:    bl f_v2i32
 ; CHECK-GI-NEXT:    mov x8, #-4294574081 // =0xffffffff0005ffff
 ; CHECK-GI-NEXT:    movk x8, #5, lsl #48
 ; CHECK-GI-NEXT:    fmov d0, x8
 ; CHECK-GI-NEXT:    bl f_v1i64
 ; CHECK-GI-NEXT:    ldr q0, [sp] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v16i8
 ; CHECK-GI-NEXT:    ldr q0, [sp, #16] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v8i16
 ; CHECK-GI-NEXT:    movi v0.4s, #3, msl #16
+; CHECK-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v4i32
 ; CHECK-GI-NEXT:    movi v0.4s, #2, msl #16
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v2i64
-; CHECK-GI-NEXT:    ldr x30, [sp, #40] // 8-byte Reload
-; CHECK-GI-NEXT:    ldr d8, [sp, #32] // 8-byte Reload
-; CHECK-GI-NEXT:    add sp, sp, #48
+; CHECK-GI-NEXT:    ldp d9, d8, [sp, #32] // 16-byte Folded Reload
+; CHECK-GI-NEXT:    ldr x30, [sp, #48] // 8-byte Reload
+; CHECK-GI-NEXT:    add sp, sp, #64
 ; CHECK-GI-NEXT:    ret
   call i8 @f_v8i8(<8 x i8> <i8 255, i8 255, i8 8, i8 0, i8 255, i8 255, i8 8, i8 0>)
   call i16 @f_v4i16(<4 x i16> <i16 65535, i16 7, i16 65535, i16 7>)
@@ -1530,22 +1618,35 @@ define dso_local void @modimm_t9_call() {
 ;
 ; CHECK-GI-LABEL: modimm_t9_call:
 ; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    str x30, [sp, #-16]! // 8-byte Folded Spill
-; CHECK-GI-NEXT:    .cfi_def_cfa_offset 16
+; CHECK-GI-NEXT:    stp d9, d8, [sp, #-32]! // 16-byte Folded Spill
+; CHECK-GI-NEXT:    str x30, [sp, #16] // 8-byte Spill
+; CHECK-GI-NEXT:    .cfi_def_cfa_offset 32
 ; CHECK-GI-NEXT:    .cfi_offset w30, -16
+; CHECK-GI-NEXT:    .cfi_offset b8, -24
+; CHECK-GI-NEXT:    .cfi_offset b9, -32
 ; CHECK-GI-NEXT:    movi v0.8b, #8
+; CHECK-GI-NEXT:    movi v8.8b, #7
+; CHECK-GI-NEXT:    movi v9.8b, #6
+; CHECK-GI-NEXT:    rev64 v0.8b, v0.8b
 ; CHECK-GI-NEXT:    bl f_v8i8
-; CHECK-GI-NEXT:    movi v0.8b, #7
+; CHECK-GI-NEXT:    rev64 v0.4h, v8.4h
 ; CHECK-GI-NEXT:    bl f_v4i16
-; CHECK-GI-NEXT:    movi v0.8b, #6
+; CHECK-GI-NEXT:    rev64 v0.2s, v9.2s
 ; CHECK-GI-NEXT:    bl f_v2i32
 ; CHECK-GI-NEXT:    movi v0.16b, #5
+; CHECK-GI-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v16i8
 ; CHECK-GI-NEXT:    movi v0.16b, #4
+; CHECK-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v8i16
 ; CHECK-GI-NEXT:    movi v0.16b, #3
+; CHECK-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v4i32
-; CHECK-GI-NEXT:    ldr x30, [sp], #16 // 8-byte Folded Reload
+; CHECK-GI-NEXT:    ldr x30, [sp, #16] // 8-byte Reload
+; CHECK-GI-NEXT:    ldp d9, d8, [sp], #32 // 16-byte Folded Reload
 ; CHECK-GI-NEXT:    ret
   call i8 @f_v8i8(<8 x i8> <i8 8, i8 8, i8 8, i8 8, i8 8, i8 8, i8 8, i8 8>)
   call i16 @f_v4i16(<4 x i16> <i16 1799, i16 1799, i16 1799, i16 1799>)
@@ -1589,39 +1690,48 @@ define dso_local void @modimm_t10_call() {
 ;
 ; CHECK-GI-LABEL: modimm_t10_call:
 ; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    sub sp, sp, #64
-; CHECK-GI-NEXT:    str d8, [sp, #48] // 8-byte Spill
-; CHECK-GI-NEXT:    str x30, [sp, #56] // 8-byte Spill
-; CHECK-GI-NEXT:    .cfi_def_cfa_offset 64
-; CHECK-GI-NEXT:    .cfi_offset w30, -8
-; CHECK-GI-NEXT:    .cfi_offset b8, -16
-; CHECK-GI-NEXT:    adrp x10, .LCPI41_2
-; CHECK-GI-NEXT:    adrp x11, .LCPI41_1
+; CHECK-GI-NEXT:    sub sp, sp, #80
+; CHECK-GI-NEXT:    stp d9, d8, [sp, #48] // 16-byte Folded Spill
+; CHECK-GI-NEXT:    str x30, [sp, #64] // 8-byte Spill
+; CHECK-GI-NEXT:    .cfi_def_cfa_offset 80
+; CHECK-GI-NEXT:    .cfi_offset w30, -16
+; CHECK-GI-NEXT:    .cfi_offset b8, -24
+; CHECK-GI-NEXT:    .cfi_offset b9, -32
 ; CHECK-GI-NEXT:    adrp x8, .LCPI41_4
-; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI41_2]
-; CHECK-GI-NEXT:    ldr d0, [x8, :lo12:.LCPI41_4]
-; CHECK-GI-NEXT:    adrp x8, .LCPI41_0
 ; CHECK-GI-NEXT:    adrp x9, .LCPI41_3
+; CHECK-GI-NEXT:    adrp x10, .LCPI41_0
+; CHECK-GI-NEXT:    ldr d0, [x8, :lo12:.LCPI41_4]
+; CHECK-GI-NEXT:    adrp x8, .LCPI41_2
+; CHECK-GI-NEXT:    ldr d9, [x9, :lo12:.LCPI41_3]
+; CHECK-GI-NEXT:    ldr q1, [x8, :lo12:.LCPI41_2]
+; CHECK-GI-NEXT:    adrp x9, .LCPI41_1
+; CHECK-GI-NEXT:    movi d8, #0xffffffffffffffff
+; CHECK-GI-NEXT:    rev64 v0.8b, v0.8b
 ; CHECK-GI-NEXT:    str q1, [sp] // 16-byte Spill
-; CHECK-GI-NEXT:    ldr q1, [x11, :lo12:.LCPI41_1]
-; CHECK-GI-NEXT:    ldr d8, [x9, :lo12:.LCPI41_3]
+; CHECK-GI-NEXT:    ldr q1, [x9, :lo12:.LCPI41_1]
 ; CHECK-GI-NEXT:    str q1, [sp, #16] // 16-byte Spill
-; CHECK-GI-NEXT:    ldr q1, [x8, :lo12:.LCPI41_0]
+; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI41_0]
 ; CHECK-GI-NEXT:    str q1, [sp, #32] // 16-byte Spill
 ; CHECK-GI-NEXT:    bl f_v8i8
-; CHECK-GI-NEXT:    fmov d0, d8
+; CHECK-GI-NEXT:    rev64 v0.4h, v9.4h
 ; CHECK-GI-NEXT:    bl f_v4i16
-; CHECK-GI-NEXT:    movi d0, #0xffffffffffffffff
+; CHECK-GI-NEXT:    rev64 v0.2s, v8.2s
 ; CHECK-GI-NEXT:    bl f_v2i32
 ; CHECK-GI-NEXT:    ldr q0, [sp] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v16i8
 ; CHECK-GI-NEXT:    ldr q0, [sp, #16] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v8i16
 ; CHECK-GI-NEXT:    ldr q0, [sp, #32] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v4i32
-; CHECK-GI-NEXT:    ldr x30, [sp, #56] // 8-byte Reload
-; CHECK-GI-NEXT:    ldr d8, [sp, #48] // 8-byte Reload
-; CHECK-GI-NEXT:    add sp, sp, #64
+; CHECK-GI-NEXT:    ldp d9, d8, [sp, #48] // 16-byte Folded Reload
+; CHECK-GI-NEXT:    ldr x30, [sp, #64] // 8-byte Reload
+; CHECK-GI-NEXT:    add sp, sp, #80
 ; CHECK-GI-NEXT:    ret
   call i8 @f_v8i8(<8 x i8> <i8 -1, i8 0, i8 0, i8 0, i8 -1, i8 0, i8 0, i8 0>)
   call i16 @f_v4i16(<4 x i16> <i16 -1, i16 0, i16 -1, i16 0>)
@@ -1670,42 +1780,52 @@ define dso_local void @modimm_t11_call() {
 ;
 ; CHECK-GI-LABEL: modimm_t11_call:
 ; CHECK-GI:       // %bb.0:
-; CHECK-GI-NEXT:    sub sp, sp, #48
-; CHECK-GI-NEXT:    str d8, [sp, #32] // 8-byte Spill
-; CHECK-GI-NEXT:    str x30, [sp, #40] // 8-byte Spill
-; CHECK-GI-NEXT:    .cfi_def_cfa_offset 48
-; CHECK-GI-NEXT:    .cfi_offset w30, -8
-; CHECK-GI-NEXT:    .cfi_offset b8, -16
-; CHECK-GI-NEXT:    adrp x10, .LCPI42_1
+; CHECK-GI-NEXT:    sub sp, sp, #64
+; CHECK-GI-NEXT:    stp d9, d8, [sp, #32] // 16-byte Folded Spill
+; CHECK-GI-NEXT:    str x30, [sp, #48] // 8-byte Spill
+; CHECK-GI-NEXT:    .cfi_def_cfa_offset 64
+; CHECK-GI-NEXT:    .cfi_offset w30, -16
+; CHECK-GI-NEXT:    .cfi_offset b8, -24
+; CHECK-GI-NEXT:    .cfi_offset b9, -32
 ; CHECK-GI-NEXT:    adrp x8, .LCPI42_3
-; CHECK-GI-NEXT:    adrp x11, .LCPI42_0
-; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI42_1]
-; CHECK-GI-NEXT:    adrp x9, .LCPI42_2
+; CHECK-GI-NEXT:    adrp x9, .LCPI42_1
+; CHECK-GI-NEXT:    adrp x10, .LCPI42_0
 ; CHECK-GI-NEXT:    ldr d0, [x8, :lo12:.LCPI42_3]
-; CHECK-GI-NEXT:    ldr d8, [x9, :lo12:.LCPI42_2]
+; CHECK-GI-NEXT:    ldr q1, [x9, :lo12:.LCPI42_1]
+; CHECK-GI-NEXT:    adrp x8, .LCPI42_2
+; CHECK-GI-NEXT:    ldr d9, [x8, :lo12:.LCPI42_2]
+; CHECK-GI-NEXT:    fmov v8.2s, #3.50000000
+; CHECK-GI-NEXT:    rev64 v0.8b, v0.8b
 ; CHECK-GI-NEXT:    str q1, [sp] // 16-byte Spill
-; CHECK-GI-NEXT:    ldr q1, [x11, :lo12:.LCPI42_0]
+; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI42_0]
 ; CHECK-GI-NEXT:    str q1, [sp, #16] // 16-byte Spill
 ; CHECK-GI-NEXT:    bl f_v8i8
-; CHECK-GI-NEXT:    fmov d0, d8
+; CHECK-GI-NEXT:    rev64 v0.4h, v9.4h
 ; CHECK-GI-NEXT:    bl f_v4i16
-; CHECK-GI-NEXT:    fmov v0.2s, #3.50000000
+; CHECK-GI-NEXT:    rev64 v0.2s, v8.2s
 ; CHECK-GI-NEXT:    bl f_v2i32
 ; CHECK-GI-NEXT:    mov x8, #1053294592 // =0x3ec80000
 ; CHECK-GI-NEXT:    movk x8, #16072, lsl #48
 ; CHECK-GI-NEXT:    fmov d0, x8
 ; CHECK-GI-NEXT:    bl f_v1i64
 ; CHECK-GI-NEXT:    ldr q0, [sp] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.16b, v0.16b
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v16i8
 ; CHECK-GI-NEXT:    ldr q0, [sp, #16] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v8i16
 ; CHECK-GI-NEXT:    fmov v0.4s, #2.75000000
+; CHECK-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v4i32
 ; CHECK-GI-NEXT:    fmov v0.4s, #2.50000000
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v2i64
-; CHECK-GI-NEXT:    ldr x30, [sp, #40] // 8-byte Reload
-; CHECK-GI-NEXT:    ldr d8, [sp, #32] // 8-byte Reload
-; CHECK-GI-NEXT:    add sp, sp, #48
+; CHECK-GI-NEXT:    ldp d9, d8, [sp, #32] // 16-byte Folded Reload
+; CHECK-GI-NEXT:    ldr x30, [sp, #48] // 8-byte Reload
+; CHECK-GI-NEXT:    add sp, sp, #64
 ; CHECK-GI-NEXT:    ret
   call i8 @f_v8i8(<8 x i8> <i8 0, i8 0, i8 128, i8 64, i8 0, i8 0, i8 128, i8 64>)
   call i16 @f_v4i16(<4 x i16> <i16 0, i16 16496, i16 0, i16 16496>)
@@ -1746,18 +1866,24 @@ define dso_local void @modimm_t12_call() {
 ; CHECK-GI-NEXT:    str x30, [sp, #32] // 8-byte Spill
 ; CHECK-GI-NEXT:    .cfi_def_cfa_offset 48
 ; CHECK-GI-NEXT:    .cfi_offset w30, -16
-; CHECK-GI-NEXT:    adrp x9, .LCPI43_1
 ; CHECK-GI-NEXT:    adrp x8, .LCPI43_2
+; CHECK-GI-NEXT:    adrp x9, .LCPI43_1
 ; CHECK-GI-NEXT:    adrp x10, .LCPI43_0
-; CHECK-GI-NEXT:    ldr q1, [x9, :lo12:.LCPI43_1]
 ; CHECK-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI43_2]
+; CHECK-GI-NEXT:    ldr q1, [x9, :lo12:.LCPI43_1]
+; CHECK-GI-NEXT:    rev64 v0.16b, v0.16b
 ; CHECK-GI-NEXT:    str q1, [sp] // 16-byte Spill
 ; CHECK-GI-NEXT:    ldr q1, [x10, :lo12:.LCPI43_0]
 ; CHECK-GI-NEXT:    str q1, [sp, #16] // 16-byte Spill
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v16i8
 ; CHECK-GI-NEXT:    ldr q0, [sp] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v8i16
 ; CHECK-GI-NEXT:    ldr q0, [sp, #16] // 16-byte Reload
+; CHECK-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-GI-NEXT:    bl f_v4i32
 ; CHECK-GI-NEXT:    ldr x30, [sp, #32] // 8-byte Reload
 ; CHECK-GI-NEXT:    add sp, sp, #48
@@ -1784,7 +1910,7 @@ define <2 x double> @test_v1f64(<1 x double> %0, ptr %1) {
 ; CHECK-GI-NEXT:    // kill: def $d0 killed $d0 def $q0
 ; CHECK-GI-NEXT:    fmov d1, x8
 ; CHECK-GI-NEXT:    mov v1.d[1], v0.d[0]
-; CHECK-GI-NEXT:    mov v0.16b, v1.16b
+; CHECK-GI-NEXT:    ext v0.16b, v1.16b, v1.16b, #8
 ; CHECK-GI-NEXT:    ret
   %vec = shufflevector <1 x double> <double 0xFFE00000FFE00000>, <1 x double> %0, <2 x i32> <i32 0, i32 1>
   ret <2 x double> %vec

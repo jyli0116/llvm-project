@@ -90,6 +90,7 @@ define <4 x i16> @test_reconstructshuffle(<16 x i8> %a, <16 x i8> %b) nounwind {
 ; CHECKBE-GI-NEXT:    mov v1.h[3], w9
 ; CHECKBE-GI-NEXT:    add v0.4h, v0.4h, v1.4h
 ; CHECKBE-GI-NEXT:    and v0.8b, v0.8b, v2.8b
+; CHECKBE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECKBE-GI-NEXT:    ret
   %tmp1 = shufflevector <16 x i8> %a, <16 x i8> undef, <4 x i32> <i32 3, i32 2, i32 1, i32 0>
   %tmp2 = shufflevector <16 x i8> %b, <16 x i8> undef, <4 x i32> <i32 12, i32 13, i32 14, i32 15>

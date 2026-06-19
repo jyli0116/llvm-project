@@ -25,6 +25,7 @@ define <4 x half> @test_16x4(<4 x half> %a, <4 x half> %b, <4 x half> %c) {
 ; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
 ; CHECK-BE-GI-NEXT:    rev64 v2.4h, v2.4h
 ; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #0
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x half> @llvm.aarch64.neon.vcmla.rot0.v4f16(<4 x half> %a, <4 x half> %b, <4 x half> %c)
@@ -54,6 +55,7 @@ define <4 x half> @test_16x4_lane_1(<4 x half> %a, <4 x half> %b, <4 x half> %c)
 ; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
 ; CHECK-BE-GI-NEXT:    rev32 v2.4h, v2.4h
 ; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.h[1], #0
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %c.cast = bitcast <4 x half> %c to <2 x i32>
@@ -84,6 +86,7 @@ define <4 x half> @test_rot90_16x4(<4 x half> %a, <4 x half> %b, <4 x half> %c) 
 ; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
 ; CHECK-BE-GI-NEXT:    rev64 v2.4h, v2.4h
 ; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #90
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x half> @llvm.aarch64.neon.vcmla.rot90.v4f16(<4 x half> %a, <4 x half> %b, <4 x half> %c)
@@ -113,6 +116,7 @@ define <4 x half> @test_rot90_16x4_lane_0(<4 x half> %a, <4 x half> %b, <4 x hal
 ; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
 ; CHECK-BE-GI-NEXT:    rev32 v2.4h, v2.4h
 ; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.h[0], #90
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %c.cast = bitcast <4 x half> %c to <2 x i32>
@@ -143,6 +147,7 @@ define <4 x half> @test_rot180_16x4(<4 x half> %a, <4 x half> %b, <4 x half> %c)
 ; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
 ; CHECK-BE-GI-NEXT:    rev64 v2.4h, v2.4h
 ; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #180
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x half> @llvm.aarch64.neon.vcmla.rot180.v4f16(<4 x half> %a, <4 x half> %b, <4 x half> %c)
@@ -173,6 +178,7 @@ define <4 x half> @test_rot180_16x4_lane_0(<4 x half> %a, <4 x half> %b, <8 x ha
 ; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
 ; CHECK-BE-GI-NEXT:    rev32 v2.8h, v2.8h
 ; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.h[0], #180
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    ret
 entry:
 
@@ -204,6 +210,7 @@ define <4 x half> @test_rot270_16x4(<4 x half> %a, <4 x half> %b, <4 x half> %c)
 ; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
 ; CHECK-BE-GI-NEXT:    rev64 v2.4h, v2.4h
 ; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.4h, #270
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x half> @llvm.aarch64.neon.vcmla.rot270.v4f16(<4 x half> %a, <4 x half> %b, <4 x half> %c)
@@ -231,6 +238,7 @@ define <2 x float> @test_32x2(<2 x float> %a, <2 x float> %b, <2 x float> %c) {
 ; CHECK-BE-GI-NEXT:    rev64 v1.2s, v1.2s
 ; CHECK-BE-GI-NEXT:    rev64 v2.2s, v2.2s
 ; CHECK-BE-GI-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #0
+; CHECK-BE-GI-NEXT:    rev64 v0.2s, v0.2s
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x float> @llvm.aarch64.neon.vcmla.rot0.v2f32(<2 x float> %a, <2 x float> %b, <2 x float> %c)
@@ -258,6 +266,7 @@ define <2 x float> @test_rot90_32x2(<2 x float> %a, <2 x float> %b, <2 x float> 
 ; CHECK-BE-GI-NEXT:    rev64 v1.2s, v1.2s
 ; CHECK-BE-GI-NEXT:    rev64 v2.2s, v2.2s
 ; CHECK-BE-GI-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #90
+; CHECK-BE-GI-NEXT:    rev64 v0.2s, v0.2s
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x float> @llvm.aarch64.neon.vcmla.rot90.v2f32(<2 x float> %a, <2 x float> %b, <2 x float> %c)
@@ -285,6 +294,7 @@ define <2 x float> @test_rot180_32x2(<2 x float> %a, <2 x float> %b, <2 x float>
 ; CHECK-BE-GI-NEXT:    rev64 v1.2s, v1.2s
 ; CHECK-BE-GI-NEXT:    rev64 v2.2s, v2.2s
 ; CHECK-BE-GI-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #180
+; CHECK-BE-GI-NEXT:    rev64 v0.2s, v0.2s
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x float> @llvm.aarch64.neon.vcmla.rot180.v2f32(<2 x float> %a, <2 x float> %b, <2 x float> %c)
@@ -312,6 +322,7 @@ define <2 x float> @test_rot270_32x2(<2 x float> %a, <2 x float> %b, <2 x float>
 ; CHECK-BE-GI-NEXT:    rev64 v1.2s, v1.2s
 ; CHECK-BE-GI-NEXT:    rev64 v2.2s, v2.2s
 ; CHECK-BE-GI-NEXT:    fcmla v0.2s, v1.2s, v2.2s, #270
+; CHECK-BE-GI-NEXT:    rev64 v0.2s, v0.2s
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x float> @llvm.aarch64.neon.vcmla.rot270.v2f32(<2 x float> %a, <2 x float> %b, <2 x float> %c)
@@ -346,6 +357,8 @@ define <8 x half> @test_16x8(<8 x half> %a, <8 x half> %b, <8 x half> %c) {
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #0
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <8 x half> @llvm.aarch64.neon.vcmla.rot0.v8f16(<8 x half> %a, <8 x half> %b, <8 x half> %c)
@@ -381,6 +394,8 @@ define <8 x half> @test_16x8_lane_0(<8 x half> %a, <8 x half> %b, <8 x half> %c)
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    rev32 v2.8h, v2.8h
 ; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.h[0], #0
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %c.cast = bitcast <8 x half> %c to <4 x i32>
@@ -418,6 +433,8 @@ define <8 x half> @test_rot90_16x8(<8 x half> %a, <8 x half> %b, <8 x half> %c) 
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #90
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <8 x half> @llvm.aarch64.neon.vcmla.rot90.v8f16(<8 x half> %a, <8 x half> %b, <8 x half> %c)
@@ -453,6 +470,8 @@ define <8 x half> @test_rot90_16x8_lane_1(<8 x half> %a, <8 x half> %b, <8 x hal
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    rev32 v2.8h, v2.8h
 ; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.h[1], #90
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %c.cast = bitcast <8 x half> %c to <4 x i32>
@@ -490,6 +509,8 @@ define <8 x half> @test_rot180_16x8(<8 x half> %a, <8 x half> %b, <8 x half> %c)
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #180
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <8 x half> @llvm.aarch64.neon.vcmla.rot180.v8f16(<8 x half> %a, <8 x half> %b, <8 x half> %c)
@@ -525,6 +546,8 @@ define <8 x half> @test_rot180_16x8_lane_1(<8 x half> %a, <8 x half> %b, <8 x ha
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    rev32 v2.8h, v2.8h
 ; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.h[1], #180
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %c.cast = bitcast <8 x half> %c to <4 x i32>
@@ -562,6 +585,8 @@ define <8 x half> @test_rot270_16x8(<8 x half> %a, <8 x half> %b, <8 x half> %c)
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.8h, #270
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <8 x half> @llvm.aarch64.neon.vcmla.rot270.v8f16(<8 x half> %a, <8 x half> %b, <8 x half> %c)
@@ -597,6 +622,8 @@ define <8 x half> @test_rot270_16x8_lane_0(<8 x half> %a, <8 x half> %b, <8 x ha
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    rev32 v2.8h, v2.8h
 ; CHECK-BE-GI-NEXT:    fcmla v0.8h, v1.8h, v2.h[0], #270
+; CHECK-BE-GI-NEXT:    rev64 v0.8h, v0.8h
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %c.cast = bitcast <8 x half> %c to <4 x i32>
@@ -634,6 +661,8 @@ define <4 x float> @test_32x4(<4 x float> %a, <4 x float> %b, <4 x float> %c) {
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #0
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x float> @llvm.aarch64.neon.vcmla.rot0.v4f32(<4 x float> %a, <4 x float> %b, <4 x float> %c)
@@ -668,6 +697,8 @@ define <4 x float> @test_32x4_lane_0(<4 x float> %a, <4 x float> %b, <4 x float>
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    rev64 v2.4s, v2.4s
 ; CHECK-BE-GI-NEXT:    fcmla v0.4s, v1.4s, v2.s[0], #0
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %c.cast = bitcast <4 x float> %c to <2 x i64>
@@ -705,6 +736,8 @@ define <4 x float> @test_rot90_32x4(<4 x float> %a, <4 x float> %b, <4 x float> 
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #90
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x float> @llvm.aarch64.neon.vcmla.rot90.v4f32(<4 x float> %a, <4 x float> %b, <4 x float> %c)
@@ -739,6 +772,8 @@ define <4 x float> @test_rot180_32x4(<4 x float> %a, <4 x float> %b, <4 x float>
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #180
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x float> @llvm.aarch64.neon.vcmla.rot180.v4f32(<4 x float> %a, <4 x float> %b, <4 x float> %c)
@@ -773,6 +808,8 @@ define <4 x float> @test_rot270_32x4(<4 x float> %a, <4 x float> %b, <4 x float>
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v0.4s, v1.4s, v2.4s, #270
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <4 x float> @llvm.aarch64.neon.vcmla.rot270.v4f32(<4 x float> %a, <4 x float> %b, <4 x float> %c)
@@ -800,6 +837,7 @@ define <2 x double> @test_64x2(<2 x double> %a, <2 x double> %b, <2 x double> %c
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #0
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x double> @llvm.aarch64.neon.vcmla.rot0.v2f64(<2 x double> %a, <2 x double> %b, <2 x double> %c)
@@ -827,6 +865,7 @@ define <2 x double> @test_rot90_64x2(<2 x double> %a, <2 x double> %b, <2 x doub
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #90
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x double> @llvm.aarch64.neon.vcmla.rot90.v2f64(<2 x double> %a, <2 x double> %b, <2 x double> %c)
@@ -854,6 +893,7 @@ define <2 x double> @test_rot180_64x2(<2 x double> %a, <2 x double> %b, <2 x dou
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #180
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x double> @llvm.aarch64.neon.vcmla.rot180.v2f64(<2 x double> %a, <2 x double> %b, <2 x double> %c)
@@ -881,6 +921,7 @@ define <2 x double> @test_rot270_64x2(<2 x double> %a, <2 x double> %b, <2 x dou
 ; CHECK-BE-GI-NEXT:    ext v1.16b, v1.16b, v1.16b, #8
 ; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #270
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %res = tail call <2 x double> @llvm.aarch64.neon.vcmla.rot270.v2f64(<2 x double> %a, <2 x double> %b, <2 x double> %c)
@@ -924,6 +965,8 @@ define <4 x float> @reassoc_f32x4(<4 x float> %a, <4 x float> %b, <4 x float> %c
 ; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v3.4s, v1.4s, v2.4s, #0
 ; CHECK-BE-GI-NEXT:    fadd v0.4s, v3.4s, v0.4s
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %d = tail call <4 x float> @llvm.aarch64.neon.vcmla.rot0.v4f32(<4 x float> zeroinitializer, <4 x float> %b, <4 x float> %c)
@@ -968,6 +1011,8 @@ define <4 x float> @reassoc_c_f32x4(<4 x float> %a, <4 x float> %b, <4 x float> 
 ; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v3.4s, v1.4s, v2.4s, #90
 ; CHECK-BE-GI-NEXT:    fadd v0.4s, v0.4s, v3.4s
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %d = tail call <4 x float> @llvm.aarch64.neon.vcmla.rot90.v4f32(<4 x float> zeroinitializer, <4 x float> %b, <4 x float> %c)
@@ -1005,6 +1050,7 @@ define <4 x half> @reassoc_f16x4(<4 x half> %a, <4 x half> %b, <4 x half> %c) {
 ; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    fcmla v3.4h, v1.4h, v2.4h, #180
 ; CHECK-BE-GI-NEXT:    fadd v0.4h, v3.4h, v0.4h
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %d = tail call <4 x half> @llvm.aarch64.neon.vcmla.rot180.v4f16(<4 x half> zeroinitializer, <4 x half> %b, <4 x half> %c)
@@ -1042,6 +1088,7 @@ define <4 x half> @reassoc_c_f16x4(<4 x half> %a, <4 x half> %b, <4 x half> %c) 
 ; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    fcmla v3.4h, v1.4h, v2.4h, #270
 ; CHECK-BE-GI-NEXT:    fadd v0.4h, v0.4h, v3.4h
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %d = tail call <4 x half> @llvm.aarch64.neon.vcmla.rot270.v4f16(<4 x half> zeroinitializer, <4 x half> %b, <4 x half> %c)
@@ -1085,6 +1132,7 @@ define <2 x double> @reassoc_f64x2(<2 x double> %a, <2 x double> %b, <2 x double
 ; CHECK-BE-GI-NEXT:    fcmla v0.2d, v1.2d, v2.2d, #270
 ; CHECK-BE-GI-NEXT:    fcmla v4.2d, v2.2d, v3.2d, #270
 ; CHECK-BE-GI-NEXT:    fadd v0.2d, v4.2d, v0.2d
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %d = tail call <2 x double> @llvm.aarch64.neon.vcmla.rot270.v2f64(<2 x double> %a, <2 x double> %b, <2 x double> %c)
@@ -1131,6 +1179,7 @@ define <2 x double> @reassoc_c_f64x2(<2 x double> %a, <2 x double> %b, <2 x doub
 ; CHECK-BE-GI-NEXT:    fcmla v0.2d, v2.2d, v3.2d, #270
 ; CHECK-BE-GI-NEXT:    fcmla v4.2d, v1.2d, v2.2d, #270
 ; CHECK-BE-GI-NEXT:    fadd v0.2d, v0.2d, v4.2d
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %d = tail call <2 x double> @llvm.aarch64.neon.vcmla.rot270.v2f64(<2 x double> %a, <2 x double> %b, <2 x double> %c)
@@ -1173,6 +1222,8 @@ define <4 x float> @reassoc_nonfast_f32x4(<4 x float> %a, <4 x float> %b, <4 x f
 ; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v3.4s, v1.4s, v2.4s, #0
 ; CHECK-BE-GI-NEXT:    fadd v0.4s, v3.4s, v0.4s
+; CHECK-BE-GI-NEXT:    rev64 v0.4s, v0.4s
+; CHECK-BE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECK-BE-GI-NEXT:    ret
 entry:
   %d = tail call <4 x float> @llvm.aarch64.neon.vcmla.rot0.v4f32(<4 x float> zeroinitializer, <4 x float> %b, <4 x float> %c)
@@ -1205,6 +1256,7 @@ define <4 x half> @be_vcmla_lane_f16(<4 x half> %0, <4 x half> %1, <4 x i32> %2)
 ; CHECK-BE-GI-NEXT:    rev64 v1.4h, v1.4h
 ; CHECK-BE-GI-NEXT:    ext v2.16b, v2.16b, v2.16b, #8
 ; CHECK-BE-GI-NEXT:    fcmla v0.4h, v1.4h, v2.h[0], #0
+; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECK-BE-GI-NEXT:    ret
 entry:
