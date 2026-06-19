@@ -90,10 +90,11 @@ define <8 x i8> @vtrni16_viabitcast(ptr %A, ptr %B) nounwind {
 ; CHECK-GI-BE-NEXT:    ld1 { v0.4h }, [x0]
 ; CHECK-GI-BE-NEXT:    ld1 { v1.4h }, [x1]
 ; CHECK-GI-BE-NEXT:    adrp x8, .LCPI2_0
+; CHECK-GI-BE-NEXT:    add x8, x8, :lo12:.LCPI2_0
 ; CHECK-GI-BE-NEXT:    rev16 v0.8b, v0.8b
 ; CHECK-GI-BE-NEXT:    rev16 v1.8b, v1.8b
 ; CHECK-GI-BE-NEXT:    mov v0.d[1], v1.d[0]
-; CHECK-GI-BE-NEXT:    ldr d1, [x8, :lo12:.LCPI2_0]
+; CHECK-GI-BE-NEXT:    ld1 { v1.8b }, [x8]
 ; CHECK-GI-BE-NEXT:    tbl v0.16b, { v0.16b }, v1.16b
 ; CHECK-GI-BE-NEXT:    rev64 v0.8b, v0.8b
 ; CHECK-GI-BE-NEXT:    ret

@@ -52,8 +52,9 @@ define void @zext_of_concat(ptr %a, ptr %b, ptr %c, ptr %d) nounwind {
 ; CHECK-GI-BE-NEXT:    ld1 { v1.2s }, [x1]
 ; CHECK-GI-BE-NEXT:    movi v3.2d, #0000000000000000
 ; CHECK-GI-BE-NEXT:    adrp x8, .LCPI0_0
+; CHECK-GI-BE-NEXT:    add x8, x8, :lo12:.LCPI0_0
 ; CHECK-GI-BE-NEXT:    add v2.2s, v0.2s, v1.2s
-; CHECK-GI-BE-NEXT:    ldr q0, [x8, :lo12:.LCPI0_0]
+; CHECK-GI-BE-NEXT:    ld1 { v0.16b }, [x8]
 ; CHECK-GI-BE-NEXT:    ld1 { v1.4s }, [x2]
 ; CHECK-GI-BE-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECK-GI-BE-NEXT:    add v0.4s, v0.4s, v1.4s
@@ -125,8 +126,9 @@ define void @zext_of_concat_extrause(ptr %a, ptr %b, ptr %c, ptr %d, ptr %e) nou
 ; CHECK-GI-BE-NEXT:    ld1 { v1.2s }, [x1]
 ; CHECK-GI-BE-NEXT:    movi v3.2d, #0000000000000000
 ; CHECK-GI-BE-NEXT:    adrp x8, .LCPI1_0
+; CHECK-GI-BE-NEXT:    add x8, x8, :lo12:.LCPI1_0
 ; CHECK-GI-BE-NEXT:    add v2.2s, v0.2s, v1.2s
-; CHECK-GI-BE-NEXT:    ldr q0, [x8, :lo12:.LCPI1_0]
+; CHECK-GI-BE-NEXT:    ld1 { v0.16b }, [x8]
 ; CHECK-GI-BE-NEXT:    mov v2.d[1], v2.d[0]
 ; CHECK-GI-BE-NEXT:    st1 { v2.4s }, [x4]
 ; CHECK-GI-BE-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b

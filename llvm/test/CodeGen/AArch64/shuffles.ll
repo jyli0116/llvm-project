@@ -90,6 +90,7 @@ define <16 x i32> @test_shuf1(<16 x i32> %x, <16 x i32> %y) {
 ; CHECKBE-GI-NEXT:    mov s0, v3.s[1]
 ; CHECKBE-GI-NEXT:    mov v17.16b, v4.16b
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI0_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI0_0
 ; CHECKBE-GI-NEXT:    mov s6, v3.s[2]
 ; CHECKBE-GI-NEXT:    mov s16, v3.s[3]
 ; CHECKBE-GI-NEXT:    mov s19, v5.s[2]
@@ -115,7 +116,7 @@ define <16 x i32> @test_shuf1(<16 x i32> %x, <16 x i32> %y) {
 ; CHECKBE-GI-NEXT:    mov v16.s[2], v20.s[0]
 ; CHECKBE-GI-NEXT:    mov v4.s[3], v5.s[0]
 ; CHECKBE-GI-NEXT:    mov v0.s[2], v18.s[0]
-; CHECKBE-GI-NEXT:    ldr q5, [x8, :lo12:.LCPI0_0]
+; CHECKBE-GI-NEXT:    ld1 { v5.16b }, [x8]
 ; CHECKBE-GI-NEXT:    mov v6.s[3], v2.s[0]
 ; CHECKBE-GI-NEXT:    mov v16.s[3], v17.s[0]
 ; CHECKBE-GI-NEXT:    tbl v2.16b, { v3.16b, v4.16b }, v5.16b
@@ -210,6 +211,7 @@ define <4 x i32> @test_shuf3(<16 x i32> %x, <16 x i32> %y) {
 ; CHECKBE-GI:       // %bb.0:
 ; CHECKBE-GI-NEXT:    // kill: def $q3 killed $q3 def $q3_q4
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI2_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI2_0
 ; CHECKBE-GI-NEXT:    mov v4.16b, v2.16b
 ; CHECKBE-GI-NEXT:    mov s0, v3.s[1]
 ; CHECKBE-GI-NEXT:    mov s1, v3.s[2]
@@ -218,7 +220,7 @@ define <4 x i32> @test_shuf3(<16 x i32> %x, <16 x i32> %y) {
 ; CHECKBE-GI-NEXT:    mov s6, v4.s[2]
 ; CHECKBE-GI-NEXT:    mov s7, v4.s[3]
 ; CHECKBE-GI-NEXT:    mov v3.s[1], v0.s[0]
-; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI2_0]
+; CHECKBE-GI-NEXT:    ld1 { v0.16b }, [x8]
 ; CHECKBE-GI-NEXT:    mov v3.s[2], v1.s[0]
 ; CHECKBE-GI-NEXT:    mov v3.s[3], v2.s[0]
 ; CHECKBE-GI-NEXT:    mov v4.s[1], v5.s[0]
@@ -360,8 +362,9 @@ define <4 x i32> @test1503(<4 x i32> %a, <4 x i32> %b)
 ; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
 ; CHECKBE-GI-NEXT:    rev64 v1.4s, v1.4s
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI5_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI5_0
 ; CHECKBE-GI-NEXT:    ext v2.16b, v0.16b, v0.16b, #8
-; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI5_0]
+; CHECKBE-GI-NEXT:    ld1 { v0.16b }, [x8]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
@@ -406,8 +409,9 @@ define <4 x i32> @test4366(<4 x i32> %a, <4 x i32> %b)
 ; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
 ; CHECKBE-GI-NEXT:    rev64 v1.4s, v1.4s
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI6_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI6_0
 ; CHECKBE-GI-NEXT:    ext v2.16b, v0.16b, v0.16b, #8
-; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI6_0]
+; CHECKBE-GI-NEXT:    ld1 { v0.16b }, [x8]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
@@ -454,8 +458,9 @@ define <4 x i32> @test7367(<4 x i32> %a, <4 x i32> %b)
 ; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
 ; CHECKBE-GI-NEXT:    rev64 v1.4s, v1.4s
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI7_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI7_0
 ; CHECKBE-GI-NEXT:    ext v2.16b, v0.16b, v0.16b, #8
-; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI7_0]
+; CHECKBE-GI-NEXT:    ld1 { v0.16b }, [x8]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
@@ -500,8 +505,9 @@ define <4 x i32> @test4045(<4 x i32> %a, <4 x i32> %b)
 ; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
 ; CHECKBE-GI-NEXT:    rev64 v1.4s, v1.4s
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI8_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI8_0
 ; CHECKBE-GI-NEXT:    ext v2.16b, v0.16b, v0.16b, #8
-; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI8_0]
+; CHECKBE-GI-NEXT:    ld1 { v0.16b }, [x8]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
@@ -544,8 +550,9 @@ define <4 x i32> @test0067(<4 x i32> %a, <4 x i32> %b)
 ; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
 ; CHECKBE-GI-NEXT:    rev64 v1.4s, v1.4s
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI9_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI9_0
 ; CHECKBE-GI-NEXT:    ext v2.16b, v0.16b, v0.16b, #8
-; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI9_0]
+; CHECKBE-GI-NEXT:    ld1 { v0.16b }, [x8]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
@@ -589,8 +596,9 @@ define <4 x i32> @test_shuf6(<4 x i32> %a, <4 x i32> %b)
 ; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
 ; CHECKBE-GI-NEXT:    rev64 v1.4s, v1.4s
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI10_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI10_0
 ; CHECKBE-GI-NEXT:    ext v2.16b, v0.16b, v0.16b, #8
-; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI10_0]
+; CHECKBE-GI-NEXT:    ld1 { v0.16b }, [x8]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECKBE-GI-NEXT:    rev64 v0.4s, v0.4s
@@ -635,8 +643,9 @@ define <4 x i16> @test_shuf7(<4 x i16> %a, <4 x i16> %b)
 ; CHECKBE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECKBE-GI-NEXT:    rev64 v1.4h, v1.4h
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI11_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI11_0
 ; CHECKBE-GI-NEXT:    mov v0.d[1], v1.d[0]
-; CHECKBE-GI-NEXT:    ldr d1, [x8, :lo12:.LCPI11_0]
+; CHECKBE-GI-NEXT:    ld1 { v1.8b }, [x8]
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v0.16b }, v1.16b
 ; CHECKBE-GI-NEXT:    rev64 v0.4h, v0.4h
 ; CHECKBE-GI-NEXT:    ret
@@ -685,8 +694,9 @@ define <8 x i8> @test_shuf8(<8 x i8> %a, <8 x i8> %b)
 ; CHECKBE-GI-NEXT:    rev64 v0.8b, v0.8b
 ; CHECKBE-GI-NEXT:    rev64 v1.8b, v1.8b
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI12_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI12_0
 ; CHECKBE-GI-NEXT:    mov v0.d[1], v1.d[0]
-; CHECKBE-GI-NEXT:    ldr d1, [x8, :lo12:.LCPI12_0]
+; CHECKBE-GI-NEXT:    ld1 { v1.8b }, [x8]
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v0.16b }, v1.16b
 ; CHECKBE-GI-NEXT:    rev64 v0.8b, v0.8b
 ; CHECKBE-GI-NEXT:    ret
@@ -733,8 +743,9 @@ define <8 x i16> @test_shuf9(<8 x i16> %a, <8 x i16> %b)
 ; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
 ; CHECKBE-GI-NEXT:    rev64 v1.8h, v1.8h
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI13_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI13_0
 ; CHECKBE-GI-NEXT:    ext v2.16b, v0.16b, v0.16b, #8
-; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI13_0]
+; CHECKBE-GI-NEXT:    ld1 { v0.16b }, [x8]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
@@ -777,7 +788,8 @@ define <16 x i8> @test_shuf10(<16 x i8> %a, <16 x i8> %b)
 ; CHECKBE-GI:       // %bb.0:
 ; CHECKBE-GI-NEXT:    rev64 v0.16b, v0.16b
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI14_0
-; CHECKBE-GI-NEXT:    ldr q2, [x8, :lo12:.LCPI14_0]
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI14_0
+; CHECKBE-GI-NEXT:    ld1 { v2.16b }, [x8]
 ; CHECKBE-GI-NEXT:    ext v0.16b, v0.16b, v0.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v0.16b, v1.16b }, v2.16b
 ; CHECKBE-GI-NEXT:    rev64 v0.16b, v0.16b
@@ -826,8 +838,9 @@ define <8 x half> @test_shuf11(<8 x half> %a, <8 x half> %b)
 ; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
 ; CHECKBE-GI-NEXT:    rev64 v1.8h, v1.8h
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI15_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI15_0
 ; CHECKBE-GI-NEXT:    ext v2.16b, v0.16b, v0.16b, #8
-; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI15_0]
+; CHECKBE-GI-NEXT:    ld1 { v0.16b }, [x8]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
@@ -876,8 +889,9 @@ define <8 x half> @test_shuf12(<8 x half> %a, <8 x half> %b)
 ; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
 ; CHECKBE-GI-NEXT:    rev64 v1.8h, v1.8h
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI16_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI16_0
 ; CHECKBE-GI-NEXT:    ext v2.16b, v0.16b, v0.16b, #8
-; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI16_0]
+; CHECKBE-GI-NEXT:    ld1 { v0.16b }, [x8]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
@@ -926,8 +940,9 @@ define <8 x half> @test_shuf13(<8 x half> %a, <8 x half> %b)
 ; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
 ; CHECKBE-GI-NEXT:    rev64 v1.8h, v1.8h
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI17_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI17_0
 ; CHECKBE-GI-NEXT:    ext v2.16b, v0.16b, v0.16b, #8
-; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI17_0]
+; CHECKBE-GI-NEXT:    ld1 { v0.16b }, [x8]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
@@ -976,8 +991,9 @@ define <8 x half> @test_shuf14(<8 x half> %a, <8 x half> %b)
 ; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
 ; CHECKBE-GI-NEXT:    rev64 v1.8h, v1.8h
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI18_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI18_0
 ; CHECKBE-GI-NEXT:    ext v2.16b, v0.16b, v0.16b, #8
-; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI18_0]
+; CHECKBE-GI-NEXT:    ld1 { v0.16b }, [x8]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
@@ -1026,8 +1042,9 @@ define <8 x half> @test_shuf15(<8 x half> %a, <8 x half> %b)
 ; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
 ; CHECKBE-GI-NEXT:    rev64 v1.8h, v1.8h
 ; CHECKBE-GI-NEXT:    adrp x8, .LCPI19_0
+; CHECKBE-GI-NEXT:    add x8, x8, :lo12:.LCPI19_0
 ; CHECKBE-GI-NEXT:    ext v2.16b, v0.16b, v0.16b, #8
-; CHECKBE-GI-NEXT:    ldr q0, [x8, :lo12:.LCPI19_0]
+; CHECKBE-GI-NEXT:    ld1 { v0.16b }, [x8]
 ; CHECKBE-GI-NEXT:    ext v3.16b, v1.16b, v1.16b, #8
 ; CHECKBE-GI-NEXT:    tbl v0.16b, { v2.16b, v3.16b }, v0.16b
 ; CHECKBE-GI-NEXT:    rev64 v0.8h, v0.8h
