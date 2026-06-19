@@ -537,14 +537,23 @@ void CallLowering::buildCopyFromRegs(MachineIRBuilder &B,
 
       // Input registers contain packed elements.
       // Determine how many elements per reg.
-      assert((SrcEltTy.getSizeInBits() % OriginalEltTy.getSizeInBits()) == 0);
-      unsigned EltPerReg =
-          (SrcEltTy.getSizeInBits() / OriginalEltTy.getSizeInBits());
+      LLT medTy;
+      unsigned EltPerReg;
+      if ((SrcEltTy.getSizeInBits() % OriginalEltTy.getSizeInBits()) != 0) {
+        unsigned extEltSize = PowerOf2Ceil(OriginalEltTy.getSizeInBits());
+        EltPerReg = SrcEltTy.getSizeInBits() / extEltSize;
+        medTy = LLT::scalar(extEltSize);
+      } else {
+        assert((SrcEltTy.getSizeInBits() % OriginalEltTy.getSizeInBits()) == 0);
+        EltPerReg =
+            (SrcEltTy.getSizeInBits() / OriginalEltTy.getSizeInBits());
+        medTy = OriginalEltTy;
+      }
 
       SmallVector<Register, 0> BVRegs;
       BVRegs.reserve(Regs.size() * EltPerReg);
       for (Register R : Regs) {
-        auto Unmerge = B.buildUnmerge(OriginalEltTy, R);
+        auto Unmerge = B.buildUnmerge(medTy, R);
         for (unsigned K = 0; K < EltPerReg; ++K)
           BVRegs.push_back(B.buildAnyExt(PartLLT, Unmerge.getReg(K)).getReg(0));
       }

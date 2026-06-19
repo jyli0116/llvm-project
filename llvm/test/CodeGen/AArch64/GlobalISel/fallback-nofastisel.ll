@@ -6,6 +6,6 @@
 ; because the FastISel is set up in the SelectionDAGISel, so it doesn't appear on the pass structure.
 
 ; CHECK-NOT: Enabling fast-ise
-define void @empty() {
-  ret void
+define <4 x i6> @foo(float %0, <4 x i6> %1) {
+  ret <4 x i6> %1
 }
